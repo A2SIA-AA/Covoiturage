@@ -49,15 +49,15 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/home/loraine/Documents/projet_c++/Projet_Covoiturage/Controlleur"
+					"path" : "/home/aissa/Bureau/Covoiturage/Controlleur"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "/home/loraine/Documents/projet_c++/Projet_Covoiturage/Modele"
+					"path" : "/home/aissa/Bureau/Covoiturage/Modele"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "/home/loraine/Documents/projet_c++/Projet_Covoiturage/Interface"
+					"path" : "/home/aissa/Bureau/Covoiturage/Interface"
 				}
 			],
 			"language" : "CXX",
