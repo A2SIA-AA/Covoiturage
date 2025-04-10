@@ -5,7 +5,8 @@
 
 class Utilisateur{
     // attributs
-private:  int idUtilisateur;
+private:
+    int idUtilisateur;
     std::string nom;
     std::string prenom;
     std::string email;
