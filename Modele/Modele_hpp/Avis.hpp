@@ -2,6 +2,12 @@
 #define __AVIS_HPP__
 
 #include <string>
+/**
+ * @class Avis
+ * @brief Représente un avis laissé ou recu par un utilisateur à propos d’un trajet.
+ *
+ * Cette classe permet de gérer les retours (notes et commentaires) associés à un trajet.
+ */
 
 class Avis{
     private:

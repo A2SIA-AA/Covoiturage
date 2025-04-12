@@ -2,7 +2,10 @@
 #define __UTILISATEUR_HPP__
 
 #include <string>
-
+/**
+ * @class Utilisateur
+ * Permet de modeliser et definir un utilisateur
+ */
 class Utilisateur{
     // attributs
 private:

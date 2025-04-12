@@ -3,7 +3,10 @@
 
 #include <string>
 #include <vector>
-
+/**
+ * @class Trajet
+ * Permet de modeliser et definir un trajet de covoiturage
+ */
 class Trajet{
 
 private:
@@ -24,7 +27,7 @@ private:
     float emissionCO2;
     std::string description;
 
-  public:
+public:
     Trajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
     void setIdTrajet(int idTrajet);
     void setDate(std::string date);
