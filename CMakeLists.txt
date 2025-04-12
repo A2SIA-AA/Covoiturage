@@ -4,7 +4,11 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 20)
 
 # Ajoute les répertoires contenant les headers
-include_directories(Controlleur Modele Interface)
+include_directories(${PROJECT_SOURCE_DIR}/Controlleur/Controlleur_hpp)
+include_directories(${PROJECT_SOURCE_DIR}/Controlleur/Controlleur_cpp)
+include_directories(${PROJECT_SOURCE_DIR}/Modele)
+include_directories(${PROJECT_SOURCE_DIR}/Interface)
+
 
 # Liste des fichiers sources à compiler
 set(SOURCES
@@ -31,4 +35,5 @@ set(SOURCES
         Modele/Modele_cpp/Utilisateur.cpp
 )
 
-add_executable(untitled main.cpp)
+add_executable(untitled ${SOURCES})
+

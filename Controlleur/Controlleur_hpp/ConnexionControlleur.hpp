@@ -9,14 +9,15 @@
  */
 class ConnexionControlleur{
 
-private:
+public:
 
     /**
-      * @brief Vérifie si un utilisateur existe dans la base de données.
-      * @param email L'adresse e-mail de l'utilisateur.
-      * @param motPasse Le mot de passe de l'utilisateur.
-      */
-    void verifierUtilisateur(std::string email, std::string motPasse);
+    * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.
+    * @param email L'adresse e-mail de l'utilisateur.
+    * @param motPasse Le mot de passe de l'utilisateur.
+    * @return true si l'utilisateur existe et que le mot de passe est correct, false sinon.
+    */
+    bool verifierUtilisateur(std::string email, std::string motPasse);
 
 };
 #endif

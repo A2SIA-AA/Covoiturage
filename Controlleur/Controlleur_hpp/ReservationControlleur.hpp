@@ -9,7 +9,8 @@
  * @brief Gère la réservation et le paiement d'un trajet.
  */
 class Reservation{
-private:
+
+public:
     /**
      * @brief Envoie une demande de paiement.
      * @param montant Le montant à payer.

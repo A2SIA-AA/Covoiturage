@@ -11,7 +11,7 @@
  */
 class TrajetControlleur{
 
-private:
+public:
     /**
      * @brief Vérifie que toutes les informations du trajet sont valides.
      * @param idTrajet Identifiant unique du trajet.
@@ -41,7 +41,7 @@ private:
      * @param email Adresse e-mail du passager.
      * @param numeroTelephone Numéro de téléphone du passager.
      */
-    void  reservation(Trajet trajet, std::string nom, std::string prenom, std::string email, int numeroTelephone);
+    void reservation(Trajet trajet, std::string nom, std::string prenom, std::string email, int numeroTelephone);
 
     /**
      * @brief Retourne un trajet spécifique.
