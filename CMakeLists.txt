@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.30)
-project(untitled)
+cmake_minimum_required(VERSION 3.10)
+project(Covoiturage)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -8,7 +8,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Controlleur/Controlleur_hpp)
 include_directories(${PROJECT_SOURCE_DIR}/Controlleur/Controlleur_cpp)
 include_directories(${PROJECT_SOURCE_DIR}/Modele)
 include_directories(${PROJECT_SOURCE_DIR}/Interface)
-
+include_directories(${PROJECT_SOURCE_DIR}/Tests)
 
 # Liste des fichiers sources à compiler
 set(SOURCES
@@ -38,10 +38,16 @@ set(SOURCES
         Tests/Test_controlleur/Test_ajoutTajet.cpp
         Tests/Test_controlleur/Test_connexion.cpp
         Tests/Test_controlleur/Test_rechercherTrajet.cpp
+        Tests/Test_controlleur/Test_comparer.cpp
+        Tests/Test_controlleur/Test_comparerEmission.cpp
+        Tests/Test_controlleur/Test_comparerHeureDepart.cpp
+        Tests/Test_controlleur/Test_comparerPointIntermediaire.cpp
+        Tests/Test_controlleur/Test_comparerDistanceTrajet.cpp
+        Tests/Test_controlleur/Test_comparerDuree.cpp
+        Tests/Test_controlleur/Test_comparerPrix.cpp
         Tests/Test_interface/TestAccueilInterface.cpp
         Tests/Test_interface/TestConnexionInterface.cpp
         Tests/Test_interface/TestInscriptionInterface.cpp
 )
 
-add_executable(untitled ${SOURCES})
-
+add_executable(Covoiturage ${SOURCES})

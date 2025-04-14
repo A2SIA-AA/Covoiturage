@@ -3,6 +3,23 @@
 #include "Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
 #include "Controlleur/Controlleur_hpp/ReservationControlleur.hpp"
 #include "Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
+#include "Interface/Interface_hpp/AccueilInterface.hpp"
+#include "Interface/Interface_hpp/TrajetInterface.hpp"
+#include "Interface/Interface_hpp/ConnexionInterface.hpp"
+#include "Interface/Interface_hpp/InscriptionInterface.hpp"
+#include "Interface/Interface_hpp/RechercheInterface.hpp"
+#include "Interface/Interface_hpp/ReservationInterface.hpp"
+#include "Interface/Interface_hpp/MesAnnoncesInterface.hpp"
+#include "Interface/Interface_hpp/MesReservationsInterface.hpp"
+#include "Modele/Modele_hpp/Avis.hpp"
+#include "Modele/Modele_hpp/Conducteur.hpp"
+#include "Modele/Modele_hpp/Message.hpp"
+#include "Modele/Modele_hpp/Paiement.hpp"
+#include "Modele/Modele_hpp/Trajet.hpp"
+#include "Modele/Modele_hpp/Reservation.hpp"
+#include "Modele/Modele_hpp/Passager.hpp"
+#include "Modele/Modele_hpp/Utilisateur.hpp"
+#include "Modele/Modele_hpp/BaseDonnees.hpp"
 
 int main() {
 

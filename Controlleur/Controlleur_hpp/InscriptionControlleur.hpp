@@ -9,7 +9,7 @@
 class InscriptionControlleur{
 
 
-private:
+public:
     /**
      * Permet de vérifier la saisie lors d'une nouvelle inscription.
      * @param nom
