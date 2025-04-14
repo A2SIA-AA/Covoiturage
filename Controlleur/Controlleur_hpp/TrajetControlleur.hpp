@@ -31,23 +31,39 @@ public:
      * @param emissionCO2 Niveau d'émission de CO2 du trajet.
      * @param description Description supplémentaire du trajet.
      */
-    void verifierSaisie(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
+    void verifierSaisieTrajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
 
     /**
-     * @brief Effectue une réservation pour un trajet donné.
-     * @param trajet Le trajet à réserver.
-     * @param nom Nom du passager.
+     * @brief Effectue une réservation pour un trajet spécifique.
+     *
+     * Cette fonction permet d'enregistrer une réservation pour un trajet identifié par son ID.
+     * Elle prend en compte les informations personnelles du passager ainsi que les détails de la réservation.
+     *
+     * @param idTrajet Identifiant du trajet à réserver.
+     * @param nom Nom de famille du passager.
      * @param prenom Prénom du passager.
      * @param email Adresse e-mail du passager.
      * @param numeroTelephone Numéro de téléphone du passager.
+     * @param prix Prix de la réservation.
+     * @param idReservation Identifiant unique de la réservation.
+     * @param statut Statut de la réservation (true si confirmée, false sinon).
      */
-    void reservation(Trajet trajet, std::string nom, std::string prenom, std::string email, int numeroTelephone);
+    void reservation(int idTrajet, std::string nom, std::string prenom, std::string email, int numeroTelephone, float prix, int idReservation, bool statut);
 
-    /**
-     * @brief Retourne un trajet spécifique.
-     * @return Un objet de type Trajet contenant les détails du trajet.
+        /**
+     * @brief Recherche les trajets correspondant aux critères spécifiés.
+     *
+     * Cette méthode permet de récupérer tous les trajets qui correspondent à un
+     * lieu de départ, un lieu d'arrivée et une date donnés. Elle est utile pour
+     * permettre aux utilisateurs de consulter les trajets disponibles selon leurs besoins.
+     *
+     * @param lieuDepart Le lieu de départ des trajets recherchés.
+     * @param lieuArrivee Le lieu d'arrivée des trajets recherchés.
+     * @param date La date des trajets (format : AAAA-MM-JJ).
+     * @return Un vecteur de trajets (`std::vector<Trajet>`) correspondant aux critères.
+     *         Le vecteur peut être vide s’il n’existe aucun trajet correspondant.
      */
-    Trajet obtenirTrajet();
+    std::vector<Trajet> obtenirTrajets(std::string lieuDepart, std::string lieuArrivee, std::string date);
 
     /**
          * @brief Crée un nouveau trajet avec les informations fournies.
