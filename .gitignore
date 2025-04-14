@@ -1,0 +1,62 @@
+# === FICHIERS DE BUILD / COMPILATION ===
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# === BINAIRES / OBJETS COMPILÉS ===
+*.o
+*.obj
+*.so
+*.a
+*.out
+*.exe
+
+# === FICHIERS TEMPORAIRES ===
+*.log
+*.tmp
+*~
+
+# === CLION / JETBRAINS ===
+.idea/
+*.iml
+
+# === SYSTÈMES (Linux/macOS/Windows) ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === TESTS SI NON TRACKÉS ===
+Tests/Test_controlleur/
+Tests/Test_interface/
+
+# === FICHIERS SENSIBLES / DÉPENDANCES (optionnel) ===
+.env
+# === FICHIERS DE BUILD / COMPILATION ===
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# === BINAIRES / OBJETS COMPILÉS ===
+*.o
+*.obj
+*.so
+*.a
+*.out
+*.exe
+
+# === FICHIERS TEMPORAIRES ===
+*.log
+*.tmp
+*~
+
+# === CLION / JETBRAINS ===
+.idea/
+*.iml
