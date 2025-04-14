@@ -1,10 +1,19 @@
-#include "BaseDonnees.hpp"
 #include <iostream>
+#include <stdexcept>
+#include "Utilisateur.cpp"
+#include "Trajet.cpp"
+#include "Avis.cpp"
+#include "Paiement.cpp"
+#include "Reservation.cpp"
+#include "Conducteur.cpp"
+#include "Passager.cpp"
+#include "Modele_hpp/BaseDonnees.hpp"
+
 /**
  *
  * @param filename
  */
-Database::Database(const std::string& filename) {
+Database::Database(const std::string& filename) {1;\
     if (sqlite3_open(filename.c_str(), &db)) {
         std::cerr << "Erreur ouverture BDD : " << sqlite3_errmsg(db) << std::endl;
         db = nullptr;
@@ -50,14 +59,14 @@ void initTables(){
     std::string createConducteurTable = R"(
         CREATE TABLE IF NOT EXISTS conducteurs (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateur(id)
+            FOREIGN KEY(id) REFERENCES utilisateur(id) ON DELETE CASCADE
         );
     )";
 
     std::string createPassagerTable = R"(
         CREATE TABLE IF NOT EXISTS passagers (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateur(id)
+            FOREIGN KEY(id) REFERENCES utilisateur(id) ON DELETE CASCADE
         );
     )";
         std::string createTrajetTable = R"(
@@ -102,8 +111,13 @@ void initTables(){
     std::string createReservationTable = R"(
     CREATE TABLE IF NOT EXISTS reservation (
         idReservation INTEGER PRIMARY KEY AUTOINCREMENT,
+        idTrajet INTEGER,
+        idPassager INTEGER,
         prix REAL,
-        statut BOOLEAN
+        statut BOOLEAN,
+        FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
+        FOREIGN KEY(idPassager) REFERENCES Passager(id)
+
     );
 )";
 
@@ -133,16 +147,23 @@ void initTables(){
     void ajouterAvis(int note, std::string commentaire, std::string typeAvis){
 
     }
-    Trajet getTrajetByVilleDepartEtArrivee(std::string villeDepart, std::string villeArrivee){
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
 
     }
-    Reservation getReservationByID(int ID){
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
+
+    Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
+
+
+
+
+Reservation getReservationByID(int ID){
 
     }
     float getEmissionCO2ByIdTraget(int IDTrajet){
 
     }
-    vector<pair<string, float>> getPrixByIdTrajet(int IDTrajet){
+    vector<pair<std::string, float>> getPrixByIdTrajet(int IDTrajet){
 
     }
     vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet){
