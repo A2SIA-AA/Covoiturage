@@ -13,6 +13,7 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 #include "Utilisateur.hpp"
 #include "Trajet.hpp"
 #include "Avis.hpp"
@@ -100,12 +101,34 @@ public:
 */
     void ajouterAvis(int note, std::string commentaire, std::string typeAvis);
     /**
- * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée.
+ * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date.
  * @param villeDepart La ville de départ du trajet.
  * @param villeArrivee La ville d’arrivée du trajet.
+ * @param date La date de depart du trajet
  * @return L'objet Trajet correspondant.
  */
-    Trajet getTrajetByVilleDepartEtArrivee(std::string villeDepart, std::string villeArrivee);
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
+/**
+ * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
+ * @param villeDepart
+ * @param villeArrivee
+ * @param date
+ * @param prix
+ * @return  L'objet Trajet correspondant.
+ */
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
+/**
+ * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
+ * @param villeDepart
+ * @param villeArrivee
+ * @param date
+ * @param emissionCO2
+ * @return  L'objet Trajet correspondant.
+ */
+    Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
+
+
+
     /**
 * @brief Récupère une réservation par son ID.
 * @param ID L'identifiant de la réservation.
@@ -117,19 +140,19 @@ public:
 * @param IDTrajet L’identifiant du trajet.
 * @return La quantité de CO2 émise.
 */
-    float getEmissionCO2ByIdTraget(int IDTrajet);
+    float getEmissionCO2ByIdTrajet(int IDTrajet);
     /**
 * @brief Récupère les prix par segment pour un trajet donné.
 * @param IDTrajet L’identifiant du trajet.
 * @return Un vecteur de paires <ville, prix>.
 */
-    vector<pair<string, float>> getPrixByIdTrajet(int IDTrajet);
+    std::vector<std::pair<std::string, float>> getPrixByIdTrajet(int idTrajet);
     /**
 * @brief Récupère les villes étapes d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
 * @return Les noms de villes étapes du trajet.
 */
-    vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet);
+    std::vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet);
     /**
 * @brief Récupère la date de départ d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
