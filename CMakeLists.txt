@@ -33,6 +33,14 @@ set(SOURCES
         Modele/Modele_cpp/Reservation.cpp
         Modele/Modele_cpp/Trajet.cpp
         Modele/Modele_cpp/Utilisateur.cpp
+        Tests/Test_controlleur/Test_calculerEmission.cpp
+        Tests/Test_controlleur/Test_verifierSaisie.cpp
+        Tests/Test_controlleur/Test_ajoutTajet.cpp
+        Tests/Test_controlleur/Test_connexion.cpp
+        Tests/Test_controlleur/Test_rechercherTrajet.cpp
+        Tests/Test_interface/TestAccueilInterface.cpp
+        Tests/Test_interface/TestConnexionInterface.cpp
+        Tests/Test_interface/TestInscriptionInterface.cpp
 )
 
 add_executable(untitled ${SOURCES})
