@@ -85,7 +85,8 @@ void initTables(){
             nombrePlaceDispo INTEGER,
             etat INTEGER, -- BOOLEAN sous forme d'entier (0 ou 1)
             emissionCO2 REAL,
-            description TEXT
+            description TEXT,
+            FOREIGN KEY(idConducteur) REFERENCES conducteurs(id)
         );
     )";
 
@@ -112,8 +113,6 @@ void initTables(){
     std::string createReservationTable = R"(
     CREATE TABLE IF NOT EXISTS reservations (
         idReservation INTEGER PRIMARY KEY AUTOINCREMENT,
-        idTrajet INTEGER,
-        idPassager INTEGER,
         prix REAL,
         statut BOOLEAN,
         FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
@@ -125,12 +124,9 @@ void initTables(){
     std::string createAvisTable = R"(
     CREATE TABLE IF NOT EXISTS avis (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        idTrajet INTEGER,
         note INTEGER,
         commentaire TEXT,
         typeAvis TEXT,
-        idEmetteur INTEGER,     -- Référence à l'utilisateur qui émet l'avis
-        idRecepteur INTEGER,    -- Référence à l'utilisateur qui reçoit l'avis
         FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
         FOREIGN KEY(idEmetteur) REFERENCES utilisateurs(id),
         FOREIGN KEY(idRecepteur) REFERENCES utilisateurs(id)
@@ -160,10 +156,7 @@ void initTables(){
 
     Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
 
-
-
-
-Reservation getReservationByID(int ID){
+    Reservation getReservationByID(int ID){
 
     }
     float getEmissionCO2ByIdTraget(int IDTrajet){

@@ -10,8 +10,6 @@
 class Reservation{
 private:
     float prix;
-    int idTrajet;
-    int idPassager;
     int idReservation;
     bool statut;
 

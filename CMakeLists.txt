@@ -47,6 +47,7 @@ set(SOURCES
         Tests/Test_interface/TestAccueilInterface.cpp
         Tests/Test_interface/TestConnexionInterface.cpp
         Tests/Test_interface/TestInscriptionInterface.cpp
+        Tests/Test_modele/Test_BDD.cpp
 )
 
 add_executable(Covoiturage ${SOURCES})

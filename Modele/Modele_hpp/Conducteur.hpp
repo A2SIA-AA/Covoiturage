@@ -14,7 +14,10 @@
  */
 class Conducteur : public Utilisateur{
 
-  public:
+private:
+    std::vector<Trajet> listeTrajet;
+
+public:
     Conducteur(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
 
 };

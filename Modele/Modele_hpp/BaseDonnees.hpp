@@ -92,14 +92,19 @@ public:
  * @param ID Identifiant de la réservation.
  * @param statut Statut de la réservation (acceptée ou refusée).
  */
-    void ajouterReservation(float prix, int ID, bool statut);
-    /**
-* @brief Ajoute un avis à propos d'un trajet.
-* @param note Note attribuée (1-5).
-* @param commentaire Commentaire écrit.
-* @param typeAvis Précise si c'est un avis laissé ou bien un avis reçu.
-*/
-    void ajouterAvis(int note, std::string commentaire, std::string typeAvis);
+    void ajouterReservation(float prix, int ID, bool statut, int idUtilisateur);
+
+/**
+ * * @brief Ajoute un avis à propos d'un trajet.
+ * @param note
+ * @param commentaire
+ * @param typeAvis
+ * @param idTrajet
+ * @param nomEmetteur
+ * @param nomRecepteur
+ * @param typeAvis Précise si c'est un avis laissé ou bien un avis reçu.
+ */
+    void ajouterAvis(int note, std::string commentaire, std::string typeAvis, int idTrajet, std::string nomEmetteur, std::string nomRecepteur);
     /**
  * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date.
  * @param villeDepart La ville de départ du trajet.
@@ -215,6 +220,7 @@ public:
      * @return le couple des noms de l'emetteur et du recepteur d'un avis
      */
     std::pair<std::string, std::string> getNomsEmetteurEtRecepteurAvisParTrajet(int idTrajet);
+
 
 
 
