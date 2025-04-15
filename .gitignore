@@ -29,10 +29,6 @@ compile_commands.json
 Thumbs.db
 desktop.ini
 
-# === TESTS SI NON TRACKÉS ===
-Tests/Test_controlleur/
-Tests/Test_interface/
-
 # === FICHIERS SENSIBLES / DÉPENDANCES (optionnel) ===
 .env
 # === FICHIERS DE BUILD / COMPILATION ===

@@ -3,9 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 #include <stdexcept>
-
 
 void testComparerHeureDepart() {
     RechercheControlleur controleur;
@@ -30,38 +28,35 @@ void testComparerHeureDepart() {
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2 };
     std::vector<Trajet> trajetsTrain = { train1, train2 };
 
-    //Cas nominal
+    // Cas nominal
     try {
-        auto resultats = controleur.comparerHeureDepart(trajetsDispo, trajetsTrain, "heure");
+        Trajet meilleur = controleur.comparerHeureDepart(trajetsDispo, trajetsTrain, "heure");
 
-        bool testOK = resultats.first[0].getDescription() == "Voiture B" &&
-              resultats.second[0].getDescription() == "Train B";
-
-        if (testOK) {
-            std::cout << "Test Cas Nominal : Réussi\n";
+        if (meilleur.getDescription() == "Train B") {
+            std::cout << "Test comparerHeureDepart (Nominal) : Réussi\n";
         } else {
-            std::cout << "Test Cas Nominal : Échoué (ordre incorrect)\n";
+            std::cout << "Test comparerHeureDepart (Nominal) : Échoué - Résultat = "
+                      << meilleur.getDescription() << "\n";
         }
-
     } catch (const std::exception& e) {
-        std::cout << "Test Cas Nominal : Échoué - " << e.what() << std::endl;
+        std::cout << "Exception comparerHeureDepart (Nominal) : " << e.what() << "\n";
     }
 
     //Cas : liste vide
     try {
         std::vector<Trajet> vide;
         controleur.comparerHeureDepart(vide, trajetsTrain, "heure");
-        std::cout << "Test Liste Vide : Échoué " << std::endl;
+        std::cout << "Test comparerHeureDepart (Liste Vide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Liste Vide : Réussi - " << e.what() << std::endl;
+        std::cout << "Test comparerHeureDepart (Liste Vide) : Réussi - " << e.what() << "\n";
     }
 
     //Cas : critère invalide
     try {
         controleur.comparerHeureDepart(trajetsDispo, trajetsTrain, "départ");
-        std::cout << "Test Critère Invalide : Échoué " << std::endl;
+        std::cout << "Test comparerHeureDepart (Critère invalide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Critère Invalide : Réussi - " << e.what() << std::endl;
+        std::cout << "Test comparerHeureDepart (Critère invalide) : Réussi - " << e.what() << "\n";
     }
 }
 

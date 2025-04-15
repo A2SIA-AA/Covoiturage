@@ -32,41 +32,34 @@ void testComparerPrix() {
 
     //Cas nominal
     try {
-        auto resultats = controleur.comparerPrix(trajetsDispo, trajetsTrain, "prix");
+        Trajet resultat = controleur.comparerPrix(trajetsDispo, trajetsTrain, "prix");
 
-
-        bool testOK = resultats.first[0].getDescription() == "Voiture B" &&
-                      resultats.second[0].getDescription() == "Train B";
-
-        if (testOK) {
-            std::cout << "Test Cas Nominal : Réussi\n";
+        if (resultat.getDescription() == "Voiture B") {
+            std::cout << "Test comparerPrix (Nominal) : Réussi\n";
         } else {
-            std::cout << "Test Cas Nominal : Échoué (ordre incorrect)\n";
+            std::cout << "Test comparerPrix (Nominal) : Échoué - Résultat = "
+                      << resultat.getDescription() << "\n";
         }
 
     } catch (const std::exception& e) {
-        std::cout << "Test Cas Nominal : Échoué - " << e.what() << std::endl;
+        std::cout << "Exception comparerPrix (Nominal) : " << e.what() << "\n";
     }
 
-    // Cas : liste vide
+    //Cas : liste vide
     try {
         std::vector<Trajet> vide;
-        auto resultats = controleur.comparerPrix(vide, trajetsTrain, "prix");
-        if (resultats.first.empty()) {
-            std::cout << "Test Liste Trajets Dispo Vide : Réussi\n";
-        } else {
-            std::cout << "Test Liste Trajets Dispo Vide : Échoué (liste pas vide)\n";
-        }
+        controleur.comparerPrix(vide, trajetsTrain, "prix");
+        std::cout << "Test comparerPrix (Liste Vide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Liste Trajets Dispo Vide : Échoué - " << e.what() << std::endl;
+        std::cout << "Test comparerPrix (Liste Vide) : Réussi - " << e.what() << "\n";
     }
 
-    // Cas : critère invalide
+    //Cas : critère invalide
     try {
         controleur.comparerPrix(trajetsDispo, trajetsTrain, "vitesse");
-        std::cout << "Test Critère Invalide : Échoué \n";
+        std::cout << "Test comparerPrix (Critère Invalide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Critère Invalide : Réussi " << e.what() << std::endl;
+        std::cout << "Test comparerPrix (Critère Invalide) : Réussi - " << e.what() << "\n";
     }
 }
 

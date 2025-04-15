@@ -34,19 +34,27 @@ void testComparer() {
 
     //Cas nominal
     try {
-        auto resultats = controleur.comparer(trajetsDispo, trajetsTrain);
+        Trajet meilleur = controleur.comparer(trajetsDispo, trajetsTrain);
+        std::string description = meilleur.getDescription();
+
+        // On suppose ici que le meilleur est Train A
+        if (description == "Train A") {
+            std::cout << "Test Cas Nominal : Réussi - Meilleur trajet = " << description << "\n";
+        } else {
+            std::cout << "Test Cas Nominal : Échoué - Résultat inattendu : " << description << "\n";
+        }
 
     } catch (const std::exception& e) {
-        std::cout << "Test Cas Nominal : Échoué - " << e.what() << std::endl;
+        std::cout << "Exception dans Test Cas Nominal : " << e.what() << "\n";
     }
 
     //Cas : liste vide
     try {
         std::vector<Trajet> vide;
         controleur.comparer(vide, trajetsTrain);
-        std::cout << "Test Liste Vide : Échoué (exception attendue)" << std::endl;
+        std::cout << "Test Liste Vide : Échoué (exception attendue)\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Liste Vide : Réussi - " << e.what() << std::endl;
+        std::cout << "Test Liste Vide : Réussi - " << e.what() << "\n";
     }
 }
 

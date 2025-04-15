@@ -3,8 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
-#include <iomanip>
 #include <stdexcept>
 
 void testComparerDuree() {
@@ -13,14 +11,14 @@ void testComparerDuree() {
     std::vector<std::pair<std::string, float>> segments = { {"Paris-Lyon", 30.0} };
     std::vector<std::string> villes = { "Paris", "Lyon" };
 
-    // Trajets voiture
+    //Trajets voiture
     Trajet voiture1(1, "2025-06-01", "08:00", "11:00", "Paris", "Lyon",
                     segments, villes, true, false, false, "Citroën", 4, true, 80.0, "Voiture 1");
 
     Trajet voiture2(2, "2025-06-01", "09:00", "10:30", "Paris", "Lyon",
                     segments, villes, true, false, false, "Peugeot", 2, true, 75.0, "Voiture 2");
 
-    // Trajets train
+    //Trajets train
     Trajet train1(101, "2025-06-01", "07:30", "10:00", "Paris", "Lyon",
                   segments, villes, true, false, false, "TGV", 0, true, 60.0, "Train 1");
 
@@ -32,36 +30,33 @@ void testComparerDuree() {
 
     //Cas nominal
     try {
-        auto resultats = controleur.comparerDuree(trajetsDispo, trajetsTrain, "duree");
+        Trajet meilleur = controleur.comparerDuree(trajetsDispo, trajetsTrain, "duree");
 
-        bool testOK = resultats.first[0].getDescription() == "Voiture B" &&
-              resultats.second[0].getDescription() == "Train B";
-
-        if (testOK) {
-            std::cout << "Test Cas Nominal : Réussi\n";
+        if (meilleur.getDescription() == "Train 2") {
+            std::cout << "Test comparerDuree (Nominal) : Réussi\n";
         } else {
-            std::cout << "Test Cas Nominal : Échoué (ordre incorrect)\n";
+            std::cout << "Test comparerDuree (Nominal) : Échoué - Mauvais trajet retourné : "
+                      << meilleur.getDescription() << "\n";
         }
-
     } catch (const std::exception& e) {
-        std::cout << "Test Cas Nominal : Échoué - " << e.what() << std::endl;
+        std::cout << "Exception comparerDuree (Nominal) : " << e.what() << "\n";
     }
 
     //Cas : liste vide
     try {
         std::vector<Trajet> vide;
-        controleur.comparerDuree(vide, trajetsTrain, "duree");
-        std::cout << "Test Liste Vide : Échoué " << std::endl;
+        controleur.comparerDuree(vide, vide, "duree");
+        std::cout << "Test comparerDuree (Vide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Liste Vide : Réussi - " << e.what() << std::endl;
+        std::cout << "Test comparerDuree (Vide) : Réussi - " << e.what() << "\n";
     }
 
-    //Cas : critère invalide
+    // Cas : critère invalide
     try {
         controleur.comparerDuree(trajetsDispo, trajetsTrain, "temps");
-        std::cout << "Test Critère Invalide : Échoué " << std::endl;
+        std::cout << "Test comparerDuree (Critère invalide) : Échoué\n";
     } catch (const std::exception& e) {
-        std::cout << "Test Critère Invalide : Réussi " << e.what() << std::endl;
+        std::cout << "Test comparerDuree (Critère invalide) : Réussi - " << e.what() << "\n";
     }
 }
 

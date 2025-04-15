@@ -26,27 +26,18 @@ public:
      * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
      * @param trajetsTrain Liste de tout les trajet disponible des trains
      * @param CritèreDeComparaison Ici le critère sera le prix
-     * @return 2 listes triées par prix croissant
+     * @return Le trajet le moins cher
      */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerPrix(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
+    Trajet comparerPrix(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
 
     /**
     * Compare l'emission de CO2 de chaque trajet disponible avec ceux des trains
     * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
      * @param trajetsTrain Liste de tout les trajet disponible des trains
      * @param CritèreDeComparaison Ici le critère sera l'emission de CO2
-     * @return 2 listes triées par émission de carbone croissant
+     * @return Le trajet le plus écologique
      */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerEmission(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
-
-    /**
-    * Compare la distance de chaque trajet disponible avec ceux des trains
-    * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
-    * @param trajetsTrain Liste de tout les trajet disponible des trains
-    * @param CritèreDeComparaison Ici le critère sera la distance (en km)
-    * @return 2 listes triées par distance croissante
-    */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerDistanceTrajet(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
+    Trajet comparerEmission(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
 
     /**
      * Calcule l'empreinte carbone d'un véhicule.
@@ -62,27 +53,27 @@ public:
     * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
     * @param trajetsTrain Liste de tout les trajet disponible des trains
     * @param CritèreDeComparaison Ici le critère sera la durée (en min)
-    * @return 2 listes triées par temps croissant
+    * @return Le trajet le plus court en terme de temps
     */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerDuree(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
+    Trajet comparerDuree(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
 
     /**
     * Compare l'heure de départ de chaque trajet disponible avec ceux des trains
     * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
     * @param trajetsTrain Liste de tout les trajet disponible des trains
     * @param CritèreDeComparaison Ici le critère sera l'heure de départ
-    * @return 2 listes triées par heure de départ croissant
+    * @return Le trajet qui part le plus tôt
     */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerHeureDepart(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
+    Trajet comparerHeureDepart(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
 
     /**
     * Compare le nombre de point intermédiaire de chaque trajet disponible avec ceux des trains
     * @param trajetsDisponibles Liste de tout les trajets disponible sur la plateforme
     * @param trajetsTrain Liste de tout les trajet disponible des trains
     * @param CritèreDeComparaison Ici le critère sera le nombre d'arrêt
-    * @return 2 listes triées par nombre de point intermediaire croissant
+    * @return Le trajet ayant le moins de point intermediaire
     */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparerPointIntermediaire(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
+    Trajet comparerPointIntermediaire(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain, std::string CritèreDeComparaison);
 
     /**
     * Compare 2 trajets selon le critères de base
@@ -90,7 +81,7 @@ public:
     * @param trajetsTrain Liste de tout les trajet disponible des trains
     * @return
     */
-    std::pair<std::vector<Trajet>, std::vector<Trajet>> comparer(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain);
+    Trajet comparer(const std::vector<Trajet>& trajetsDisponibles, const std::vector<Trajet>& trajetsTrain);
 
 };
 #endif

@@ -18,7 +18,7 @@ public:
      * @param motPasse
      * @param adressePostale
      */
-    void verifierSaisie(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale);
+    void verifierSaisieInscription(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale);
 
 
 };

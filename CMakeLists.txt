@@ -34,7 +34,7 @@ set(SOURCES
         Modele/Modele_cpp/Trajet.cpp
         Modele/Modele_cpp/Utilisateur.cpp
         Tests/Test_controlleur/Test_calculerEmission.cpp
-        Tests/Test_controlleur/Test_verifierSaisie.cpp
+        Tests/Test_controlleur/Test_verifierSaisieInscription.cpp
         Tests/Test_controlleur/Test_VerifierSaisieTajet.cpp
         Tests/Test_controlleur/Test_verifierUtilisateur.cpp
         Tests/Test_controlleur/Test_rechercherTrajet.cpp
@@ -42,7 +42,6 @@ set(SOURCES
         Tests/Test_controlleur/Test_comparerEmission.cpp
         Tests/Test_controlleur/Test_comparerHeureDepart.cpp
         Tests/Test_controlleur/Test_comparerPointIntermediaire.cpp
-        Tests/Test_controlleur/Test_comparerDistanceTrajet.cpp
         Tests/Test_controlleur/Test_comparerDuree.cpp
         Tests/Test_controlleur/Test_comparerPrix.cpp
         Tests/Test_interface/TestAccueilInterface.cpp
