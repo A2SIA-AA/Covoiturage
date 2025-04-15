@@ -3,6 +3,7 @@
 #include "Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
 #include "Controlleur/Controlleur_hpp/ReservationControlleur.hpp"
 #include "Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
+#include "Controlleur/Controlleur_hpp/ModifierProfilControlleur.hpp"
 #include "Interface/Interface_hpp/AccueilInterface.hpp"
 #include "Interface/Interface_hpp/TrajetInterface.hpp"
 #include "Interface/Interface_hpp/ConnexionInterface.hpp"
