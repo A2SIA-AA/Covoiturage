@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 #include "Utilisateur.cpp"
 #include "Trajet.cpp"
 #include "Avis.cpp"
@@ -70,7 +71,7 @@ void initTables(){
         );
     )";
         std::string createTrajetTable = R"(
-        CREATE TABLE IF NOT EXISTS trajet (
+        CREATE TABLE IF NOT EXISTS trajets (
             idTrajet INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT,
             heureDepart TEXT,
@@ -109,7 +110,7 @@ void initTables(){
         );
     )";
     std::string createReservationTable = R"(
-    CREATE TABLE IF NOT EXISTS reservation (
+    CREATE TABLE IF NOT EXISTS reservations (
         idReservation INTEGER PRIMARY KEY AUTOINCREMENT,
         idTrajet INTEGER,
         idPassager INTEGER,
@@ -123,11 +124,16 @@ void initTables(){
 
     std::string createAvisTable = R"(
     CREATE TABLE IF NOT EXISTS avis (
-        idTrajet INTEGER PRIMARY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        idTrajet INTEGER,
         note INTEGER,
         commentaire TEXT,
         typeAvis TEXT,
-        FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet)
+        idEmetteur INTEGER,     -- Référence à l'utilisateur qui émet l'avis
+        idRecepteur INTEGER,    -- Référence à l'utilisateur qui reçoit l'avis
+        FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
+        FOREIGN KEY(idEmetteur) REFERENCES utilisateurs(id),
+        FOREIGN KEY(idRecepteur) REFERENCES utilisateurs(id)
     );
 )";
 
@@ -163,12 +169,14 @@ Reservation getReservationByID(int ID){
     float getEmissionCO2ByIdTraget(int IDTrajet){
 
     }
-    vector<pair<std::string, float>> getPrixByIdTrajet(int IDTrajet){
+
+    std::vector<std::pair<std::string, float>> getPrixByIdTrajet(int idTrajet){
+    }
+
+    std::vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet){
 
     }
-    vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet){
 
-    }
     std::string getDateDepatByIdTrajet(int IDTrajet){
 
     }
@@ -196,7 +204,12 @@ Reservation getReservationByID(int ID){
     Passager getPassagerByID(int idUtilisateur){
 
     }
-    
+
+    std::pair<std::string, std::string> getNomsEmetteurEtRecepteurAvisParTrajet(int idTrajet) {
+
+    }
+
+
 };
 
 

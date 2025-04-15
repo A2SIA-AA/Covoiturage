@@ -15,6 +15,8 @@ class Avis{
             int idTrajet;
             std::string commentaire;
             std::string typeAvis;
+            std::string nomEmetteur;
+            std::string nomRecepteur;
 
    public:
      Avis(int note, std::string commentaire, std::string typeAvis);

@@ -209,6 +209,12 @@ public:
 */
     Passager getPassagerByID(int idUtilisateur);
 
+    /**
+     * Cette methode permet d'avoir le nom de la personne qui a laisse un avis et le nom de la personne a qui il a laisse l'avis
+     * @param idTrajet
+     * @return le couple des noms de l'emetteur et du recepteur d'un avis
+     */
+    std::pair<std::string, std::string> getNomsEmetteurEtRecepteurAvisParTrajet(int idTrajet);
 
 
 
