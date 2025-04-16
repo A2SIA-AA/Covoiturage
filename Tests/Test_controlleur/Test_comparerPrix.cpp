@@ -3,63 +3,56 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 void testComparerPrix() {
     RechercheControlleur controleur;
 
-    // Création des segments de prix
-    std::vector<std::pair<std::string, float>> segmentsVoiture = { {"Paris-Lyon", 30.0} };
-    std::vector<std::pair<std::string, float>> segmentsVoiture2 = { {"Paris-Lyon", 25.0} };
-    std::vector<std::pair<std::string, float>> segmentsTrain = { {"Paris-Lyon", 50.0} };
-    std::vector<std::pair<std::string, float>> segmentsTrain2 = { {"Paris-Lyon", 45.0} };
-
+    std::vector<std::pair<std::string, float>> segments1 = { {"Paris-Lyon", 40.0} };
+    std::vector<std::pair<std::string, float>> segments2 = { {"Paris-Lyon", 30.0} };
+    std::vector<std::pair<std::string, float>> segments3 = { {"Paris-Lyon", 30.0} };
     std::vector<std::string> villes = { "Paris", "Lyon" };
 
-    // Trajets covoiturage
-    Trajet trajet1(1, "2025-05-10", "08:00", "12:00", "Paris", "Lyon",
-                   segmentsVoiture, villes, true, false, false, "Peugeot", 3, true, 110.5, "Voiture A");
-    Trajet trajet2(2, "2025-05-10", "09:00", "13:00", "Paris", "Lyon",
-                   segmentsVoiture2, villes, true, false, false, "Renault", 2, true, 105.3, "Voiture B");
+    // Trajets covoiturage avec différents prix
+    Trajet voiture1(1, "2025-06-01", "08:00", "11:00", "Paris", "Lyon",
+                    segments1, villes, true, false, false, "Citroën", 4, true, 70.0, "Voiture 1");
 
-    // Trajets train
-    Trajet train1(101, "2025-05-10", "08:30", "11:30", "Paris", "Lyon",
-                  segmentsTrain, villes, true, false, false, "TGV", 0, true, 90.0, "Train A");
-    Trajet train2(102, "2025-05-10", "10:00", "13:00", "Paris", "Lyon",
-                  segmentsTrain2, villes, true, false, false, "TGV", 0, true, 92.0, "Train B");
+    Trajet voiture2(2, "2025-06-01", "09:00", "10:30", "Paris", "Lyon",
+                    segments2, villes, true, false, false, "Peugeot", 2, true, 80.0, "Voiture 2");
 
-    std::vector<Trajet> trajetsDispo = { trajet1, trajet2 };
-    std::vector<Trajet> trajetsTrain = { train1, train2 };
+    Trajet voiture3(3, "2025-06-01", "07:00", "08:00", "Paris", "Lyon",
+                    segments3, villes, true, false, false, "Renault", 3, true, 75.0, "Voiture 3");
 
-    //Cas nominal
+    std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3 };
+
+    // Cas nominal
     try {
-        Trajet resultat = controleur.comparerPrix(trajetsDispo, trajetsTrain, "prix");
+        std::vector<Trajet> resultat = controleur.comparerPrix(trajetsDispo);
 
-        if (resultat.getDescription() == "Voiture B") {
+        if (resultat.size() == 3 &&
+            resultat[0].getDescription() == "Voiture 2" &&
+            resultat[1].getDescription() == "Voiture 3" &&
+            resultat[2].getDescription() == "Voiture 1") {
             std::cout << "Test comparerPrix (Nominal) : Réussi\n";
         } else {
-            std::cout << "Test comparerPrix (Nominal) : Échoué - Résultat = "
-                      << resultat.getDescription() << "\n";
+            std::cout << "Test comparerPrix (Nominal) : Échoué - Mauvais ordre\n";
         }
-
     } catch (const std::exception& e) {
         std::cout << "Exception comparerPrix (Nominal) : " << e.what() << "\n";
     }
 
-    //Cas : liste vide
+    // Cas vide
     try {
         std::vector<Trajet> vide;
-        controleur.comparerPrix(vide, trajetsTrain, "prix");
-        std::cout << "Test comparerPrix (Liste Vide) : Échoué\n";
-    } catch (const std::exception& e) {
-        std::cout << "Test comparerPrix (Liste Vide) : Réussi - " << e.what() << "\n";
-    }
+        std::vector<Trajet> resultat = controleur.comparerPrix(vide);
 
-    //Cas : critère invalide
-    try {
-        controleur.comparerPrix(trajetsDispo, trajetsTrain, "vitesse");
-        std::cout << "Test comparerPrix (Critère Invalide) : Échoué\n";
+        if (resultat.empty()) {
+            std::cout << "Test comparerPrix (Vide) : Réussi - Liste vide retournée\n";
+        } else {
+            std::cout << "Test comparerPrix (Vide) : Échoué - Liste non vide\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test comparerPrix (Critère Invalide) : Réussi - " << e.what() << "\n";
+        std::cout << "Exception comparerPrix (Vide) : " << e.what() << "\n";
     }
 }
 

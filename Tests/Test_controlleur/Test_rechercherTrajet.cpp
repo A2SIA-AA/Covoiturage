@@ -1,52 +1,88 @@
 #include "../../Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
+#include "../../Modele/Modele_hpp/Trajet.hpp"
 #include <iostream>
+#include <vector>
 #include <string>
+#include <stdexcept>
 
-void TestrechercherTrajet() {
+void testRechercherTrajet() {
     RechercheControlleur controleur;
 
-    // Cas nominal
+    std::vector<std::pair<std::string, float>> segments = { {"Paris-Lyon", 30.0} };
+    std::vector<std::string> villes = { };
+
+    // Trajets de covoiturage avec différentes dates et villes de départ et d'arrivée
+    Trajet voiture1(1, "2025-06-01", "08:00", "11:00", "Paris", "Lyon",
+                    segments, villes, true, false, false, "Citroën", 4, true, 40.0, "Voiture 1");
+
+    Trajet voiture2(2, "2025-06-01", "09:00", "10:30", "Paris", "Lyon",
+                    segments, villes, true, false, false, "Peugeot", 2, true, 30.0, "Voiture 2");
+
+    Trajet voiture3(3, "2025-06-01", "07:00", "08:00", "Paris", "Marseille",
+                    segments, villes, true, false, false, "Renault", 3, true, 35.0, "Voiture 3");
+
+    Trajet voiture4(4, "2025-06-02", "10:00", "12:00", "Paris", "Lyon",
+                    segments, villes, true, false, false, "Volkswagen", 5, true, 50.0, "Voiture 4");
+
+    std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3, voiture4 };
+
+    // Cas nominal : recherche pour Paris -> Lyon le 1er juin 2025
     try {
-        controleur.rechercherTrajet("Paris", "Lyon", "08:00", "prix");
-        std::cout << "Test Cas Nominal : Réussi" << std::endl;
+        std::vector<Trajet> resultat = controleur.rechercherTrajet("Paris", "Lyon", "2025-06-01");
+
+        if (resultat.size() == 2 &&
+            resultat[0].getDescription() == "Voiture 1" &&
+            resultat[1].getDescription() == "Voiture 2") {
+            std::cout << "Test rechercherTrajet (Nominal) : Réussi\n";
+        } else {
+            std::cout << "Test rechercherTrajet (Nominal) : Échoué - Mauvais résultat\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test Cas Nominal : Échoué " << e.what() << std::endl;
+        std::cout << "Exception rechercherTrajet (Nominal) : " << e.what() << "\n";
     }
 
-    // Cas : ville de départ vide
+    // recherche pour Paris -> Marseille le 1er juin 2025
     try {
-        controleur.rechercherTrajet("", "Lyon", "08:00", "prix");
-        std::cout << "Test Ville Départ Vide : Échoué " << std::endl;
+        std::vector<Trajet> resultat = controleur.rechercherTrajet("Paris", "Marseille", "2025-06-01");
+
+        if (resultat.size() == 1 &&
+            resultat[0].getDescription() == "Voiture 3") {
+            std::cout << "Test rechercherTrajet (Marseille, Nominal) : Réussi\n";
+        } else {
+            std::cout << "Test rechercherTrajet (Marseille, Nominal) : Échoué - Mauvais résultat\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test Ville Départ Vide : Réussi " << e.what() << std::endl;
+        std::cout << "Exception rechercherTrajet (Marseille, Nominal) : " << e.what() << "\n";
     }
 
-    // Cas : ville d’arrivée vide
+    // Cas où aucune correspondance : recherche avec une date qui ne correspond à aucun trajet
     try {
-        controleur.rechercherTrajet("Paris", "", "08:00", "prix");
-        std::cout << "Test Ville Arrivée Vide : Échoué " << std::endl;
+        std::vector<Trajet> resultat = controleur.rechercherTrajet("Paris", "Lyon", "2025-06-03");
+
+        if (resultat.empty()) {
+            std::cout << "Test rechercherTrajet (Pas de trajet trouvé) : Réussi\n";
+        } else {
+            std::cout << "Test rechercherTrajet (Pas de trajet trouvé) : Échoué - Résultats inattendus\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test Ville Arrivée Vide : Réussi " << e.what() << std::endl;
+        std::cout << "Exception rechercherTrajet (Pas de trajet trouvé) : " << e.what() << "\n";
     }
 
-    // Cas : horaire incorrect
+    // Cas où la ville de départ ou d'arrivée est incorrecte
     try {
-        controleur.rechercherTrajet("Paris", "Lyon", "25:99", "prix"); // horaire non valide
-        std::cout << "Test Horaire Incorrect : Échoué" << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << "Test Horaire Incorrect : Réussi " << e.what() << std::endl;
-    }
+        std::vector<Trajet> resultat = controleur.rechercherTrajet("Inexistante", "Lyon", "2025-06-01");
 
-    // Cas : filtre vide
-    try {
-        controleur.rechercherTrajet("Paris", "Lyon", "10:00", "");
-        std::cout << "Test Filtre Vide : Échoué" << std::endl;
+        if (resultat.empty()) {
+            std::cout << "Test rechercherTrajet (Ville de départ incorrecte) : Réussi\n";
+        } else {
+            std::cout << "Test rechercherTrajet (Ville de départ incorrecte) : Échoué - Résultats inattendus\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test Filtre Vide : Réussi " << e.what() << std::endl;
+        std::cout << "Exception rechercherTrajet (Ville de départ incorrecte) : " << e.what() << "\n";
     }
 }
 
 int main() {
-    TestrechercherTrajet();
+    testRechercherTrajet();
     return 0;
 }
