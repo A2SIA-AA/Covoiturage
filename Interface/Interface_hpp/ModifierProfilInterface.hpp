@@ -1,13 +1,14 @@
 #ifndef MODIFIERPROFILINTERFACE_HPP
 #define MODIFIERPROFILINTERFACE_HPP
 
+#include "AccueilInterface.hpp"
 #include <string>
 
 /**
  * @file ModifierProfilInterface.hpp
  * @brief Interface graphique pour la modification du profil utilisateur.
  */
-class ModifierProfilInterface {
+class ModifierProfilInterface : public AccueilInterface {
 public:
     /**
      * @brief Affiche l'interface de modification et soumet les nouvelles informations du profil utilisateur.
