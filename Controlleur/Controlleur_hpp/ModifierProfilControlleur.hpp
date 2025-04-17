@@ -18,12 +18,12 @@ public:
 
     /**
      * @brief Modifie le profil de l'utilisateur.
-     * @param nouveauProfil Une chaîne représentant les nouvelles informations du profil.
+     * @param choix Une chaîne représentant les nouvelles informations du profil.
      *
      * Cette méthode permet de modifier le profil d’un utilisateur avec les
      * informations fournies dans le paramètre.
      */
-    void ModifierProfil(std::string nouveauProfil);
+    void ModifierProfil(std::string choix, std::string modification);
 };
 
 #endif // MODIFIERPROFILCONTROLLEUR_H

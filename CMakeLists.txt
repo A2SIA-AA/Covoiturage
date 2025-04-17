@@ -35,7 +35,7 @@ set(SOURCES
         Modele/Modele_cpp/Utilisateur.cpp
         Tests/Test_controlleur/Test_calculerEmission.cpp
         Tests/Test_controlleur/Test_verifierSaisieInscription.cpp
-        Tests/Test_controlleur/Test_VerifierSaisieTajet.cpp
+        Tests/Test_controlleur/Test_VerifierSaisieTrajet.cpp
         Tests/Test_controlleur/Test_verifierUtilisateur.cpp
         Tests/Test_controlleur/Test_rechercherTrajet.cpp
         Tests/Test_controlleur/Test_comparer.cpp
