@@ -12,6 +12,8 @@
 #include "Interface/Interface_hpp/ReservationInterface.hpp"
 #include "Interface/Interface_hpp/MesAnnoncesInterface.hpp"
 #include "Interface/Interface_hpp/MesReservationsInterface.hpp"
+#include "Interface/Interface_hpp/AvisInterface.hpp"
+#include "Interface/Interface_hpp/ModifierProfilInterface.hpp"
 #include "Modele/Modele_hpp/Avis.hpp"
 #include "Modele/Modele_hpp/Conducteur.hpp"
 #include "Modele/Modele_hpp/Message.hpp"
