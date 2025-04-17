@@ -8,7 +8,7 @@
  * @file ModifierProfilInterface.hpp
  * @brief Interface graphique pour la modification du profil utilisateur.
  */
-class ModifierProfilInterface : public AccueilInterface {
+class ModifierProfilInterface {
 public:
     /**
      * @brief Affiche l'interface de modification et soumet les nouvelles informations du profil utilisateur.
