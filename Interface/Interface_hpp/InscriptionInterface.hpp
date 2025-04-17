@@ -21,6 +21,7 @@ public:
     virtual bool sInscrire(const std::string& nom, const std::string& prenom,
                              const std::string& email, const std::string& telephone,
                              const std::string& motDePasse) = 0;
+    virtual ~InscriptionInterface() = default;
 };
 
 #endif // INSCRIPTION_INTERFACE_HPP
