@@ -1,24 +1,59 @@
-#ifndef ACCUEIL_INTERFACE_HPP
-#define ACCUEIL_INTERFACE_HPP
+#ifndef ACCUEILINTERFACE_HPP
+#define ACCUEILINTERFACE_HPP
 
-#include <string>
+#include "AvisInterface.hpp"
+#include "MesAnnoncesInterface.hpp"
+#include "MesReservationsInterface.hpp"
+#include "ModifierProfilInterface.hpp"
+#include "RechercheInterface.hpp"
+#include "ReservationInterface.hpp"
+#include "TrajetInterface.hpp"
 
 /**
  * @file AccueilInterface.hpp
- * @brief Interface pour la gestion du profil utilisateur.
+ * @brief Interface graphique pour la page d'accueil utilisateur.
+ *
+ * Cette interface permet de rediriger les actions principales vers les interfaces spécialisées.
  */
 class AccueilInterface {
 public:
+    virtual ~AccueilInterface() = default;
+
     /**
-     * @brief Méthode pour modifier les informations du profil utilisateur :  Cette méthode permet à un utilisateur authentifié de modifier ses informations personnelles.
-     * @param nom Le nouveau nom de l'utilisateur.
-     * @param prenom Le nouveau prénom de l'utilisateur.
-     * @param email La nouvelle adresse email de l'utilisateur.
-     * @param telephone Le nouveau numéro de téléphone de l'utilisateur.
-     * @return bool Retourne true si la mise à jour réussit, false sinon.
+     * @brief Accède à l'interface de recherche de trajets.
      */
-    virtual bool modifierCoordonnees(const std::string& nom, const std::string& prenom,
-                                 const std::string& email, const std::string& telephone) = 0;
+    virtual RechercheInterface* getRechercheInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface de réservation.
+     */
+    virtual ReservationInterface* getReservationInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface de modification du profil.
+     */
+    virtual ModifierProfilInterface* getModifierProfilInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface de consultation des réservations (passager).
+     */
+    virtual MesReservationsInterface* getMesReservationsInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface de consultation des annonces (conducteur).
+     */
+    virtual MesAnnoncesInterface* getMesAnnoncesInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface de saisie d'un nouveau trajet (conducteur).
+     */
+    virtual TrajetInterface* getTrajetInterface() = 0;
+
+    /**
+     * @brief Accède à l'interface pour laisser un avis.
+     */
+    virtual AvisInterface* getAvisInterface() = 0;
 };
 
-#endif // ACCUEIL_INTERFACE_HPP
+#endif // ACCUEILINTERFACE_HPP
+
