@@ -3,7 +3,6 @@
 #include <utility>
 #include "Utilisateur.cpp"
 #include "Trajet.cpp"
-#include "Avis.cpp"
 #include "Paiement.cpp"
 #include "Reservation.cpp"
 #include "Conducteur.cpp"
@@ -42,9 +41,8 @@ bool Database::execute(const std::string& query) {
     }
     return true;
 }
-/**
- *
- */
+
+
 void initTables(){
 	std::string createUtilisateurTable = R"(
         CREATE TABLE IF NOT EXISTS utilisateurs (
@@ -120,41 +118,31 @@ void initTables(){
 
     );
 )";
+}
 
-    std::string createAvisTable = R"(
-    CREATE TABLE IF NOT EXISTS avis (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        note INTEGER,
-        commentaire TEXT,
-        typeAvis TEXT,
-        FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
-        FOREIGN KEY(idEmetteur) REFERENCES utilisateurs(id),
-        FOREIGN KEY(idRecepteur) REFERENCES utilisateurs(id)
-    );
-)";
+    void ajouterUtilisateur(Utilisateur u){
 
-    void ajouterUtilisateur(std::string nom, std::string prenom, std::string email, std::string mdp, std::string adressePostale, bool fumer){
-
-    };
+    }
 
     Utilisateur getUtilisateurByEmailAndMDP(std::string email, std::string mdp){
 
     }
-    void ajouterTrajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description){
+    void ajouterTrajet(Trajet t){
 
     }
-    void ajouterReservation(float prix, int ID, bool statut){
+    void ajouterReservation(Reservation r){
 
     }
-    void ajouterAvis(int note, std::string commentaire, std::string typeAvis){
+
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date){
+    }
+
+    Trajet getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix){
 
     }
-    Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
 
+    Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2) {
     }
-    Trajet getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
-
-    Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
 
     Reservation getReservationByID(int ID){
 
@@ -188,9 +176,7 @@ void initTables(){
     std::string getVilleDepartByIdTrajet(int IDTrajet){
 
     }
-    Avis getAvisByIdTrajet(int IDTrajet){
 
-    }
     Conducteur getConducteurByID(int idUtilisateur){
 
     }
@@ -198,11 +184,7 @@ void initTables(){
 
     }
 
-    std::pair<std::string, std::string> getNomsEmetteurEtRecepteurAvisParTrajet(int idTrajet) {
+    void ajouterPointIntermediaire(int idTrajet, std::string NomVille ) {
 
-    }
-
-
-};
-
+}
 
