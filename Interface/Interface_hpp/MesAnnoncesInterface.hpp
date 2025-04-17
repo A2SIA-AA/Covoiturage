@@ -9,7 +9,7 @@
  * @file MesAnnoncesInterface.hpp
  * @brief Interface pour afficher et gérer les annonces de l'utilisateur.
  */
-class MesAnnoncesInterface : public AccueilInterface {
+class MesAnnoncesInterface {
 public:
     /**
      * @brief Méthode pour récupérer et afficher les réservations de l'utilisateur : Cette méthode permet de récupérer la liste des réservations de l'utilisateur qu'elles soient passées ou futures, et de les afficher à l'écran.
