@@ -16,6 +16,9 @@ public:
      * @return bool Retourne true si la connexion réussit, false sinon.
      */
     virtual bool seConnecter(const std::string& email, const std::string& motDePasse) = 0;
+
+    virtual ~ConnexionInterface() = default;
+    
 };
 
 #endif // CONNEXION_INTERFACE_HPP
