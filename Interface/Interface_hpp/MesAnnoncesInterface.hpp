@@ -1,6 +1,7 @@
 #ifndef MES_ANNONCES_INTERFACE_HPP
 #define MES_ANNONCES_INTERFACE_HPP
 
+#include "AccueilInterface.hpp"
 #include <vector>
 #include <string>
 
@@ -8,7 +9,7 @@
  * @file MesAnnoncesInterface.hpp
  * @brief Interface pour afficher et gérer les annonces de l'utilisateur.
  */
-class MesAnnoncesInterface {
+class MesAnnoncesInterface : public AccueilInterface {
 public:
     /**
      * @brief Méthode pour récupérer et afficher les réservations de l'utilisateur : Cette méthode permet de récupérer la liste des réservations de l'utilisateur qu'elles soient passées ou futures, et de les afficher à l'écran.
