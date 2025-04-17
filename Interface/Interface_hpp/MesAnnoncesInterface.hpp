@@ -1,7 +1,6 @@
 #ifndef MES_ANNONCES_INTERFACE_HPP
 #define MES_ANNONCES_INTERFACE_HPP
 
-#include "AccueilInterface.hpp"
 #include <vector>
 #include <string>
 
