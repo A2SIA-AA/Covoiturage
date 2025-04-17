@@ -1,7 +1,6 @@
 #ifndef MODIFIERPROFILINTERFACE_HPP
 #define MODIFIERPROFILINTERFACE_HPP
 
-#include "AccueilInterface.hpp"
 #include <string>
 
 /**
