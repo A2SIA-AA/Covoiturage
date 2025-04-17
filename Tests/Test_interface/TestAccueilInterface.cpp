@@ -2,41 +2,26 @@
 #include <iostream>
 
 /**
- * @brief Fonction pour tester la méthode modifierCoordonnees.
+ * @brief Fonction pour tester que l'interface d’accueil redirige bien vers les modules spécialisés.
  */
-void testModifierCoordonnees() {
+void testAccueilInterface() {
     // Instancier l'implémentation concrète
     AccueilInterface accueil;
 
-    // Test 1 : Modification valide
-    bool resultat = accueil.modifierCoordonnees("Dupont", "Jean", "jean.dupont@example.com", "0601020304");
-    std::cout << "Test 1 - Modification valide : " << (resultat ? "Réussi" : "Échoué") << std::endl;
-
-    // Test 2 : Email invalide
-    resultat = accueil.modifierCoordonnees("Dupont", "Jean", "email_invalide@example", "0601020304");
-    std::cout << "Test 2 - Email invalide : " << (!resultat ? "Réussi" : "Échoué") << std::endl;
-
-    // Test 3 : Nom vide
-    resultat = accueil.modifierCoordonnees("", "Jean", "jean.dupont@example.com", "0601020304");
-    std::cout << "Test 3 - Nom vide : " << (!resultat ? "Réussi" : "Échoué") << std::endl;
-
-    // Test 4 : Prénom vide
-    resultat = accueil.modifierCoordonnees("Dupont", "", "jean.dupont@example.com", "0601020304");
-    std::cout << "Test 4 - Prénom vide : " << (!resultat ? "Réussi" : "Échoué") << std::endl;
-
-    // Test 5 : Email vide
-    resultat = accueil.modifierCoordonnees("Dupont", "Jean", "", "0601020304");
-    std::cout << "Test 5 - Email vide : " << (!resultat ? "Réussi" : "Échoué") << std::endl;
-
-    // Test 6 : Téléphone vide
-    resultat = accueil.modifierCoordonnees("Dupont", "Jean", "jean.dupont@example.com", "");
-    std::cout << "Test 6 - Téléphone vide : " << (!resultat ? "Réussi" : "Échoué") << std::endl;
+    // Test 1 : Vérifier que chaque getter retourne un pointeur non nul
+    std::cout << "Test 1 - RechercheInterface : " << (accueil.getRechercheInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 2 - ReservationInterface : " << (accueil.getReservationInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 3 - ModifierProfilInterface : " << (accueil.getModifierProfilInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 4 - MesReservationsInterface : " << (accueil.getMesReservationsInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 5 - MesAnnoncesInterface : " << (accueil.getMesAnnoncesInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 6 - TrajetInterface : " << (accueil.getTrajetInterface() ? "Réussi" : "Échoué") << std::endl;
+    std::cout << "Test 7 - AvisInterface : " << (accueil.getAvisInterface() ? "Réussi" : "Échoué") << std::endl;
 }
 
 int main() {
     // Lancer les tests unitaires
     std::cout << "--- Début des tests unitaires pour AccueilInterface ---" << std::endl;
-    testModifierCoordonnees();
+    testAccueilInterface();
     std::cout << "--- Fin des tests unitaires ---" << std::endl;
     return 0;
 }
