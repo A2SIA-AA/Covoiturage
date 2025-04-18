@@ -82,6 +82,20 @@ void test_getConducteurPassagerByID(Database& db) {
     cout << "test_getPassagerByID: " << (db.getPassagerByID(2).getNom() == "Durand" ? "OK" : "FAIL") << endl;
 }
 
+void test_supprimerTrajetByIDTrajet(Database& db) {
+    db.supprimerTrajetByIDTrajet(3); // Supposons qu'on supprime le trajet avec ID 3
+    Trajet t = db.getTrajetByIdTrajet(3);
+    cout << "test_supprimerTrajetByIDTraget: "
+         << ( t.getIdTrajet() == -1 ? "OK" : "FAIL") << endl;
+}
+
+void test_supprimerReservationByIdReservation(Database& db){
+    db.supprimerTrajetByIDTrajet(3);
+    Reservation r = db.getReservationByID(3);
+    cout << "test_supprimerTrajetByIDTraget: "
+         << (r.getIdReservation() == -1  ? "OK" : "FAIL") << endl;
+}
+
 
 int main() {
     const std::string test_db_filename = "test_temp.db";
@@ -90,6 +104,7 @@ int main() {
     setupDatabase(db);
 
     // Lancement des tests
+    test_execute(db);
     test_getUtilisateurByEmailAndMDP(db);
     test_getTrajetByVilleDate(db);
     test_getTrajetByVilleDatePrix(db);
@@ -101,6 +116,8 @@ int main() {
     test_dates_heures(db);
     test_villes(db);
     test_getConducteurPassagerByID(db);
+    test_supprimerReservationByIdReservation(db);
+    test_supprimerTrajetByIDTrajet(db);
 
     // Suppression du fichier de base de test
     if (remove(test_db_filename.c_str()) != 0) {

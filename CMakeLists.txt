@@ -26,7 +26,6 @@ set(SOURCES
         Interface/Interface_cpp/RechercheInterface.cpp
         Interface/Interface_cpp/ReservationInterface.cpp
         Interface/Interface_cpp/TrajetInterface.cpp
-        Modele/Modele_cpp/Avis.cpp
         Modele/Modele_cpp/BaseDonnees.cpp
         Modele/Modele_cpp/Conducteur.cpp
         Modele/Modele_cpp/Passager.cpp

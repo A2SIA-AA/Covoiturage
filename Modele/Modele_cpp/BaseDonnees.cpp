@@ -134,6 +134,10 @@ void initTables(){
 
     }
 
+    Trajet getTrajetByIdTrajet(int idTrajet){
+
+}
+
     Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date){
     }
 
@@ -185,6 +189,13 @@ void initTables(){
     }
 
     void ajouterPointIntermediaire(int idTrajet, std::string NomVille ) {
+
+}
+
+    void supprimerTrajetByIDTrajet(int idTrajet){
+
+}
+    void supprimerReservationByIDReservation(int idReservation){
 
 }
 

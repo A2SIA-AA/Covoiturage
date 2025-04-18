@@ -103,7 +103,12 @@ public:
  */
     Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
 
-
+    /**
+     * Obtenir un trajet par son ID
+     * @param idTrajet id du trajet qu'on veut obtenir
+     * @return un objet Trajet correcpondant
+     */
+    Trajet getTrajetByIdTrajet(int idTrajet);
 
     /**
 * @brief Récupère une réservation par son ID.
@@ -189,6 +194,19 @@ public:
      */
 
     void ajouterPointIntermediaire(int idTrajet, std::string nomVille);
+
+    /**
+     * Supprimer un trajet de la base de donnees
+     * @param idTrajet respresente l'id du trajet qu'on veut supprimer
+     */
+    void supprimerTrajetByIDTrajet(int idTrajet);
+
+    /**
+     * Supprimer une reservation de la base de donnees
+     * @param idReservation id de la reservation à annuler
+     */
+    void supprimerReservationByIDReservation(int idReservation);
+
 };
 
 #endif
