@@ -19,6 +19,8 @@ private:
     std::vector<Reservation> listeReservation;
 
 public:
+    std::vector<Reservation> getListeReservation();
+    void setListeReservation(std::vector<Reservation> reservation);
     Passager(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
 
 };
