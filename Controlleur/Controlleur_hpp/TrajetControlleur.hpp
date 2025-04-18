@@ -86,6 +86,18 @@ public:
          */
     void creerTrajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, enum etat, float emissionCO2, std::string description);
 
+    /**
+     * @brief Supprime un trajet qu'un conducteur a posté
+     * @param idTrajet ID du trajet à supprimer
+     */
+    void supprimerTrajet(int idTrajet);
+
+    /**
+     * @brief Supprime une réservation qu'un passager à effectuer
+     * @param idReservation ID de la réservation à supprimer
+     */
+    void supprimerReservation(int idReservation);
+
 
 };
 #endif
