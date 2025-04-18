@@ -11,6 +11,7 @@
  */
 #include <string>
 #include "Utilisateur.hpp"
+#include "Reservation.hpp"
 
 class Passager : public Utilisateur{
 

@@ -1,4 +1,4 @@
-#include "InscriptionInterface.hpp"
+#include "../../Interface/Interface_hpp/InscriptionInterface.hpp"
 #include <iostream>
 
 

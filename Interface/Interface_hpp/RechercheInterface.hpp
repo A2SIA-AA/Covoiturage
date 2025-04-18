@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "Trajet.hpp"
+#include "../../Modele/Modele_hpp/Trajet.hpp"
 
 /**
  * @class RechercheInterface
