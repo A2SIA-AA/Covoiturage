@@ -3,6 +3,8 @@
 
 #include <string>
 #include "Utilisateur.hpp"
+#include "Trajet.hpp"
+
 /**
  * @class Conducteur
  * @brief Représente un utilisateur ayant le rôle de conducteur dans l'application.
