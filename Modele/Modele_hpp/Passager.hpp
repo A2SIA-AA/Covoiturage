@@ -10,6 +10,7 @@
  * @see Utilisateur
  */
 #include <string>
+#include <vector>
 #include "Utilisateur.hpp"
 #include "Reservation.hpp"
 
@@ -21,7 +22,8 @@ private:
 public:
     std::vector<Reservation> getListeReservation();
     void setListeReservation(std::vector<Reservation> reservation);
-    Passager(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
-
+    Passager(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur, std::vector<Reservation> listeReservation);
+    void ajouterReservation(const Reservation& res);
 };
+
 #endif
