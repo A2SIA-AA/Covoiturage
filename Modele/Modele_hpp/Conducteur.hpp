@@ -22,7 +22,7 @@ private:
 public:
     std::vector<Trajet> getListeTrajet();
     void setListeTrajet(std::vector<Trajet> trajet);
-    Conducteur(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
+    Conducteur(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur,std::vector<Trajet> listeTrajet);
 
 };
 #endif
