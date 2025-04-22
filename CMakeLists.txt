@@ -16,7 +16,6 @@ set(SOURCES
         Controlleur/Controlleur_cpp/ConnexionControlleur.cpp
         Controlleur/Controlleur_cpp/InscriptionControlleur.cpp
         Controlleur/Controlleur_cpp/RechercheControlleur.cpp
-        Controlleur/Controlleur_cpp/ReservationControlleur.cpp
         Controlleur/Controlleur_cpp/TrajetControlleur.cpp
         Interface/Interface_cpp/AcceuilInterface.cpp
         Interface/Interface_cpp/ConnexionInterface.cpp
@@ -24,7 +23,6 @@ set(SOURCES
         Interface/Interface_cpp/MesAnnoncesInterface.cpp
         Interface/Interface_cpp/MesReservationsInterface.cpp
         Interface/Interface_cpp/RechercheInterface.cpp
-        Interface/Interface_cpp/ReservationInterface.cpp
         Interface/Interface_cpp/TrajetInterface.cpp
         Modele/Modele_cpp/BaseDonnees.cpp
         Modele/Modele_cpp/Conducteur.cpp

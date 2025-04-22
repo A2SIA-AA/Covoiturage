@@ -16,20 +16,21 @@
 #include <vector>
 #include "Utilisateur.hpp"
 #include "Trajet.hpp"
-#include "Paiement.hpp"
 #include "Reservation.hpp"
 #include "Conducteur.hpp"
 #include "Passager.hpp"
 
 class Database {
 
-private: sqlite3* db; ///< Pointeur vers l'objet base de données SQLite
+private:
+    std::string filename;
+    sqlite3* db; ///< Pointeur vers l'objet base de données SQLite
 public:
     /**
  * @brief Constructeur de la classe Database.
  * @param filename Chemin du fichier SQLite à ouvrir ou créer.
  */
-    Database(const std::string& filename);
+    explicit Database(const std::string& filename);
 
     /**
      * @brief Destructeur de la classe Database.
@@ -42,16 +43,21 @@ public:
      * @param query Requête SQL à exécuter.
      * @return true si la requête a réussi, false sinon.
      */
-    bool execute(const std::string& query);
+    bool execute(const std::string query);
+
+    bool isConnected() const;
+
+    void close();
     /**
-* @brief Initialise les tables nécessaires dans la base de données si elles n'existent pas.
-*/
+    * @brief Initialise les tables nécessaires dans la base de données si elles n'existent pas.
+    */
     void initTables();
-    /**
-     * Ajouter un utilisateur a la base de donnees
-     * @param u un utilisateur a rajouter
-     */
-    void ajouterUtilisateur(Utilisateur u);
+/**
+ * Ajouter un utilisateur dans la base de donnees
+ * @param u un utilisateur a rajouter
+ * @return vrai si il a bien etait ajouter et faux sinon
+ */
+    bool ajouterUtilisateur(Utilisateur u);
 
     /**
      * @brief Permet de récupérer un utilisateur à partir de son email et son mot de passe.
@@ -61,18 +67,21 @@ public:
      */
     Utilisateur getUtilisateurByEmailAndMDP(std::string email, std::string mdp);
 /**
- * Ajouter un trajet a la base de donnees
+ * Ajouter un trajet dans la base de donnees
  * @param t un trajet a rajouter
+ * @param idConducteur id du conducteur qui publie le trajet
+ * @return vrai si il a bien etait ajouter et faux sinon
  */
-    void ajouterTrajet(Trajet t);
+    bool ajouterTrajet(Trajet t, int idConducteur);
 
 
 
     /**
      * Ajouter une reservation a la base de donnees
      * @param r une reservation a rajouter
+     * return vrai si elle a bien etait ajouter et faux sinon
      */
-    void ajouterReservation(Reservation r);
+    bool ajouterReservation(Reservation r);
 
 /**
  * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date.
@@ -191,15 +200,25 @@ public:
      * Ajouter un point intermediaire dans le trajet
      * @param idTrajet
      * @param NomVille
+     * return vrai si il a bien etait ajouter et faux sinon
      */
 
-    void ajouterPointIntermediaire(int idTrajet, std::string nomVille);
+    bool ajouterPointIntermediaire(int idTrajet, std::string nomVille);
+
+    /**
+     * Ajouter le prix d'un segment du trajet
+     * @param idTrajet
+     * @param prix
+     * @return vrai si il a bien etait ajouter et faux sinon
+     */
+    bool ajouterSegmentsPrix(int idTrajet, const std::string& segment, float prix);
 
     /**
      * Supprimer un trajet de la base de donnees
      * @param idTrajet respresente l'id du trajet qu'on veut supprimer
      */
     void supprimerTrajetByIDTrajet(int idTrajet);
+
 
     /**
      * Supprimer une reservation de la base de donnees

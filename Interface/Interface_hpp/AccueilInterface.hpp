@@ -1,59 +1,24 @@
 #ifndef ACCUEILINTERFACE_HPP
 #define ACCUEILINTERFACE_HPP
 
-#include "AvisInterface.hpp"
-#include "MesAnnoncesInterface.hpp"
-#include "MesReservationsInterface.hpp"
-#include "ModifierProfilInterface.hpp"
-#include "RechercheInterface.hpp"
-#include "ReservationInterface.hpp"
-#include "TrajetInterface.hpp"
+#include <string>
 
 /**
  * @file AccueilInterface.hpp
- * @brief Interface graphique pour la page d'accueil utilisateur.
+ * @brief Interface pour la page d'accueil utilisateur.
  *
- * Cette interface permet de rediriger les actions principales vers les interfaces spécialisées.
+ * Cette interface permet de rediriger les actions principales vers les interfaces spécialisées à l'aide des contrôleurs.
+ * L'utilisateur choisit l'interface vers laquelle il souhaite aller, cette information est transmise aux contrôleurs qui effectuent ensuite le traitement nécessaire.
  */
 class AccueilInterface {
 public:
     virtual ~AccueilInterface() = default;
 
     /**
-     * @brief Accède à l'interface de recherche de trajets.
+     * @brief Affiche l'accueil et retourne le choix de l'utilisateur.
+     * @return Le choix de l'utilisateur sous forme de chaîne de caractères.
      */
-    virtual RechercheInterface* getRechercheInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface de réservation.
-     */
-    virtual ReservationInterface* getReservationInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface de modification du profil.
-     */
-    virtual ModifierProfilInterface* getModifierProfilInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface de consultation des réservations (passager).
-     */
-    virtual MesReservationsInterface* getMesReservationsInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface de consultation des annonces (conducteur).
-     */
-    virtual MesAnnoncesInterface* getMesAnnoncesInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface de saisie d'un nouveau trajet (conducteur).
-     */
-    virtual TrajetInterface* getTrajetInterface() = 0;
-
-    /**
-     * @brief Accède à l'interface pour laisser un avis.
-     */
-    virtual AvisInterface* getAvisInterface() = 0;
+    virtual std::string accueil() = 0;
 };
 
 #endif // ACCUEILINTERFACE_HPP
-
