@@ -16,7 +16,6 @@
 #include <vector>
 #include "Utilisateur.hpp"
 #include "Trajet.hpp"
-#include "Paiement.hpp"
 #include "Reservation.hpp"
 #include "Conducteur.hpp"
 #include "Passager.hpp"
