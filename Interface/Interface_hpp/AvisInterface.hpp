@@ -5,7 +5,7 @@
 
 /**
  * @file AvisInterface.hpp
- * @brief Interface pour la gestion des avis utilisateurs.
+ * @brief Interface pour la gestion d'avis des utilisateurs.
  *
  * Un avis possède une note, un commentaire, un type, un nom d'émetteur et un nom de récepteur.
  */
