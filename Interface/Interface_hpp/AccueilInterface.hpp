@@ -1,7 +1,6 @@
 #ifndef ACCUEILINTERFACE_HPP
 #define ACCUEILINTERFACE_HPP
 
-#include "AvisInterface.hpp"
 #include "MesAnnoncesInterface.hpp"
 #include "MesReservationsInterface.hpp"
 #include "ModifierProfilInterface.hpp"
@@ -49,10 +48,6 @@ public:
      */
     virtual TrajetInterface* getTrajetInterface() = 0;
 
-    /**
-     * @brief Accède à l'interface pour laisser un avis.
-     */
-    virtual AvisInterface* getAvisInterface() = 0;
 };
 
 #endif // ACCUEILINTERFACE_HPP
