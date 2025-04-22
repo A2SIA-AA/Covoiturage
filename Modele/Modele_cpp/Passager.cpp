@@ -1,26 +1,23 @@
+#include "Modele_hpp/Reservation.hpp"
 #include "Modele_hpp/Passager.hpp"
 
-
-Passager::Passager(int idUtilisateur, std::string nom, std::string prenom,
-                   std::string email, std::string motPasse,
-                   std::string adressePostale, bool fumeur, std::vector<Reservation> listeReservation)
-        : Utilisateur(idUtilisateur, nom, prenom, email, motPasse, adressePostale, fumeur) {
+Passager::Passager(int idUtilisateur, std::string nom, std::string prenom, std::string email, std::string motPasse, std::string adressePostale, bool fumeur, std::vector<Reservation> listeReservation)
+        : Utilisateur(idUtilisateur, nom, prenom, email, motPasse, adressePostale, fumeur),
+          listeReservation(listeReservation) {
 
 }
 
-std::vector<Reservation> getListeReservation(){
+
+std::vector<Reservation> Passager::getListeReservation() {
     return listeReservation;
 }
 
-void setListeReservation(const std::vector<Reservation>& reservation) {
+void Passager::setListeReservation(std::vector<Reservation> reservation) {
     listeReservation = reservation;
 }
 
-/**
- * Ajouter une reservation dans la liste des reservations du passager
- * @param res
- */
-void ajouterReservation(const Reservation& res){
-
+void Passager::ajouterReservation(const Reservation& res) {
+    listeReservation.push_back(res);
 }
+
 
