@@ -19,5 +19,12 @@ public:
     */
     bool verifierUtilisateur(std::string email, std::string motPasse);
 
+    /**
+    * @brief Traite la connexion d'un utilisateur (si la connexion s'est bien passé, on le renvoie à "AccueilInterface")
+    * @param email L'adresse e-mail de l'utilisateur.
+    * @param motPasse Le mot de passe de l'utilisateur.
+    */
+    void traiterConnexion(std::string email, std::string motPasse);
+
 };
 #endif

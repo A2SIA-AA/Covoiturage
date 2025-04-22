@@ -24,6 +24,11 @@ public:
      * informations fournies dans le paramètre.
      */
     void ModifierProfil(std::string choix, std::string modification);
+
+    /**
+     * @brief Redirige l'utilisateur vers "AccueilInterface" ou "ConnexionInterface" selon la modification
+     */
+    void TraiterModificationProfil();
 };
 
 #endif // MODIFIERPROFILCONTROLLEUR_H

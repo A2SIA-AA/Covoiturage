@@ -98,6 +98,11 @@ public:
      */
     void supprimerReservation(int idReservation);
 
+    /**
+     * @brief Redirige l'utilisateur vers "TrajetInterface"
+     */
+    void TraiterTrajet();
+
 
 };
 #endif
