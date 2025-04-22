@@ -18,7 +18,7 @@ private:
     /**
     * @brief Affiche un message pour permettre à l'utilisateur de retourner à l'accueil.
     */
-    void afficherMenuPrincipal();
+    virtual void afficherMenuPrincipal() = 0;
 
 public:
     /**
@@ -26,7 +26,9 @@ public:
      * 
      * @return std::tuple<std::string, std::string, std::string> un tuple contenant le lieu de départ, le lieu d'arrivée et la date de départ souhaité pour le trajet  
      */
-    std::tuple<std::string, std::string, std::string> rechercher() const;
+    virtual std::tuple<std::string, std::string, std::string> rechercher() const =0 ;
+    
+    virtual ~TrajetInterface() = default;
 };
 
 #endif

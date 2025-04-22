@@ -18,32 +18,32 @@ class TrajetInterface {
          * 
          * @param trajets la liste des trajets à afficher 
          */
-        void afficherTrajets(const std::vector<Trajet>& trajets);
+        virtual void afficherTrajets(const std::vector<Trajet>& trajets) =0;
 
         /**
          * @brief Affiche le menu de filtres disponibles à l'utilisateur.
          * 
          */
-        void afficherMenuFiltres();
+        virtual afficherMenuFiltres() = 0;
 
         /**
          * @brief Affiche le résultat du filtrage choisi par l'utilisateur
          * 
          * @param trajets Référence au vecteur de trajets à filtrer.
          */
-        void afficherFiltrage(const std::vector<Trajet>& trajets);
+        virtual  afficherFiltrage(const std::vector<Trajet>& trajets) =0;
 
         /**
         * @brief Affiche un message pour permettre à l'utilisateur de retourner à l'accueil.
         */
-        void afficherMenuPrincipal();
+        virtual void afficherMenuPrincipal() =0;
 
         /**
          * @brief Affiche les détails d’un trajet sélectionné et une fois cela fait,  
          * donné la possibilité à l'utilisateur de le réserver ou de revenir à la liste des trajets.
          * @param trajet Le trajet à détailler.
          */
-        void afficherDetailsTrajet(const Trajet& trajet);
+        virtual void afficherDetailsTrajet(const Trajet& trajet) =0 ;
 
     public:
         /**
@@ -59,7 +59,9 @@ class TrajetInterface {
          *
          * @param trajets Vecteur de trajets à afficher et potentiellement filtrer. Il peut être vide.
          */
-        void afficherInterfaceRecherche(const std::vector<Trajet>& trajets);
+        virtual void afficherInterfaceRecherche(const std::vector<Trajet>& trajets) = 0;
+
+        virtual ~TrajetInterface() = default;
     };
 
 #endif

@@ -13,7 +13,10 @@ public:
      * @brief Affiche toutes les réservations du passager connecté.
      * @param passager L’utilisateur connecté dont on veut afficher les réservations.
      */
-    void afficherReservations(const Passager& passager);
+    virtual void afficherReservations(const Passager& passager) = 0 ;
+
+    virtual ~MesReservationsInterface() = default;
+    
 };
 
 #endif
