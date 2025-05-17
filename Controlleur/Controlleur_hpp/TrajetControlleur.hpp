@@ -4,12 +4,19 @@
 #include <string>
 #include <vector>
 #include "../../Modele/Modele_hpp/Trajet.hpp"
+#include "Modele/Modele_hpp/BaseDonnees.hpp"
+#include "Modele/Modele_hpp/Reservation.hpp"
 
 /**
  * @class TrajetControlleur
  * @brief Gère la gestion des trajets et les réservations associées.
  */
 class TrajetControlleur{
+
+private:
+
+    BaseDonnees baseDeDonnees;
+
 
 public:
     /**
@@ -37,18 +44,12 @@ public:
      * @brief Effectue une réservation pour un trajet spécifique.
      *
      * Cette fonction permet d'enregistrer une réservation pour un trajet identifié par son ID.
-     * Elle prend en compte les informations personnelles du passager ainsi que les détails de la réservation.
-     *
      * @param idTrajet Identifiant du trajet à réserver.
-     * @param nom Nom de famille du passager.
-     * @param prenom Prénom du passager.
-     * @param email Adresse e-mail du passager.
-     * @param numeroTelephone Numéro de téléphone du passager.
      * @param prix Prix de la réservation.
-     * @param idReservation Identifiant unique de la réservation.
+     * @param idPassager Identifiant unique du passager.
      * @param statut Statut de la réservation (true si confirmée, false sinon).
      */
-    void reservation(int idTrajet, std::string nom, std::string prenom, std::string email, int numeroTelephone, float prix, int idReservation, bool statut);
+    void reservation(int idTrajet, float prix, int idPassager, bool statut);
 
         /**
      * @brief Recherche les trajets correspondant aux critères spécifiés.
@@ -84,7 +85,7 @@ public:
          * @param emissionCO2 Niveau d'émission de CO2 du trajet.
          * @param description Description supplémentaire du trajet.
          */
-    void creerTrajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, enum etat, float emissionCO2, std::string description);
+    void creerTrajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
 
     /**
      * @brief Supprime un trajet qu'un conducteur a posté

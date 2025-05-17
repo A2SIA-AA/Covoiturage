@@ -1,9 +1,12 @@
 #include "Modele_hpp/Utilisateur.hpp"
 
-Utilisateur::Utilisateur(int idUtilisateur, std::string nom, std::string prenom,
+int Utilisateur::compteurUtilisateur = 0;
+
+Utilisateur::Utilisateur(std::string nom, std::string prenom,
                          std::string email, std::string motPasse,
                          std::string adressePostale, bool fumeur) {
-    this->idUtilisateur = idUtilisateur;
+    compteurUtilisateur++;
+    this->idUtilisateur = compteurUtilisateur;
     this->nom = nom;
     this->prenom = prenom;
     this->email = email;

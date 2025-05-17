@@ -1,13 +1,16 @@
 #include "Modele_hpp/Trajet.hpp"
 
-Trajet::Trajet(int idTrajet, std::string date, std::string heureDepart, std::string heureArrivee,
+int Trajet::compteurTrajet = 0;
+
+Trajet::Trajet(std::string date, std::string heureDepart, std::string heureArrivee,
                std::string lieuDepart, std::string lieuArrivee,
                std::vector<std::pair<std::string, float>> segmentsPrix,
                std::vector<std::string> villesEtapes,
                bool disponible, bool allerRetour, bool animaux,
                std::string voiture, int nombrePlaceDispo,
                bool etat, float emissionCO2, std::string description) {
-    this->idTrajet = idTrajet;
+    compteurTrajet++;
+    this->idTrajet = compteurTrajet;
     this->date = date;
     this->heureDepart = heureDepart;
     this->heureArrivee = heureArrivee;

@@ -19,7 +19,7 @@ OBJDIR   = obj
 BINDIR   = bin
 
 # Récupère tous les fichiers .cpp dans les répertoires spécifiés
-SOURCES := $(wildcard $(SRCDIR)/*.cpp) $(wildcard main.cpp)
+SOURCES := $(wildcard $(SRCDIR)/*.cpp) #$(wildcard main.cpp)
 # Récupère tous les fichiers .hpp dans les répertoires spécifiés
 INCLUDES := $(wildcard $(SRCDIR2)/*.hpp)
 # Crée une liste d'objets à partir des fichiers .cpp

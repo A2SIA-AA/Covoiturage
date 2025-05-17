@@ -2,6 +2,7 @@
 #define __CONNEXIONCONTROLLEUR_HPP__
 
 #include <string>
+#include "Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * @class ConnexionControlleur
@@ -9,15 +10,17 @@
  */
 class ConnexionControlleur{
 
+private:
+    BaseDonnees baseDeDonnees;
+
 public:
 
     /**
     * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.
     * @param email L'adresse e-mail de l'utilisateur.
     * @param motPasse Le mot de passe de l'utilisateur.
-    * @return true si l'utilisateur existe et que le mot de passe est correct, false sinon.
     */
-    bool verifierUtilisateur(std::string email, std::string motPasse);
+    void verifierUtilisateur(std::string email, std::string motPasse);
 
     /**
     * @brief Traite la connexion d'un utilisateur (si la connexion s'est bien passé, on le renvoie à "AccueilInterface")

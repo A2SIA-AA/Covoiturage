@@ -1,11 +1,13 @@
 #include "Modele_hpp/Reservation.hpp"
 
-Reservation::Reservation(float prix, int IDrev, bool statut) {
+int Reservation::compteurReservation = 0;
+
+Reservation::Reservation(float prix, bool statut) {
+    compteurReservation++;
     this->prix = prix;
-    this->idReservation = IDrev;
+    this->idReservation = compteurReservation;
     this->statut = statut;
 }
-
 // Getters
 float Reservation::getPrix() {
     return prix;

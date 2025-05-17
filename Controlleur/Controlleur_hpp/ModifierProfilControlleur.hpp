@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * @class ModifierProfilControlleur
@@ -14,21 +15,26 @@
  */
 class ModifierProfilControlleur {
 
+private:
+    BaseDonnees baseDeDonnees;
+
 public:
 
     /**
      * @brief Modifie le profil de l'utilisateur.
-     * @param choix Une chaîne représentant les nouvelles informations du profil.
-     *
+     * @param id l'id de l'utilisateur qui fait la demande.
+     * @param choix Une chaîne représentant l'element du profil à modifier.
+     * @param modification Une chaîne représentant les nouvelles informations du profil.
      * Cette méthode permet de modifier le profil d’un utilisateur avec les
      * informations fournies dans le paramètre.
      */
-    void ModifierProfil(std::string choix, std::string modification);
+    void ModifierProfil(int id, std::string choix, std::string modification);
 
     /**
      * @brief Redirige l'utilisateur vers "AccueilInterface" ou "ConnexionInterface" selon la modification
+     * @param choix Une chaîne représentant l'element du profil à modifier.
      */
-    void TraiterModificationProfil();
+    void TraiterModificationProfil(std::string choix);
 };
 
 #endif // MODIFIERPROFILCONTROLLEUR_H

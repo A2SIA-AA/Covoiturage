@@ -9,12 +9,13 @@
  */
 class Reservation{
 private:
+    static int compteurReservation;
     float prix;
     int idReservation;
     bool statut;
 
 public:
-    Reservation(float prix, int ID, bool statut);
+    Reservation(float prix, bool statut);
 
     float getPrix();
     int getIdReservation();
