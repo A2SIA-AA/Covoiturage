@@ -2,13 +2,10 @@
 
 int Reservation::compteurReservation = 0;
 
-Reservation::Reservation(float prix, bool statut) {
-    compteurReservation++;
-    this->prix = prix;
-    this->idReservation = compteurReservation;
-    this->statut = statut;
-}
-// Getters
+Reservation::Reservation(float prix, bool statut)
+        : prix(prix), idReservation(compteurReservation++),
+          statut(statut), idPassager(0), idTrajet(0) {}
+
 float Reservation::getPrix() {
     return prix;
 }
@@ -21,16 +18,30 @@ bool Reservation::getStatut() {
     return statut;
 }
 
-// Setters
+int Reservation::getIdTrajet() const {
+    return idTrajet;
+}
+
+int Reservation::getIdPassager() const {
+    return idPassager;
+}
+
+void Reservation::setIdPassager(int idPassager) {
+    this->idPassager = idPassager;
+}
+
 void Reservation::setPrix(float prix) {
     this->prix = prix;
 }
 
-void Reservation::setIdReservation(int IDrev) {
-    this->idReservation = IDrev;
+void Reservation::setIdReservation(int ID) {
+    idReservation = ID;
 }
 
 void Reservation::setStatut(bool statut) {
     this->statut = statut;
 }
 
+void Reservation::setIdTrajet(int idTrajet) {
+    this->idTrajet = idTrajet;
+}

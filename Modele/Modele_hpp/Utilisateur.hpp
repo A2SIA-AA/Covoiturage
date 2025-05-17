@@ -7,20 +7,21 @@
  * Permet de modeliser et definir un utilisateur
  */
 class Utilisateur{
-    // attributs
     private:
-        int idUtilisateur;
+
+    int idUtilisateur;
         std::string nom;
         std::string prenom;
         std::string email;
         std::string motPasse;
         std::string adressePostale;
         bool fumeur;
+        static int compteurUtilisateur;
 
 
-    public:
 
-        Utilisateur(int idUtilisateur, std::string nom, std::string prenom,std::string email,std::string motPasse,std::string adressePostale, bool fumeur);
+public:
+        Utilisateur(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
         int getIdUtilisateur();
         std::string getNom();
         std::string getPrenom();

@@ -84,23 +84,23 @@ public:
     bool ajouterReservation(Reservation r);
 
 /**
- * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date.
+ * @brief Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date.
  * @param villeDepart La ville de départ du trajet.
  * @param villeArrivee La ville d’arrivée du trajet.
  * @param date La date de depart du trajet
  * @return L'objet Trajet correspondant.
  */
-    Trajet getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
 
 /**
- * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
+ * Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
  * @param villeDepart
  * @param villeArrivee
  * @param date
  * @param prix
  * @return  L'objet Trajet correspondant.
  */
-    Trajet getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
 
 /**
  * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
@@ -110,7 +110,7 @@ public:
  * @param emissionCO2
  * @return  L'objet Trajet correspondant.
  */
-    Trajet getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
 
     /**
      * Obtenir un trajet par son ID
