@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include "../../Modele/Modele_hpp/Trajet.hpp"
-#include "Modele/Modele_hpp/BaseDonnees.hpp"
-#include "Modele/Modele_hpp/Reservation.hpp"
+#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../../Modele/Modele_hpp/Reservation.hpp"
 
 /**
  * @class TrajetControlleur

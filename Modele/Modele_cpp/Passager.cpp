@@ -1,5 +1,5 @@
-#include "Modele_hpp/Reservation.hpp"
-#include "Modele_hpp/Passager.hpp"
+#include "../Modele_hpp/Reservation.hpp"
+#include "../Modele_hpp/Passager.hpp"
 
 Passager::Passager(std::string nom, std::string prenom, std::string email, std::string motPasse, std::string adressePostale, bool fumeur, std::vector<Reservation> listeReservation)
         : Utilisateur( nom, prenom, email, motPasse, adressePostale, fumeur),

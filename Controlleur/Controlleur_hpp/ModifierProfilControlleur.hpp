@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * @class ModifierProfilControlleur

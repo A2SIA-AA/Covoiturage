@@ -42,14 +42,16 @@ void InscriptionControlleur::traiterInscription(
     std::string motPasse,
     std::string adressePostal,
     bool fumeur) {
-    if (verifierSaisieInscription(nom, prenom, email, motPasse, adressePostal,fumeur)) {
-        Utilisateur utilisateur(nom, prenom, email, motPasse, adressePostal,fumeur);
-        Database database;
-        database.ajouterUtilisateur(utilisateur);
-        std::cout << "Inscription réussie ! Vous pouvez désormais vous connecter." << std::endl;
-        ConnexionInterface vue;
-        vue.afficher();
-    } else {
-        std::cout << "Erreur lors de l'inscription : données invalides." << std::endl;
+    if (!verifierSaisieInscription(nom, prenom, email, motPasse, adressePostal, fumeur)) {
+        throw std::runtime_error("Erreur lors de l'inscription : données invalides.");
     }
+
+    Utilisateur utilisateur(nom, prenom, email, motPasse, adressePostal, fumeur);
+
+    if (!baseDeDonnees.ajouterUtilisateur(utilisateur)) {
+        throw std::runtime_error("Erreur : impossible d'ajouter l'utilisateur en base.");
+    }
+    std::cout << "Inscription réussie ! Vous pouvez désormais vous connecter." << std::endl;
+    //ConnexionInterface vue;
+    //vue.afficher();
 }

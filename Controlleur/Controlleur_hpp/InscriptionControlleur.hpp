@@ -2,12 +2,15 @@
 #define __InscriptionControlleur_HPP__
 
 #include <string>
+#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * Contient les méthodes en lien avec l'inscription d'un nouvel utilisateur
  */
 class InscriptionControlleur{
 
+private:
+    BaseDonnees baseDeDonnees;
 
 public:
     /**

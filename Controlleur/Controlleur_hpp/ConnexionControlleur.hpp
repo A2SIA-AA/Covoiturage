@@ -2,7 +2,7 @@
 #define __CONNEXIONCONTROLLEUR_HPP__
 
 #include <string>
-#include "Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * @class ConnexionControlleur
@@ -20,7 +20,7 @@ public:
     * @param email L'adresse e-mail de l'utilisateur.
     * @param motPasse Le mot de passe de l'utilisateur.
     */
-    void verifierUtilisateur(std::string email, std::string motPasse);
+    bool verifierUtilisateur(std::string email, std::string motPasse);
 
     /**
     * @brief Traite la connexion d'un utilisateur (si la connexion s'est bien passé, on le renvoie à "AccueilInterface")

@@ -1,4 +1,4 @@
-#include "Modele_hpp/Trajet.hpp"
+#include "../Modele_hpp/Trajet.hpp"
 
 int Trajet::compteurTrajet = 0;
 
