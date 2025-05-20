@@ -226,6 +226,13 @@ public:
      */
     void supprimerReservationByIDReservation(int idReservation);
 
-};
+/**
+ * Cette methode permet d'obtenir un utilisateur a partir de son ID
+ * @param idUtilisateur
+ * @return un objet Utilisateur correspondant a l'ID
+ */
 
+    Utilisateur getUtilisateurByID(int idUtilisateur);
+
+};
 #endif

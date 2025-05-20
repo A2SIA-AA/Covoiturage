@@ -652,12 +652,52 @@ Reservation Database::getReservationByID(int ID) {
 }
 
 
-    float getEmissionCO2ByIdTrajet(int IDTrajet){
+float Database::getEmissionCO2ByIdTrajet(int IDTrajet) {
+    std::string sql = "SELECT emissionCO2 FROM trajets WHERE idTrajet = ?";
+    sqlite3_stmt* stmt;
+    float emissionCO2 = 0.0f;
 
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
     }
 
-    std::vector<std::pair<std::string, float>> getPrixByIdTrajet(int idTrajet){
+    sqlite3_bind_int(stmt, 1, IDTrajet);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        emissionCO2 = static_cast<float>(sqlite3_column_double(stmt, 0));
+    } else {
+        sqlite3_finalize(stmt);
+        throw std::runtime_error("Trajet non trouvé");
     }
+
+    sqlite3_finalize(stmt);
+    return emissionCO2;
+}
+
+
+std::vector<std::pair<std::string, float>> Database::getPrixByIdTrajet(int idTrajet) {
+    std::vector<std::pair<std::string, float>> segmentsPrix;
+    std::string sql = "SELECT segment, prix FROM segment_prix WHERE idTrajet = ?";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
+    }
+
+    sqlite3_bind_int(stmt, 1, idTrajet);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        std::string segment = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        float prix = static_cast<float>(sqlite3_column_double(stmt, 1));
+        segmentsPrix.emplace_back(segment, prix);
+    }
+
+    sqlite3_finalize(stmt);
+    return segmentsPrix;
+}
+
 
 std::vector<std::string> Database::getPointIntermediaireByIdTrajet(int IDTrajet) {
     std::vector<std::string> villesEtapes;
@@ -777,7 +817,7 @@ std::string Database::getVilleArriveeByIdTrajet(int IDTrajet) {
 
 std::string Database::getVilleDepartByIdTrajet(int IDTrajet) {
     std::string villeDepart;
-    std::string sql = "SELECT lieuDepart FROM trajets WHERE idTrajet = ?";
+    std::string sql = R"(SELECT lieuDepart FROM trajets WHERE idTrajet = ?)";
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK)
         throw std::runtime_error("Erreur préparation requête");
@@ -790,12 +830,115 @@ std::string Database::getVilleDepartByIdTrajet(int IDTrajet) {
     return villeDepart;
 }
 
+Utilisateur Database::getUtilisateurByID(int idUtilisateur) {
+    std::string sql = R"(SELECT id, nom, prenom, email, mdp, adressePostale, fumeur FROM utilisateurs WHERE id = ?)";
+    sqlite3_stmt* stmt;
 
-    Conducteur getConducteurByID(int idUtilisateur){
-
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
     }
-    Passager getPassagerByID(int idUtilisateur){
 
+    sqlite3_bind_int(stmt, 1, idUtilisateur);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        std::string nom = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        std::string prenom = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        std::string email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        std::string mdp = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        std::string adresse = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        bool fumeur = sqlite3_column_int(stmt, 6);
+
+        sqlite3_finalize(stmt);
+        return Utilisateur(nom, prenom, email, mdp, adresse, fumeur);
+    } else {
+        sqlite3_finalize(stmt);
+        throw std::runtime_error("Utilisateur non trouvé");
+    }
+}
+
+
+Conducteur Database::getConducteurByID(int idUtilisateur) {
+    std::string sql = R"(SELECT 1 FROM conducteurs WHERE id = ?)";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw std::runtime_error("Erreur base de données (conducteurs)");
+    }
+    sqlite3_bind_int(stmt, 1, idUtilisateur);
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        throw std::runtime_error("L'utilisateur n'est pas un conducteur");
+    }
+    sqlite3_finalize(stmt);
+
+    Utilisateur user = getUtilisateurByID(idUtilisateur);
+
+    std::vector<Trajet> listeTrajet;
+    {
+        std::string sqlTrajets = R"(SELECT idTrajet FROM trajets WHERE idConducteur = ?)";
+        sqlite3_stmt* stmtTrajet;
+        if (sqlite3_prepare_v2(db, sqlTrajets.c_str(), -1, &stmtTrajet, nullptr) == SQLITE_OK) {
+            sqlite3_bind_int(stmtTrajet, 1, idUtilisateur);
+            while (sqlite3_step(stmtTrajet) == SQLITE_ROW) {
+                int idTrajet = sqlite3_column_int(stmtTrajet, 0);
+                listeTrajet.push_back(getTrajetByIdTrajet(idTrajet));
+            }
+        }
+        sqlite3_finalize(stmtTrajet);
+    }
+
+    return Conducteur(
+            user.getNom(),
+            user.getPrenom(),
+            user.getEmail(),
+            user.getMotPasse(),
+            user.getAdressePostale(),
+            user.getFumeur(),
+            listeTrajet
+    );
+}
+
+    Passager Database::getPassagerByID(int idUtilisateur){
+        std::string sql = R"(SELECT 1 FROM passagers WHERE id = ?)";
+        sqlite3_stmt* stmt;
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+            throw std::runtime_error("Erreur base de données (conducteurs)");
+        }
+        sqlite3_bind_int(stmt, 1, idUtilisateur);
+
+        if (sqlite3_step(stmt) != SQLITE_ROW) {
+            sqlite3_finalize(stmt);
+            throw std::runtime_error("L'utilisateur n'est pas un passager");
+        }
+        sqlite3_finalize(stmt);
+
+        Utilisateur user = getUtilisateurByID(idUtilisateur);
+
+        std::vector<Reservation> listeReservation;
+        {
+            std::string sqlReservations = R"(SELECT idReservation FROM reservations WHERE idPassager = ?)";
+            sqlite3_stmt* stmtReservation;
+            if (sqlite3_prepare_v2(db, sqlReservations.c_str(), -1, &stmtReservation, nullptr) == SQLITE_OK) {
+                sqlite3_bind_int(stmtReservation, 1, idUtilisateur);
+                while (sqlite3_step(stmtReservation) == SQLITE_ROW) {
+                    int idReservation = sqlite3_column_int(stmtReservation, 0);
+                    listeReservation.push_back(getReservationByID(idReservation));
+                }
+            }
+            sqlite3_finalize(stmtReservation);
+        }
+
+        return Passager(
+                user.getNom(),
+                user.getPrenom(),
+                user.getEmail(),
+                user.getMotPasse(),
+                user.getAdressePostale(),
+                user.getFumeur(),
+                listeReservation
+        );
     }
 
 
