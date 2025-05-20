@@ -17,13 +17,13 @@ set(SOURCES
         Controlleur/Controlleur_cpp/InscriptionControlleur.cpp
         Controlleur/Controlleur_cpp/RechercheControlleur.cpp
         Controlleur/Controlleur_cpp/TrajetControlleur.cpp
-        Interface/Interface_cpp/AcceuilInterface.cpp
-        Interface/Interface_cpp/ConnexionInterface.cpp
-        Interface/Interface_cpp/InscriptionInterface.cpp
-        Interface/Interface_cpp/MesAnnoncesInterface.cpp
-        Interface/Interface_cpp/MesReservationsInterface.cpp
-        Interface/Interface_cpp/RechercheInterface.cpp
-        Interface/Interface_cpp/TrajetInterface.cpp
+        Interface/Interface_cpp/AccueilConsole.cpp
+        Interface/Interface_cpp/ConnexionConsole.cpp
+        Interface/Interface_cpp/InscriptionConsole.cpp
+        Interface/Interface_cpp/MesAnnoncesConsole.cpp
+        Interface/Interface_cpp/MesReservationsConsole.cpp
+        Interface/Interface_cpp/RechercheConsole.cpp
+        Interface/Interface_cpp/TrajetConsole.cpp
         Modele/Modele_cpp/BaseDonnees.cpp
         Modele/Modele_cpp/Conducteur.cpp
         Modele/Modele_cpp/Passager.cpp
@@ -45,6 +45,14 @@ set(SOURCES
         Tests/Test_interface/TestConnexionInterface.cpp
         Tests/Test_interface/TestInscriptionInterface.cpp
         Tests/Test_modele/Test_BDD.cpp
+        Interface/Interface_hpp/AccueilConsole.hpp
+        Interface/Interface_hpp/ConnexionConsole.hpp
+        Interface/Interface_hpp/InscriptionConsole.hpp
+        Interface/Interface_hpp/MesAnnoncesConsole.hpp
+        Interface/Interface_hpp/MesReservationsConsole.hpp
+        Interface/Interface_hpp/ModifierProfilConsole.hpp
+        Interface/Interface_hpp/RechercheConsole.hpp
+        Interface/Interface_hpp/TrajetConsole.hpp
 )
 
 add_executable(Covoiturage ${SOURCES})
