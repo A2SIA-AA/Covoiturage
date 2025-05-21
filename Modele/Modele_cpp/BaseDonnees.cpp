@@ -59,14 +59,14 @@ void Database::initTables(){
     std::string createConducteurTable = R"(
         CREATE TABLE IF NOT EXISTS conducteurs (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+            FOREIGN KEY(id) REFERENCES utilisateurs(idUtilisateur) ON DELETE CASCADE
         );
     )";
 
     std::string createPassagerTable = R"(
         CREATE TABLE IF NOT EXISTS passagers (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+            FOREIGN KEY(id) REFERENCES utilisateurs(idUtilisateur) ON DELETE CASCADE
         );
     )";
         std::string createTrajetTable = R"(
@@ -116,6 +116,7 @@ void Database::initTables(){
         prix REAL,
         statut BOOLEAN,
         idPassager INTEGER,
+        idTrajet INTEGER,
         FOREIGN KEY(idTrajet) REFERENCES trajets(idTrajet),
         FOREIGN KEY(idPassager) REFERENCES passagers(id)
 
