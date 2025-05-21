@@ -5,8 +5,8 @@
 #ifndef MESRESERVATIONSCONSOLE_HPP
 #define MESRESERVATIONSCONSOLE_HPP
 
-#include "MesReservations.hpp"
 #include "../../Modele/Modele_hpp/Passager.hpp"
+#include "Interface_hpp/MesReservationsInterface.hpp"
 
 
 class MesReservationsConsole : public MesReservations {

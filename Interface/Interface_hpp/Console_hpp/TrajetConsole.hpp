@@ -5,9 +5,8 @@
 #ifndef TRAJETCONSOLE_HPP
 #define TRAJETCONSOLE_HPP
 
-#include "TrajetInterface.hpp"
 #include <vector>
-#include <string>
+#include "Interface_hpp/TrajetInterface.hpp"
 
 class TrajetConsole : public TrajetInterface {
 private:

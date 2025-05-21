@@ -2,8 +2,8 @@
 #ifndef ACCUEILCONSOLE_HPP
 #define ACCUEILCONSOLE_HPP
 
-#include "AccueilInterface.hpp"
 #include <string>
+#include "Interface_hpp/AccueilInterface.hpp"
 
 class AccueilConsole : public AccueilInterface {
 public:

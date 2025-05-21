@@ -5,10 +5,9 @@
 #ifndef RECHERCHECONSOLE_HPP
 #define RECHERCHECONSOLE_HPP
 
-#include "RechercheInterface.hpp"
 #include <tuple>
 #include <string>
-#include <vector>
+#include "Interface_hpp/RechercheInterface.hpp"
 
 
 class RechercheConsole : public RechercheInterface {

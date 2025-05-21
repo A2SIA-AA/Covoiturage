@@ -5,8 +5,8 @@
 #ifndef MODIFIERPROFILCONSOLE_HPP
 #define MODIFIERPROFILCONSOLE_HPP
 
-#include "ModifierProfilInterface.hpp"
 #include <string>
+#include "Interface_hpp/ModifierProfilInterface.hpp"
 
 
 class ModifierProfilConsole : public ModifierProfilInterface {

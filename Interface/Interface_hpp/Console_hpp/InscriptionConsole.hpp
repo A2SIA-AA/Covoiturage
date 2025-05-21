@@ -5,8 +5,9 @@
 #ifndef INSCRIPTIONCONSOLE_HPP
 #define INSCRIPTIONCONSOLE_HPP
 
-#include "InscriptionInterface.hpp"
+#include "Interface_hpp/InscriptionInterface.hpp"
 #include <string>
+
 
 class InscriptionConsole : public InscriptionInterface {
 public:

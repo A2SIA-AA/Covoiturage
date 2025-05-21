@@ -5,9 +5,9 @@
 #ifndef MESANNONCESCONSOLE_HPP
 #define MESANNONCESCONSOLE_HPP
 
-#include "MesAnnoncesInterface.hpp"
 #include <vector>
 #include <string>
+#include "Interface_hpp/MesAnnoncesInterface.hpp"
 
 
 class MesAnnoncesConsole : public MesAnnoncesInterface {

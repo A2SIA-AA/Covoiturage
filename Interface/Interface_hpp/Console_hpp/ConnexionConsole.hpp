@@ -5,8 +5,8 @@
 #ifndef CONNEXIONCONSOLE_HPP
 #define CONNEXIONCONSOLE_HPP
 
-#include "ConnexionInterface.hpp"
 #include <string>
+#include "Interface_hpp/ConnexionInterface.hpp"
 
 class ConnexionConsole : public ConnexionInterface {
 public:

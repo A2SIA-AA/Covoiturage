@@ -1,4 +1,4 @@
-#include "Interface_hpp/InscriptionConsole.hpp"
+#include "Interface_hpp/Console_hpp/InscriptionConsole.hpp"
 #include "../Controlleur_hpp/InscriptionControlleur.hpp"
 #include <iostream>
 
@@ -26,7 +26,7 @@ bool InscriptionConsole::sInscrire(const std::string& /*nom*/, const std::string
     InscriptionControlleur controlleur;
 
     // On vérifie la saisie avec le contrôleur
-    if (controlleur.verifierSaisieInscription(nom, prenom, email, motDePasse, telephone)) {
+    if (controlleur.verifierSaisieInscription(nom, prenom, email, telephone)) {
         controlleur.traiterInscription(nom, prenom, email, motDePasse, telephone);
         return true;
     }

@@ -1,4 +1,4 @@
-#include "Interface_hpp/ConnexionConsole.hpp"
+#include "Interface_hpp/Console_hpp/ConnexionConsole.hpp"
 
 #include "ConnexionControlleur.hpp" // Inclure le contrôleur
 #include <iostream>
