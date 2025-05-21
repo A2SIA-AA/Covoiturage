@@ -10,9 +10,10 @@
 class InscriptionControlleur{
 
 private:
-    BaseDonnees baseDeDonnees;
+    Database& baseDeDonnees;
 
 public:
+    InscriptionControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * Permet de vérifier la saisie lors d'une nouvelle inscription.
      * @param nom

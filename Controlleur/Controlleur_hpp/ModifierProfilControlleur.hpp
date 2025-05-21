@@ -16,10 +16,10 @@
 class ModifierProfilControlleur {
 
 private:
-    BaseDonnees baseDeDonnees;
+    Database& baseDeDonnees;
 
 public:
-
+    ModifierProfilControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * @brief Modifie le profil de l'utilisateur.
      * @param id l'id de l'utilisateur qui fait la demande.

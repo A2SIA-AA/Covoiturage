@@ -23,7 +23,8 @@
 #include "Modele/Modele_hpp/BaseDonnees.hpp"
 
 int main() {
-    InscriptionControlleur inscriptionCtrl;
+    Database db("maBase.sqlite");
+    InscriptionControlleur inscriptionCtrl(db);
 
     try {
         inscriptionCtrl.traiterInscription("Jean", "Dupont", "jean.dupont@example.com", "secure123", "75001", true);
@@ -32,7 +33,8 @@ int main() {
         return 1; // Arrêt propre du programme en cas d’erreur
     }
 
-    ConnexionControlleur connexionCtrl;
+
+    ConnexionControlleur connexionCtrl(db);
     bool connexionReussie = connexionCtrl.verifierUtilisateur("jean.dupont@example.com", "secure123");
 
     if (connexionReussie) {

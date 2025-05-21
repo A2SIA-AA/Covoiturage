@@ -11,10 +11,10 @@
 class ConnexionControlleur{
 
 private:
-    BaseDonnees baseDeDonnees;
+    Database& baseDeDonnees;
 
 public:
-
+    ConnexionControlleur(Database& db) : baseDeDonnees(db) {}
     /**
     * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.
     * @param email L'adresse e-mail de l'utilisateur.

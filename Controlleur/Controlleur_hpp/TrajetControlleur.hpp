@@ -15,10 +15,11 @@ class TrajetControlleur{
 
 private:
 
-    BaseDonnees baseDeDonnees;
+    Database& baseDeDonnees;
 
 
 public:
+    TrajetControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * @brief Vérifie que toutes les informations du trajet sont valides.
      * @param idTrajet Identifiant unique du trajet.

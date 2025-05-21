@@ -1,11 +1,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
-#include "Utilisateur.cpp"
-#include "Trajet.cpp"
-#include "Reservation.cpp"
-#include "Conducteur.cpp"
-#include "Passager.cpp"
 #include "../Modele_hpp/BaseDonnees.hpp"
 
 /**
