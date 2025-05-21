@@ -2,31 +2,18 @@
 
 int Trajet::compteurTrajet = 0;
 
-Trajet::Trajet(std::string date, std::string heureDepart, std::string heureArrivee,
-               std::string lieuDepart, std::string lieuArrivee,
-               std::vector<std::pair<std::string, float>> segmentsPrix,
-               std::vector<std::string> villesEtapes,
-               bool disponible, bool allerRetour, bool animaux,
-               std::string voiture, int nombrePlaceDispo,
-               bool etat, float emissionCO2, std::string description) {
-    compteurTrajet++;
-    this->idTrajet = compteurTrajet;
-    this->date = date;
-    this->heureDepart = heureDepart;
-    this->heureArrivee = heureArrivee;
-    this->lieuDepart = lieuDepart;
-    this->lieuArrivee = lieuArrivee;
-    this->segmentsPrix = segmentsPrix;
-    this->villesEtapes = villesEtapes;
-    this->disponible = disponible;
-    this->allerRetour = allerRetour;
-    this->animaux = animaux;
-    this->voiture = voiture;
-    this->nombrePlaceDispo = nombrePlaceDispo;
-    this->etat = etat;
-    this->emissionCO2 = emissionCO2;
-    this->description = description;
-}
+Trajet::Trajet(std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee,
+               std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes,
+               bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo,
+               bool etat, float emissionCO2, std::string description)
+        : idTrajet(compteurTrajet++), idConducteur(0),
+          date(date), heureDepart(heureDepart), heureArrivee(heureArrivee),
+          lieuDepart(lieuDepart), lieuArrivee(lieuArrivee),
+          segmentsPrix(segmentsPrix), villesEtapes(villesEtapes),
+          disponible(disponible), allerRetour(allerRetour), animaux(animaux),
+          voiture(voiture), nombrePlaceDispo(nombrePlaceDispo),
+          etat(etat), emissionCO2(emissionCO2), description(description) {}
+
 
 // Getters
 int Trajet::getIdTrajet() { return idTrajet; }

@@ -46,7 +46,7 @@ bool Database::execute(const std::string query) {
 void Database::initTables(){
 	std::string createUtilisateurTable = R"(
         CREATE TABLE IF NOT EXISTS utilisateurs (
-            id INTEGER PRIMARY KEY,
+            idUtilisateur INTEGER PRIMARY KEY,
             nom TEXT,
             prenom TEXT,
             email TEXT,
@@ -59,19 +59,20 @@ void Database::initTables(){
     std::string createConducteurTable = R"(
         CREATE TABLE IF NOT EXISTS conducteurs (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateur(id) ON DELETE CASCADE
+            FOREIGN KEY(id) REFERENCES utilisateurs(id) ON DELETE CASCADE
         );
     )";
 
     std::string createPassagerTable = R"(
         CREATE TABLE IF NOT EXISTS passagers (
             id INTEGER PRIMARY KEY,
-            FOREIGN KEY(id) REFERENCES utilisateur(id) ON DELETE CASCADE
+            FOREIGN KEY(id) REFERENCES utilisateurs(id) ON DELETE CASCADE
         );
     )";
         std::string createTrajetTable = R"(
         CREATE TABLE IF NOT EXISTS trajets (
             idTrajet INTEGER PRIMARY KEY,
+            idConducteur INTEGER,
             date TEXT,
             heureDepart TEXT,
             heureArrivee TEXT,
@@ -96,7 +97,7 @@ void Database::initTables(){
             idTrajet INTEGER,
             segment TEXT,
             prix REAL,
-            FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet)
+            FOREIGN KEY(idTrajet) REFERENCES trajets(idTrajet)
         );
     )";
 
@@ -106,7 +107,7 @@ void Database::initTables(){
             idEtape INTEGER PRIMARY KEY AUTOINCREMENT,
             idTrajet INTEGER,
             ville TEXT,  -- Nom de la ville de l'étape
-            FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet)
+            FOREIGN KEY(idTrajet) REFERENCES trajets(idTrajet)
         );
     )";
     std::string createReservationTable = R"(
@@ -114,8 +115,9 @@ void Database::initTables(){
         idReservation INTEGER PRIMARY KEY AUTOINCREMENT,
         prix REAL,
         statut BOOLEAN,
-        FOREIGN KEY(idTrajet) REFERENCES trajet(idTrajet),
-        FOREIGN KEY(idPassager) REFERENCES Passager(id)
+        idPassager INTEGER,
+        FOREIGN KEY(idTrajet) REFERENCES trajets(idTrajet),
+        FOREIGN KEY(idPassager) REFERENCES passagers(id)
 
     );
 )";

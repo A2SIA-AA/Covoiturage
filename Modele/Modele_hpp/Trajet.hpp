@@ -12,6 +12,7 @@ class Trajet{
 private:
     static int compteurTrajet;
     int idTrajet;
+    int idConducteur;
     std::string date;
     std::string heureDepart;
     std::string heureArrivee;
@@ -31,6 +32,7 @@ private:
 public:
     Trajet(std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
     void setIdTrajet(int idTrajet);
+    void setIdConducteur(int idConducteur);
     void setDate(std::string date);
     void setHeureDepart(std::string heureDepart);
     void setHeureArrive(std::string heureArrivee);
@@ -48,6 +50,7 @@ public:
     void setVillesEtapes(std::vector<std::string> villesEtapes);
 
     int getIdTrajet();
+    int getIdConducteur();
     std::string getDate();
     std::string getHeureDepart();
     std::string getHeureArrive();
