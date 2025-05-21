@@ -161,7 +161,7 @@ void Database::initTables(){
 
 Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string mdp) {
     std::string sql = R"(
-        SELECT id, nom, prenom, email, mdp, adressePostale
+        SELECT idUtilisateur, nom, prenom, email, mdp, adressePostale
         FROM utilisateurs
         WHERE email = ? AND mdp = ?
     )";
