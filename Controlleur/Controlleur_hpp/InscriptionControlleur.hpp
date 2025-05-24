@@ -24,7 +24,7 @@ public:
      * @param fumeur
      * @return true si les saisie respectent la norme
      */
-    bool verifierSaisieInscription(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string numéroTelephone, bool fumeur);
+    bool verifierSaisieInscription(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostal, bool fumeur);
 
     /**
      * @brief Traite l'inscription d'un utilisateur (si l'inscription s'est bien passé, on le renvoie à "ConnexionInterface")
@@ -35,7 +35,7 @@ public:
      * @param numéroTelephone
      * @param fumeur
      */
-    void traiterInscription(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string numéroTelephone, bool fumeur);
+    void traiterInscription(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostal, bool fumeur);
 
 };
 #endif

@@ -1,5 +1,6 @@
 #ifndef __CONNEXIONCONTROLLEUR_HPP__
 #define __CONNEXIONCONTROLLEUR_HPP__
+#include <optional>
 
 #include <string>
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
@@ -19,8 +20,9 @@ public:
     * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.
     * @param email L'adresse e-mail de l'utilisateur.
     * @param motPasse Le mot de passe de l'utilisateur.
+    * @return l'utlisateur si il est present sinon un nulopt
     */
-    bool verifierUtilisateur(std::string email, std::string motPasse);
+    std::optional<Utilisateur> verifierUtilisateur(std::string email, std::string motPasse);
 
     /**
     * @brief Traite la connexion d'un utilisateur (si la connexion s'est bien passé, on le renvoie à "AccueilInterface")

@@ -10,7 +10,6 @@
 class Trajet{
 
 private:
-    static int compteurTrajet;
     int idTrajet;
     int idConducteur;
     std::string date;

@@ -46,7 +46,7 @@ bool Database::execute(const std::string query) {
 void Database::initTables(){
 	std::string createUtilisateurTable = R"(
         CREATE TABLE IF NOT EXISTS utilisateurs (
-            idUtilisateur INTEGER PRIMARY KEY,
+            idUtilisateur INTEGER PRIMARY KEY AUTOINCREMENT,
             nom TEXT,
             prenom TEXT,
             email TEXT,
@@ -58,20 +58,20 @@ void Database::initTables(){
 
     std::string createConducteurTable = R"(
         CREATE TABLE IF NOT EXISTS conducteurs (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             FOREIGN KEY(id) REFERENCES utilisateurs(idUtilisateur) ON DELETE CASCADE
         );
     )";
 
     std::string createPassagerTable = R"(
         CREATE TABLE IF NOT EXISTS passagers (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             FOREIGN KEY(id) REFERENCES utilisateurs(idUtilisateur) ON DELETE CASCADE
         );
     )";
         std::string createTrajetTable = R"(
         CREATE TABLE IF NOT EXISTS trajets (
-            idTrajet INTEGER PRIMARY KEY,
+            idTrajet INTEGER PRIMARY KEY AUTOINCREMENT,
             idConducteur INTEGER,
             date TEXT,
             heureDepart TEXT,
@@ -93,7 +93,7 @@ void Database::initTables(){
     // Création de la table 'SegmentPrix'
     std::string createSegmentsTable = R"(
         CREATE TABLE IF NOT EXISTS segment_prix (
-            idSegment INTEGER PRIMARY KEY,
+            idSegment INTEGER PRIMARY KEY AUTOINCREMENT,
             idTrajet INTEGER,
             segment TEXT,
             prix REAL,
@@ -135,19 +135,19 @@ void Database::initTables(){
 }
 
     bool Database::ajouterUtilisateur(Utilisateur u){
-        std::string sql = "INSERT INTO utilisateurs (idUtilisateur, nom, prenom, email, mdp, adressePostale) VALUES (?, ?, ?, ?, ?, ?)";
+        std::string sql = "INSERT INTO utilisateurs (nom, prenom, email, mdp, adressePostale) VALUES (?, ?, ?, ?, ?)";
         sqlite3_stmt* stmt;
 
         if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
             std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
             return false;
         }
-        sqlite3_bind_int(stmt, 1, u.getIdUtilisateur());
-        sqlite3_bind_text(stmt, 2, u.getNom().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 3, u.getPrenom().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 4, u.getEmail().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 5, u.getMotPasse().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 6, u.getAdressePostale().c_str(), -1, SQLITE_TRANSIENT);
+
+        sqlite3_bind_text(stmt, 1, u.getNom().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, u.getPrenom().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, u.getEmail().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 4, u.getMotPasse().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 5, u.getAdressePostale().c_str(), -1, SQLITE_TRANSIENT);
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             std::cerr << "Erreur exécution insertion : " << sqlite3_errmsg(db) << std::endl;
@@ -284,7 +284,7 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
     }
 
     bool Database::ajouterReservation(Reservation r){
-        std::string sql = "INSERT INTO reservations (prix, statut, idTrajet, idPassager) VALUES (?, ?, ?, ?)";
+        std::string sql = "INSERT INTO reservations ( idTrajet, statut, prix, idPassager) VALUES (?, ?, ?, ?)";
         sqlite3_stmt* stmt;
 
         if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -292,9 +292,9 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
             return false;
         }
 
-        sqlite3_bind_double(stmt, 1, r.getPrix());
+        sqlite3_bind_double(stmt, 1, r.getIdTrajet());
         sqlite3_bind_int(stmt, 2, r.getStatut() ? 1 : 0);
-        sqlite3_bind_int(stmt, 3, r.getIdTrajet());
+        sqlite3_bind_int(stmt, 3, r.getPrix());
         sqlite3_bind_int(stmt, 4, r.getIdPassager());
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
@@ -631,12 +631,14 @@ Reservation Database::getReservationByID(int ID) {
 
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         int idReservation = sqlite3_column_int(stmt, 0);
-        float prix = static_cast<float>(sqlite3_column_double(stmt, 1));
+        int idTrajet = sqlite3_column_int(stmt, 1);
         bool statut = sqlite3_column_int(stmt, 2);
-        int idPassager = sqlite3_column_int(stmt, 3);
-        int idTrajet = sqlite3_column_int(stmt, 4);
+        float prix = static_cast<float>(sqlite3_column_double(stmt, 3));
 
-        Reservation res(prix, statut);
+        int idPassager = sqlite3_column_int(stmt, 4);
+
+
+        Reservation res(idTrajet, statut, prix, idPassager);
         res.setIdReservation(idReservation);
         res.setIdPassager(idPassager);
         res.setIdTrajet(idTrajet);

@@ -24,10 +24,11 @@
 
 int main() {
     Database db("maBase.sqlite");
+
     InscriptionControlleur inscriptionCtrl(db);
 
     try {
-        inscriptionCtrl.traiterInscription("Jean", "Dupont", "jean.dupont@example.com", "secure123", "75001", true);
+        inscriptionCtrl.traiterInscription("farhat", "joelle", "joelle.farhat@gmail.com", "123458", "76800", false);
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
         return 1; // Arrêt propre du programme en cas d’erreur
@@ -35,12 +36,66 @@ int main() {
 
 
     ConnexionControlleur connexionCtrl(db);
-    bool connexionReussie = connexionCtrl.verifierUtilisateur("jean.dupont@example.com", "secure123");
+    auto utilisateurOptionel = connexionCtrl.verifierUtilisateur("joelle.farhat@gmail.com", "123458");
 
-    if (connexionReussie) {
-        std::cout << "Connexion réussie ! Bienvenue Jean Dupont.\n";
+    if (utilisateurOptionel) {
+        std::cout << "Connexion réussie ! Bienvenue.\n";
     } else {
         std::cout << "Échec de la connexion : Email ou mot de passe incorrect.\n";
     }
+
+    /*
+    TrajetControlleur trajetCtrl(db);
+    trajetCtrl.creerTrajet(
+    utilisateurOptionel->getIdUtilisateur(),
+    "2025-06-15",                            // date
+    "08:00",                                 // heureDepart
+    "12:00",                                 // heureArrivee
+    "Paris",                                 // lieuDepart
+    "mans",                                  // lieuArrivee
+    {                                        // segmentsPrix
+        {"Paris-Orléans", 15.0},
+        {"Orléans-mans", 25.0}
+    },
+    {"Orléans"},                             // villesEtapes
+    true,                                    // disponible
+    false,                                   // allerRetour
+    true,                                    // animaux
+    "Renault Clio - Bleu",                   // voiture
+    1,                                       // nombrePlaceDispo
+    true,                                    // etat
+    123,                                  // emissionCO2
+    "Trajet pas agreable avec pause à Orléans"   // description
+);
+
+*/
+    TrajetControlleur trajetCtrl(db);
+    trajetCtrl.reservation(1, 15,   utilisateurOptionel->getIdUtilisateur(), true);
+
+/*
+    TrajetControlleur trajetCtrl(db);
+    std::vector<Trajet> trajets = trajetCtrl.obtenirTrajets("Paris", "mans", "2025-06-15" );
+
+
+    if (trajets.empty()) {
+        std::cout << "Aucun trajet trouvé.\n";
+
+    }
+
+    for ( auto& trajet : trajets) {
+        std::cout << "---------------------------\n";
+        std::cout << "ID Trajet: " << trajet.getIdTrajet() << "\n";
+        std::cout << "Date: " << trajet.getDate() << "\n";
+        std::cout << "Heure départ: " << trajet.getHeureDepart() << "\n";
+        std::cout << "Heure arrivée: " << trajet.getHeureArrive() << "\n";
+        std::cout << "Lieu départ: " << trajet.getLieuDepart() << "\n";
+        std::cout << "Lieu arrivée: " << trajet.getLieuArrive() << "\n";
+        std::cout << "Voiture: " << trajet.getVoiture() << "\n";
+        std::cout << "Places dispo: " << trajet.getNombrePlaceDispo() << "\n";
+        std::cout << "CO2: " << trajet.getEmissionCO2() << " g/km\n";
+        std::cout << "Description: " << trajet.getDescription() << "\n";
+    }
+    std::cout << "---------------------------\n";
+*/
     return 0;
 }

@@ -16,7 +16,7 @@ class Utilisateur{
         std::string motPasse;
         std::string adressePostale;
         bool fumeur;
-        static int compteurUtilisateur;
+
 
 
 

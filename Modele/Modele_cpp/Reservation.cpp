@@ -1,10 +1,10 @@
 #include "../Modele_hpp/Reservation.hpp"
 
-int Reservation::compteurReservation = 0;
 
-Reservation::Reservation(float prix, bool statut)
-        : prix(prix), idReservation(compteurReservation++),
-          statut(statut), idPassager(0), idTrajet(0) {}
+
+Reservation::Reservation(int idTrajet, bool statut,float prix, int idPassager)
+        : prix(prix),
+          statut(statut), idPassager(idPassager), idTrajet(idTrajet) {}
 
 float Reservation::getPrix() {
     return prix;
