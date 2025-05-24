@@ -14,13 +14,17 @@ public:
      * @param nom Le nom de l'utilisateur.
      * @param prenom Le prénom de l'utilisateur.
      * @param email L'adresse email de l'utilisateur.
-     * @param telephone Le numéro de téléphone de l'utilisateur.
-     * @param motDePasse Le mot de passe de l'utilisateur.
+     * @param motPasse Le mot de passe de l'utilisateur.
+     * @param adressePostale L'adresse postale de l'utilisateur.
+     * @param fumeur Indique si l'utilisateur est fumeur.
      * @return bool Retourne true si l'inscription réussit, false sinon.
      */
-    virtual bool sInscrire(const std::string& nom, const std::string& prenom,
-                             const std::string& email, const std::string& telephone,
-                             const std::string& motDePasse) = 0;
+    virtual bool sInscrire(const std::string& nom,
+                           const std::string& prenom,
+                           const std::string& email,
+                           const std::string& motPasse,
+                           const std::string& adressePostale,
+                           bool fumeur) = 0;
 
     virtual ~InscriptionInterface() = default;
 };

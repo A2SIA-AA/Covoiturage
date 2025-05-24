@@ -11,9 +11,12 @@
 
 class InscriptionConsole : public InscriptionInterface {
 public:
-    bool sInscrire(const std::string& nom, const std::string& prenom,
-                   const std::string& email, const std::string& telephone,
-                   const std::string& motDePasse) override;
+    bool sInscrire(const std::string& nom,
+                   const std::string& prenom,
+                   const std::string& email,
+                   const std::string& motPasse,
+                   const std::string& adressePostale,
+                   bool fumeur) override;
 };
 
 #endif //INSCRIPTIONCONSOLE_HPP

@@ -2,11 +2,8 @@
 
 #include "ConnexionControlleur.hpp" // Inclure le contrôleur
 #include <iostream>
+#include <optional>
 
-/**
- * @brief Affiche l'interface de connexion console, demande à l'utilisateur son email et son mot de passe,
- *        puis délègue la vérification au contrôleur.
- */
 bool ConnexionConsole::seConnecter(const std::string& /*email*/, const std::string& /*motDePasse*/) {
     std::string email, motDePasse;
 
@@ -17,11 +14,17 @@ bool ConnexionConsole::seConnecter(const std::string& /*email*/, const std::stri
     std::cout << "Mot de passe : ";
     std::getline(std::cin, motDePasse);
 
-    // Création du contrôleur
+    // Création du contrôleur (attention : il faut que la classe ait un constructeur par défaut)
     ConnexionControlleur controlleur;
 
     // Appel du contrôleur pour vérifier l'utilisateur
-    bool resultat = controlleur.verifierUtilisateur(email, motDePasse);
+    std::optional<Utilisateur> utilisateur = controlleur.verifierUtilisateur(email, motDePasse);
 
-    return resultat;
+    if (utilisateur) {
+        std::cout << "Connexion réussie !" << std::endl;
+        return true;
+    } else {
+        std::cout << "Connexion échouée : email ou mot de passe incorrect." << std::endl;
+        return false;
+    }
 }
