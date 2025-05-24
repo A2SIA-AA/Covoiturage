@@ -385,100 +385,155 @@ Trajet Database::getTrajetByIdTrajet(int idTrajet) {
 }
 
 
-std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee, std::string date) {
-    std::vector<Trajet> resultats;
-    std::string sql = R"(
-        SELECT idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description
-        FROM trajets WHERE lieuDepart = ? AND lieuArrivee = ? AND date = ?)";
-
-    sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
-        throw std::runtime_error("Erreur base de données");
-    }
-    sqlite3_bind_text(stmt, 1, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_TRANSIENT);
-
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        int idTrajet = sqlite3_column_int(stmt, 0);
-        std::string date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        std::string heureDepart = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        std::string heureArrivee = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        std::string lieuDepart = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        std::string lieuArrivee = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-        bool disponible = sqlite3_column_int(stmt, 6);
-        bool allerRetour = sqlite3_column_int(stmt, 7);
-        bool animaux = sqlite3_column_int(stmt, 8);
-        std::string voiture = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
-        int nombrePlaceDispo = sqlite3_column_int(stmt, 10);
-        bool etat = sqlite3_column_int(stmt, 11);
-        float emissionCO2 = static_cast<float>(sqlite3_column_double(stmt, 12));
-        std::string description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 13));
-
-        // SegmentsPrix
-        std::vector<std::pair<std::string, float>> segmentsPrix;
-        {
-            std::string sqlSeg = "SELECT segment, prix FROM segment_prix WHERE idTrajet = ?";
-            sqlite3_stmt* stmtSeg;
-            if (sqlite3_prepare_v2(db, sqlSeg.c_str(), -1, &stmtSeg, nullptr) == SQLITE_OK) {
-                sqlite3_bind_int(stmtSeg, 1, idTrajet);
-                while (sqlite3_step(stmtSeg) == SQLITE_ROW) {
-                    std::string segment = reinterpret_cast<const char*>(sqlite3_column_text(stmtSeg, 0));
-                    float prix = static_cast<float>(sqlite3_column_double(stmtSeg, 1));
-                    segmentsPrix.emplace_back(segment, prix);
-                }
-            }
-            sqlite3_finalize(stmtSeg);
-        }
-        // VillesEtapes
-        std::vector<std::string> villesEtapes;
-        {
-            std::string sqlEtape = "SELECT ville FROM ville_etape WHERE idTrajet = ?";
-            sqlite3_stmt* stmtEtape;
-            if (sqlite3_prepare_v2(db, sqlEtape.c_str(), -1, &stmtEtape, nullptr) == SQLITE_OK) {
-                sqlite3_bind_int(stmtEtape, 1, idTrajet);
-                while (sqlite3_step(stmtEtape) == SQLITE_ROW) {
-                    std::string ville = reinterpret_cast<const char*>(sqlite3_column_text(stmtEtape, 0));
-                    villesEtapes.push_back(ville);
-                }
-            }
-            sqlite3_finalize(stmtEtape);
-        }
-        Trajet trajet(
-                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
-                segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
-                voiture, nombrePlaceDispo, etat, emissionCO2, description
-        );
-        trajet.setIdTrajet(idTrajet);
-        resultats.push_back(trajet);
-    }
-    sqlite3_finalize(stmt);
-    return resultats;
-}
-
-
-std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
-        std::string villeDepart, std::string villeArrivee, std::string date, int prix)
+std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepart(
+        const std::string& villeDepart, const std::string& villeArrivee, const std::string& date)
 {
     std::vector<Trajet> resultats;
-    // les prix sont stockes dans segment_prix donc on a besoin de faire une jointure pour recuperer les prix
-    std::string sql =
-            "SELECT idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, "
-            "disponible, allerRetour, animaux, voiture, nombrePlaceDispo, "
-            "etat, emissionCO2, description "
-            "FROM trajets "
-            "JOIN segment_prix ON trajets.idTrajet = segment_prix.idTrajet "
-            "WHERE lieuDepart = ? AND lieuArrivee = ? AND date = ? AND segment_prix.prix = ?";
+    std::string sql = R"(
+        SELECT DISTINCT t.idTrajet, t.date, t.heureDepart, t.heureArrivee, t.lieuDepart, t.lieuArrivee,
+               t.disponible, t.allerRetour, t.animaux, t.voiture, t.nombrePlaceDispo,
+               t.etat, t.emissionCO2, t.description
+        FROM trajets t
+        LEFT JOIN ville_etape vd ON t.idTrajet = vd.idTrajet
+        LEFT JOIN ville_etape va ON t.idTrajet = va.idTrajet
+        WHERE (t.lieuDepart = ? OR vd.ville = ?)
+          AND (t.lieuArrivee = ? OR va.ville = ?)
+          AND t.date = ?
+    )";
+
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
         throw std::runtime_error("Erreur base de données");
     }
     sqlite3_bind_text(stmt, 1, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_double(stmt, 4, prix);
+    sqlite3_bind_text(stmt, 2, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, date.c_str(), -1, SQLITE_TRANSIENT);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int idTrajet = sqlite3_column_int(stmt, 0);
+        std::string date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        std::string heureDepart = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        std::string heureArrivee = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        std::string lieuDepart = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        std::string lieuArrivee = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        bool disponible = sqlite3_column_int(stmt, 6);
+        bool allerRetour = sqlite3_column_int(stmt, 7);
+        bool animaux = sqlite3_column_int(stmt, 8);
+        std::string voiture = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
+        int nombrePlaceDispo = sqlite3_column_int(stmt, 10);
+        bool etat = sqlite3_column_int(stmt, 11);
+        float emissionCO2 = static_cast<float>(sqlite3_column_double(stmt, 12));
+        std::string description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 13));
+
+        // SegmentsPrix
+        std::vector<std::pair<std::string, float>> segmentsPrix;
+        {
+            std::string sqlSeg = "SELECT segment, prix FROM segment_prix WHERE idTrajet = ?";
+            sqlite3_stmt* stmtSeg;
+            if (sqlite3_prepare_v2(db, sqlSeg.c_str(), -1, &stmtSeg, nullptr) == SQLITE_OK) {
+                sqlite3_bind_int(stmtSeg, 1, idTrajet);
+                while (sqlite3_step(stmtSeg) == SQLITE_ROW) {
+                    std::string segment = reinterpret_cast<const char*>(sqlite3_column_text(stmtSeg, 0));
+                    float prix = static_cast<float>(sqlite3_column_double(stmtSeg, 1));
+                    segmentsPrix.emplace_back(segment, prix);
+                }
+            }
+            sqlite3_finalize(stmtSeg);
+        }
+        // VillesEtapes
+        std::vector<std::string> villesEtapes;
+        {
+            std::string sqlEtape = "SELECT ville FROM ville_etape WHERE idTrajet = ?";
+            sqlite3_stmt* stmtEtape;
+            if (sqlite3_prepare_v2(db, sqlEtape.c_str(), -1, &stmtEtape, nullptr) == SQLITE_OK) {
+                sqlite3_bind_int(stmtEtape, 1, idTrajet);
+                while (sqlite3_step(stmtEtape) == SQLITE_ROW) {
+                    std::string ville = reinterpret_cast<const char*>(sqlite3_column_text(stmtEtape, 0));
+                    villesEtapes.push_back(ville);
+                }
+            }
+            sqlite3_finalize(stmtEtape);
+        }
+
+        // ============== NOUVEAU : GÉNÉRATION DES SOUS-TRAJETS ==============
+        // 1. On crée le trajet principal (départ principal → arrivée principale)
+        Trajet trajetPrincipal(
+                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
+                segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
+                voiture, nombrePlaceDispo, etat, emissionCO2, description
+        );
+        trajetPrincipal.setIdTrajet(idTrajet);
+
+        // 2. On cherche si la ville de départ ou d'arrivée est une étape intermédiaire
+        // et si le segment villeDepart-villeArrivee existe dans les segmentsPrix
+        std::string segmentDemande = villeDepart + "-" + villeArrivee;
+        for (const auto& seg : segmentsPrix) {
+            if (seg.first == segmentDemande) {
+                // On crée un sous-trajet pour ce segment
+                Trajet sousTrajet(
+                        date, heureDepart, "", // heureArrivee vide ou à calculer
+                        villeDepart,
+                        villeArrivee,
+                        {seg}, // segments prix du sous-trajet
+                        {}, //vide
+                        disponible,
+                        allerRetour,
+                        animaux,
+                        voiture,
+                        nombrePlaceDispo,
+                        etat,
+                        seg.second,
+                        description
+                );
+                sousTrajet.setIdTrajet(idTrajet);
+                resultats.push_back(sousTrajet);
+            }
+        }
+
+        // 3. Si le segment n'est pas trouvé mais que les villes correspondent au trajet principal, on ajoute le trajet principal
+        // (ex : l'utilisateur cherche le trajet complet)
+        if (lieuDepart == villeDepart && lieuArrivee == villeArrivee) {
+            resultats.push_back(trajetPrincipal);
+        }
+    }
+    sqlite3_finalize(stmt);
+    return resultats;
+}
+
+
+
+
+std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(const std::string villeDepart, const std::string villeArrivee, const std::string date, const int prix)
+{
+        std::vector<Trajet> resultats;
+        std::string sql = R"(
+        SELECT DISTINCT t.idTrajet, t.date, t.heureDepart, t.heureArrivee, t.lieuDepart, t.lieuArrivee,
+               t.disponible, t.allerRetour, t.animaux, t.voiture, t.nombrePlaceDispo,
+               t.etat, t.emissionCO2, t.description
+        FROM trajets t
+        JOIN segment_prix sp ON t.idTrajet = sp.idTrajet
+        LEFT JOIN ville_etape vd ON t.idTrajet = vd.idTrajet
+        LEFT JOIN ville_etape va ON t.idTrajet = va.idTrajet
+        WHERE (t.lieuDepart = ? OR vd.ville = ?)
+          AND (t.lieuArrivee = ? OR va.ville = ?)
+          AND t.date = ?
+          AND sp.prix = ?
+    )";
+
+        sqlite3_stmt* stmt;
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+            std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+            throw std::runtime_error("Erreur base de données");
+        }
+        sqlite3_bind_text(stmt, 1, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 4, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 5, date.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_double(stmt, 6, prix);
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int idTrajet = sqlite3_column_int(stmt, 0);
@@ -538,22 +593,32 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
 }
 
 
-
-std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee, std::string date, float emissionCO2) {
+std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(const std::string villeDepart, const std::string villeArrivee, const std::string date, const float emissionCO2) {
     std::vector<Trajet> resultats;
     std::string sql = R"(
-        SELECT idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description
-        FROM trajets WHERE lieuDepart = ? AND lieuArrivee = ? AND date = ? AND emissionCO2 = ?)";
-    sqlite3_stmt* stmt;
+        SELECT DISTINCT t.idTrajet, t.date, t.heureDepart, t.heureArrivee, t.lieuDepart, t.lieuArrivee,
+               t.disponible, t.allerRetour, t.animaux, t.voiture, t.nombrePlaceDispo,
+               t.etat, t.emissionCO2, t.description
+        FROM trajets t
+        LEFT JOIN ville_etape vd ON t.idTrajet = vd.idTrajet
+        LEFT JOIN ville_etape va ON t.idTrajet = va.idTrajet
+        WHERE (t.lieuDepart = ? OR vd.ville = ?)
+          AND (t.lieuArrivee = ? OR va.ville = ?)
+          AND t.date = ?
+          AND t.emissionCO2 = ?
+    )";
 
+    sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
         throw std::runtime_error("Erreur base de données");
     }
     sqlite3_bind_text(stmt, 1, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_double(stmt, 4, emissionCO2);
+    sqlite3_bind_text(stmt, 2, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt, 6, emissionCO2);
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int idTrajet = sqlite3_column_int(stmt, 0);
@@ -612,7 +677,48 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::
     return resultats;
 }
 
+bool Database::verifierPrix(int idTrajet, float prix, const std::string& villeDepart, const std::string& villeArrivee) {
+    std::string sql = R"(
+        SELECT sp.prix
+        FROM trajets t
+        LEFT JOIN ville_etape ve_dep
+            ON t.idTrajet = ve_dep.idTrajet
+            AND (ve_dep.ville = ? OR t.lieuDepart = ?)
+        LEFT JOIN ville_etape ve_arr
+            ON t.idTrajet = ve_arr.idTrajet
+            AND (ve_arr.ville = ? OR t.lieuArrivee = ?)
+        INNER JOIN segment_prix sp
+            ON t.idTrajet = sp.idTrajet
+            AND sp.segment = ve_dep.ville || '-' || ve_arr.ville
+        WHERE t.idTrajet = ?
+    )";
 
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw std::runtime_error("Erreur de préparation de la requête");
+    }
+
+    sqlite3_bind_text(stmt, 1, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, villeDepart.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, villeArrivee.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 5, idTrajet);
+
+    bool prixCorrect = false;
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        float prixBase = static_cast<float>(sqlite3_column_double(stmt, 0));
+        prixCorrect = (std::abs(prix - prixBase) < 0.01); // Tolérance pour les erreurs d'arrondi
+    }
+
+    sqlite3_finalize(stmt);
+
+    if (!prixCorrect) {
+        throw std::invalid_argument("Prix incorrect ou segment invalide pour le trajet " + std::to_string(idTrajet));
+    }
+
+    return prixCorrect;
+}
 
 Reservation Database::getReservationByID(int ID) {
     std::string sql = R"(

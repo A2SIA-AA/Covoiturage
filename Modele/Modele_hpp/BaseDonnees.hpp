@@ -66,6 +66,13 @@ public:
      * @return Objet Utilisateur correspondant.
      */
     Utilisateur getUtilisateurByEmailAndMDP(std::string email, std::string mdp);
+
+    /**
+     * Cette methode permet me modifier les informations d'un utilisateur dans la table quand il modifie son compte
+     * @param u
+     */
+    void modifierUtilisateur(Utilisateur u);
+
 /**
  * Ajouter un trajet dans la base de donnees
  * @param t un trajet a rajouter
@@ -90,8 +97,7 @@ public:
  * @param date La date de depart du trajet
  * @return L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepart(std::string villeDepart, std::string villeArrivee,std::string date);
-
+    std::vector<Trajet>getTrajetByVilleDepartEtArriveeEtDateDepart(const std::string& villeDepart, const std::string& villeArrivee, const std::string& date);
 /**
  * Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
  * @param villeDepart
@@ -100,7 +106,7 @@ public:
  * @param prix
  * @return  L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(std::string villeDepart, std::string villeArrivee,std::string date, int prix);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(const std::string villeDepart, const std::string villeArrivee, const std::string date, const int prix);
 
 /**
  * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
@@ -110,7 +116,7 @@ public:
  * @param emissionCO2
  * @return  L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtEmissionCO2(std::string villeDepart, std::string villeArrivee,std::string date, float emissionCO2);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtEmissionCO2(const std::string villeDepart, const std::string villeArrivee,const std::string date, const float emissionCO2);
 
     /**
      * Obtenir un trajet par son ID
@@ -234,5 +240,14 @@ public:
 
     Utilisateur getUtilisateurByID(int idUtilisateur);
 
+
+/**
+ * Cette methode permet de verifier que le prix du trajet reservé rentré par le passager est correcte et correspond bien au trajet qu'il a choisit
+ * @param idTrajet id du trajet à reserver
+ * @param prix prix rentré par le passager
+ * @param villeDepart ville de depart du trajet voulu
+ * @param villeArrivee ville d'arrivée du trajet voulu
+ */
+    bool verifierPrix(int idTrajet, float prix, const std::string& villeDepart, const std::string& villeArrivee);
 };
 #endif

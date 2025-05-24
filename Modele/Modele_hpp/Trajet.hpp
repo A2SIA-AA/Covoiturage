@@ -27,6 +27,7 @@ private:
     bool etat;
     float emissionCO2;
     std::string description;
+    float prixTotal;
 
 public:
     Trajet(std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee, std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes, bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo, bool etat, float emissionCO2, std::string description);
@@ -47,6 +48,7 @@ public:
     void setDescription(std::string description);
     void setSegmentsPrix(std::vector<std::pair<std::string, float>> segmentsPrix);
     void setVillesEtapes(std::vector<std::string> villesEtapes);
+    void setPrixTotal(float prix);
 
     int getIdTrajet();
     int getIdConducteur();
@@ -65,6 +67,7 @@ public:
     std::string getDescription();
     std::vector<std::pair<std::string, float>> getSegmentsPrix();
     std::vector<std::string> getVillesEtapes();
+    float getPrixTotal();
 
 };
 
