@@ -4,6 +4,10 @@
 #include <iostream>
 #include "../../Modele/Modele_hpp/Utilisateur.hpp"
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp"
+
+InscriptionControlleur::InscriptionControlleur(): baseDeDonnees() {}
+
 
 bool InscriptionControlleur::verifierSaisieInscription(
     std::string nom,
@@ -40,18 +44,18 @@ void InscriptionControlleur::traiterInscription(
     std::string prenom,
     std::string email,
     std::string motPasse,
-    std::string adressePostal,
+    std::string telephone,
     bool fumeur) {
-    if (!verifierSaisieInscription(nom, prenom, email, motPasse, adressePostal, fumeur)) {
+    if (!verifierSaisieInscription(nom, prenom, email, motPasse, telephone, fumeur)) {
         throw std::runtime_error("Erreur lors de l'inscription : données invalides.");
     }
 
-    Utilisateur utilisateur(nom, prenom, email, motPasse, adressePostal, fumeur);
+    Utilisateur utilisateur(nom, prenom, email, motPasse, telephone, fumeur);
 
     if (!baseDeDonnees.ajouterUtilisateur(utilisateur)) {
         throw std::runtime_error("Erreur : impossible d'ajouter l'utilisateur en base.");
     }
     std::cout << "Inscription réussie ! Vous pouvez désormais vous connecter." << std::endl;
-    //ConnexionInterface vue;
-    //vue.afficher();
+    //InscriptionConsole vue;
+    //vue.sInscrire(nom, prenom, email,telephone, motPasse);
 }

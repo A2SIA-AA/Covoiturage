@@ -4,6 +4,9 @@
 #include <utility>
 #include "../Controlleur_hpp/TrajetControlleur.hpp"
 
+TrajetControlleur::TrajetControlleur(): baseDeDonnees(){}
+
+
 bool TrajetControlleur::verifierSaisieTrajet(
     int idTrajet,
     std::string date,

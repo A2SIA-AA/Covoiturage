@@ -5,6 +5,9 @@
 #include <regex>
 #include <algorithm>
 
+ModifierProfilControlleur::ModifierProfilControlleur(): baseDeDonnees() {}
+
+
 void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::string modification) {
     const std::vector<std::string> champsValides = {
         "nom", "prenom", "email", "motPasse", "adressePostal", "fumeur"

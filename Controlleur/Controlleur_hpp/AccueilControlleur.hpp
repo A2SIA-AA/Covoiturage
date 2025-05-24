@@ -4,6 +4,9 @@
 class AccueilControlleur
 {
 public:
+
+    AccueilControlleur();
+
     /**
     * @brief Redirige l'utilisateur vers "ModifierProfilInterface"
     */

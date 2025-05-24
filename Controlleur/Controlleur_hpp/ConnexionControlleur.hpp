@@ -15,6 +15,9 @@ private:
     Database& baseDeDonnees;
 
 public:
+
+    ConnexionControlleur();
+
     ConnexionControlleur(Database& db) : baseDeDonnees(db) {}
     /**
     * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.

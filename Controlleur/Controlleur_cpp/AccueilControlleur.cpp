@@ -1,12 +1,15 @@
 #include "AccueilControlleur.hpp"
-#include "../../Interface/Interface_hpp/ModifierProfilInterface.hpp"
+#include "../../Interface/Interface_hpp/Console_hpp/AccueilConsole.hpp"
 #include "../../Interface/Interface_hpp/RechercheInterface.hpp"
 #include "../../Interface/Interface_hpp/MesReservationsInterface.hpp"
 #include "../../Interface/Interface_hpp/MesAnnoncesInterface.hpp"
 
+AccueilControlleur::AccueilControlleur(){}
+
+
 void AccueilControlleur::TraiterModifierProfil() {
-    ModifierProfilInterface vue;
-    vue.afficher();
+    AccueilConsole vue;
+    vue.accueil();
 }
 
 void AccueilControlleur::TraiterRecherche() {

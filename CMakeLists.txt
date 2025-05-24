@@ -45,14 +45,14 @@ set(SOURCES
         Tests/Test_interface/TestConnexionInterface.cpp
         Tests/Test_interface/TestInscriptionInterface.cpp
         Tests/Test_modele/Test_BDD.cpp
-        Interface/Interface_hpp/AccueilConsole.hpp
-        Interface/Interface_hpp/ConnexionConsole.hpp
-        Interface/Interface_hpp/InscriptionConsole.hpp
-        Interface/Interface_hpp/MesAnnoncesConsole.hpp
-        Interface/Interface_hpp/MesReservationsConsole.hpp
-        Interface/Interface_hpp/ModifierProfilConsole.hpp
-        Interface/Interface_hpp/RechercheConsole.hpp
-        Interface/Interface_hpp/TrajetConsole.hpp
+        Interface/Interface_hpp/Console_hpp/AccueilConsole.hpp
+        Interface/Interface_hpp/Console_hpp/ConnexionConsole.hpp
+        Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp
+        Interface/Interface_hpp/Console_hpp/MesAnnoncesConsole.hpp
+        Interface/Interface_hpp/Console_hpp/MesReservationsConsole.hpp
+        Interface/Interface_hpp/Console_hpp/ModifierProfilConsole.hpp
+        Interface/Interface_hpp/Console_hpp/RechercheConsole.hpp
+        Interface/Interface_hpp/Console_hpp/TrajetConsole.hpp
 )
 
 add_executable(Covoiturage ${SOURCES})

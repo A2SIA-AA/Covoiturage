@@ -19,6 +19,10 @@ private:
 
 
 public:
+
+    TrajetControlleur();
+
+
     TrajetControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * @brief Vérifie que toutes les informations du trajet sont valides.

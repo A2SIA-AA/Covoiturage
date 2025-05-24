@@ -19,6 +19,9 @@ private:
     Database& baseDeDonnees;
 
 public:
+
+    ModifierProfilControlleur();
+
     ModifierProfilControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * @brief Modifie le profil de l'utilisateur.

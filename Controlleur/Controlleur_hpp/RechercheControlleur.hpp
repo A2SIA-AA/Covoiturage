@@ -11,6 +11,9 @@
 class RechercheControlleur {
 
 public:
+
+    RechercheControlleur();
+
     /**
      * Permet de récuperer tout les trajet des covoiturages et les affiche
      * @param villeDepart
