@@ -106,7 +106,11 @@ public:
  * @param prix
  * @return  L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(const std::string villeDepart, const std::string villeArrivee, const std::string date, const int prix);
+    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
+            const std::string& villeDepart,
+            const std::string& villeArrivee,
+            const std::string& date,
+            int prix);
 
 /**
  * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
