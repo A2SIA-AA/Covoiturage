@@ -14,13 +14,17 @@ public:
      * @param nom Nouveau nom de l'utilisateur.
      * @param prenom Nouveau prénom de l'utilisateur.
      * @param email Nouvel email de l'utilisateur.
-     * @param telephone Nouveau numéro de téléphone de l'utilisateur.
+     * @param motPasse Le mot de passe de l'utilisateur.
+     * @param adressePostale L'adresse postale de l'utilisateur.
+     * @param fumeur Indique si l'utilisateur est fumeur.
      * @return true si la modification a réussi, false sinon.
      */
     virtual bool modifierCoordonnees(const std::string& nom,
-                                     const std::string& prenom,
-                                     const std::string& email,
-                                     const std::string& telephone) = 0;
+                           const std::string& prenom,
+                           const std::string& email,
+                           const std::string& motPasse,
+                           const std::string& adressePostale,
+                           bool fumeur) = 0;
 
     virtual ~ModifierProfilInterface() = default;
 };

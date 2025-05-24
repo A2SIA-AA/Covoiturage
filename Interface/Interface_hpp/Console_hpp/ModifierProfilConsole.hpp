@@ -12,9 +12,11 @@
 class ModifierProfilConsole : public ModifierProfilInterface {
 public:
     bool modifierCoordonnees(const std::string& nom,
-                             const std::string& prenom,
-                             const std::string& email,
-                             const std::string& telephone) override;
+                           const std::string& prenom,
+                           const std::string& email,
+                           const std::string& motPasse,
+                           const std::string& adressePostale,
+                           bool fumeur) override;
 };
 
 #endif //MODIFIERPROFILCONSOLE_HPP

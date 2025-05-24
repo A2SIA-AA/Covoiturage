@@ -18,7 +18,7 @@ private:
     /**
     * @brief Affiche un message pour permettre à l'utilisateur de retourner à l'accueil.
     */
-    virtual void afficherMenuPrincipal() = 0;
+    virtual void afficherMenuPrincipal() const = 0;
 
 public:
     /**

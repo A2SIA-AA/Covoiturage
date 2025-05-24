@@ -12,7 +12,7 @@
 
 class RechercheConsole : public RechercheInterface {
 private:
-    void afficherMenuPrincipal() override;
+    void afficherMenuPrincipal() const override;
 
 public:
     std::tuple<std::string, std::string, std::string> rechercher() const override;

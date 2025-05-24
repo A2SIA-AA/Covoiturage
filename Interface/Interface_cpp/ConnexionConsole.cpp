@@ -1,6 +1,6 @@
 #include "Interface_hpp/Console_hpp/ConnexionConsole.hpp"
 
-#include "ConnexionControlleur.hpp" // Inclure le contrôleur
+#include "../Controlleur_hpp/ConnexionControlleur.hpp" // Inclure le contrôleur
 #include <iostream>
 #include <optional>
 
