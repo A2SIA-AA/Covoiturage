@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
+#include <cmath>
 #include "../Modele_hpp/BaseDonnees.hpp"
 
 /**
@@ -199,7 +200,7 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
 
 
 void Database::modifierUtilisateur(Utilisateur u) {
-    const char* sql = "UPDATE Utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE id = ?;";
+    const char* sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE id = ?;";
 
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
@@ -212,6 +213,8 @@ void Database::modifierUtilisateur(Utilisateur u) {
     sqlite3_bind_text(stmt, 2, u.getPrenom().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, u.getEmail().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, u.getMotPasse().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, u.getAdressePostale().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 6, u.getFumeur() ? 1 : 0);
     sqlite3_bind_int(stmt, 5, u.getIdUtilisateur());
 
     rc = sqlite3_step(stmt);
@@ -225,12 +228,6 @@ void Database::modifierUtilisateur(Utilisateur u) {
 
     std::cout << "Utilisateur modifié avec succès (id=" << u.getIdUtilisateur() << ")" << std::endl;
 }
-
-
-
-
-
-
 
 
     bool Database::ajouterTrajet(Trajet t, int idConducteur){
@@ -658,7 +655,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
         // Si le segment demandé n'est pas trouvé dans les segments mais que le trajet principal correspond aux villes et prix demandés,
         // on ajoute le trajet principal complet
         if (lieuDepart == villeDepart && lieuArrivee == villeArrivee) {
-            if (std::abs(trajetPrincipal.getPrixTotal() - prix) < 0.01f) { // Comparaison précise des floats
+            if (std::fabs(trajetPrincipal.getPrixTotal() - prix) < 0.01f) { // Comparaison précise des floats
                 resultats.push_back(trajetPrincipal);
             }
         }
@@ -824,7 +821,7 @@ bool Database::verifierPrix(int idTrajet, float prix, const std::string& villeDe
 
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         float prixBase = static_cast<float>(sqlite3_column_double(stmt, 0));
-        prixCorrect = (std::abs(prix - prixBase) < 0.01); // Tolérance pour les erreurs d'arrondi
+        prixCorrect = (std::fabs(prix - prixBase) < 0.01); // Tolérance pour les erreurs d'arrondi
     }
 
     sqlite3_finalize(stmt);
