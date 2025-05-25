@@ -15,7 +15,8 @@ bool ConnexionConsole::seConnecter(const std::string& /*email*/, const std::stri
     std::getline(std::cin, motDePasse);
 
     // Création du contrôleur (attention : il faut que la classe ait un constructeur par défaut)
-    ConnexionControlleur controlleur;
+    Database db("maBase.sqlite");
+    ConnexionControlleur controlleur(db);
 
     // Appel du contrôleur pour vérifier l'utilisateur
     std::optional<Utilisateur> utilisateur = controlleur.verifierUtilisateur(email, motDePasse);

@@ -49,7 +49,9 @@ bool ModifierProfilConsole::modifierCoordonnees(
     std::getline(std::cin, nouvelleValeur);
 
     // 5. Appeler le contrôleur
-    ModifierProfilControlleur controlleur;
+    Database db("maBase.sqlite");
+    ModifierProfilControlleur controlleur(db);
+
     controlleur.ModifierProfil(idUtilisateur, champ, nouvelleValeur);
 
     std::cout << "Modification effectuée !" << std::endl;
