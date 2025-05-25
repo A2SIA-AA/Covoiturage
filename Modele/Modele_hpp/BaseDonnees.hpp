@@ -70,8 +70,9 @@ public:
     /**
      * Cette methode permet me modifier les informations d'un utilisateur dans la table quand il modifie son compte
      * @param u
+     * @return vrai si la modification a reussi et faux sinon
      */
-    void modifierUtilisateur(Utilisateur u);
+    bool modifierUtilisateur(Utilisateur u);
 
 /**
  * Ajouter un trajet dans la base de donnees

@@ -199,14 +199,17 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
 
 
 
-void Database::modifierUtilisateur(Utilisateur u) {
-    const char* sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE idUtilisateur = ?;";
+bool Database::modifierUtilisateur(Utilisateur u) {
+    std::string sql = R"(
+        UPDATE utilisateurs
+        SET nom = ?, prenom = ?, email = ?, mdp = ?, adressePostale = ?, fumeur = ?
+        WHERE idUtilisateur = ?;)";
 
     sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Erreur lors de la préparation de la requête: " << sqlite3_errmsg(db) << std::endl;
-        throw std::runtime_error("Erreur préparation requête modifierUtilisateur");
+
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation modification utilisateur : " << sqlite3_errmsg(db) << std::endl;
+        return false;
     }
 
     sqlite3_bind_text(stmt, 1, u.getNom().c_str(), -1, SQLITE_TRANSIENT);
@@ -215,19 +218,18 @@ void Database::modifierUtilisateur(Utilisateur u) {
     sqlite3_bind_text(stmt, 4, u.getMotPasse().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 5, u.getAdressePostale().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 6, u.getFumeur() ? 1 : 0);
-    sqlite3_bind_int(stmt, 5, u.getIdUtilisateur());
+    sqlite3_bind_int(stmt, 7, u.getIdUtilisateur());
 
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Erreur lors de l'exécution de la requête: " << sqlite3_errmsg(db) << std::endl;
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cerr << "Erreur mise à jour utilisateur : " << sqlite3_errmsg(db) << std::endl;
         sqlite3_finalize(stmt);
-        throw std::runtime_error("Erreur execution requete modifierUtilisateur");
+        return false;
     }
 
     sqlite3_finalize(stmt);
-
-    std::cout << "Utilisateur modifié avec succès (id=" << u.getIdUtilisateur() << ")" << std::endl;
+    return true;
 }
+
 
 
     bool Database::ajouterTrajet(Trajet t, int idConducteur){
@@ -1175,7 +1177,7 @@ void Database::supprimerReservationByIDReservation(int idReservation) {
     }
     sqlite3_finalize(stmtUpdate);
 
-    std::cout << "Trajet " << idTrajet << " : nombrePlaceDispo = " << nbPlaceDispo << ", etat = " << etat << std::endl;
+    //std::cout << "Trajet " << idTrajet << " : nombrePlaceDispo = " << nbPlaceDispo << ", etat = " << etat << std::endl;
 }
 
 
