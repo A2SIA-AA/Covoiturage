@@ -200,7 +200,7 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
 
 
 void Database::modifierUtilisateur(Utilisateur u) {
-    const char* sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE id = ?;";
+    const char* sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE idUtilisateur = ?;";
 
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
@@ -952,7 +952,7 @@ std::string Database::getVilleDepartByIdTrajet(int IDTrajet) {
 }
 
 Utilisateur Database::getUtilisateurByID(int idUtilisateur) {
-    std::string sql = R"(SELECT idUtilisateur, nom, prenom, email, mdp, adressePostale, fumeur FROM utilisateurs WHERE id = ?)";
+    std::string sql = R"(SELECT idUtilisateur, nom, prenom, email, mdp, adressePostale, fumeur FROM utilisateurs WHERE idUtilisateur = ?)";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
