@@ -317,30 +317,73 @@ void Database::modifierUtilisateur(Utilisateur u) {
         return success;
     }
 
-    bool Database::ajouterReservation(Reservation r){
-        std::string sql = "INSERT INTO reservations ( idTrajet, statut, prix, idPassager) VALUES (?, ?, ?, ?)";
-        sqlite3_stmt* stmt;
+bool Database::ajouterReservation(Reservation r) {
+    std::string sql = "INSERT INTO reservations (idTrajet, statut, prix, idPassager) VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
 
-        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-            std::cerr << "Erreur préparation ajout réservation : " << sqlite3_errmsg(db) << std::endl;
-            return false;
-        }
-
-        sqlite3_bind_double(stmt, 1, r.getIdTrajet());
-        sqlite3_bind_int(stmt, 2, r.getStatut() ? 1 : 0);
-        sqlite3_bind_int(stmt, 3, r.getPrix());
-        sqlite3_bind_int(stmt, 4, r.getIdPassager());
-
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            std::cerr << "Erreur insertion réservation : " << sqlite3_errmsg(db) << std::endl;
-            sqlite3_finalize(stmt);
-            return false;
-        }
-
-        sqlite3_finalize(stmt);
-        return true;
-
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation ajout réservation : " << sqlite3_errmsg(db) << std::endl;
+        return false;
     }
+
+    sqlite3_bind_int(stmt, 1, r.getIdTrajet());
+    sqlite3_bind_int(stmt, 2, r.getStatut() ? 1 : 0);
+    sqlite3_bind_double(stmt, 3, r.getPrix());
+    sqlite3_bind_int(stmt, 4, r.getIdPassager());
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cerr << "Erreur insertion réservation : " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+
+    int idTrajet = r.getIdTrajet();
+    int nbPlaceDispo = 0;
+    int dispo = 1;
+
+    // Récupérer le nombre de places disponibles actuel
+    std::string sqlSelect = "SELECT nombrePlaceDispo FROM trajets WHERE idTrajet = ?;";
+    sqlite3_stmt* stmtSelect;
+    if (sqlite3_prepare_v2(db, sqlSelect.c_str(), -1, &stmtSelect, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtSelect, 1, idTrajet);
+        if (sqlite3_step(stmtSelect) == SQLITE_ROW) {
+            nbPlaceDispo = sqlite3_column_int(stmtSelect, 0);
+        }
+        sqlite3_finalize(stmtSelect);
+    } else {
+        std::cerr << "Erreur récupération nombre de places : " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    nbPlaceDispo = std::max(0, nbPlaceDispo - 1);
+
+    // Si le nombre de places passe à zéro, mettre la disponibilite à faux
+    if (nbPlaceDispo == 0) {
+        dispo = 0;
+    }
+
+    // Mettre à jour le trajet
+    std::string sqlUpdate = "UPDATE trajets SET nombrePlaceDispo = ?, disponible = ? WHERE idTrajet = ?;";
+    sqlite3_stmt* stmtUpdate;
+    if (sqlite3_prepare_v2(db, sqlUpdate.c_str(), -1, &stmtUpdate, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtUpdate, 1, nbPlaceDispo);
+        sqlite3_bind_int(stmtUpdate, 2, dispo);
+        sqlite3_bind_int(stmtUpdate, 3, idTrajet);
+        if (sqlite3_step(stmtUpdate) != SQLITE_DONE) {
+            std::cerr << "Erreur mise à jour trajet : " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_finalize(stmtUpdate);
+            return false;
+        }
+        sqlite3_finalize(stmtUpdate);
+    } else {
+        std::cerr << "Erreur préparation mise à jour trajet : " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 
 Trajet Database::getTrajetByIdTrajet(int idTrajet) {
     std::string sql = R"(
@@ -1039,7 +1082,7 @@ void Database::supprimerTrajetByIDTrajet(int idTrajet) {
     sqlite3_finalize(stmt);
 }
 
-void Database::supprimerReservationByIDReservation(int idReservation) {
+/*void Database::supprimerReservationByIDReservation(int idReservation) {
     std::string sql = "DELETE FROM reservations WHERE idReservation = ?";
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -1054,6 +1097,85 @@ void Database::supprimerReservationByIDReservation(int idReservation) {
         throw std::runtime_error("Suppression réservation échouée");
     }
     sqlite3_finalize(stmt);
+}*/
+
+void Database::supprimerReservationByIDReservation(int idReservation) {
+    // 1. Récupérer l’id du trajet associé à la réservation
+    int idTrajet = -1;
+    std::string sqlSelect = "SELECT idTrajet FROM reservations WHERE idReservation = ?;";
+    sqlite3_stmt* stmtSelect;
+    if (sqlite3_prepare_v2(db, sqlSelect.c_str(), -1, &stmtSelect, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête SELECT trajet : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
+    }
+    sqlite3_bind_int(stmtSelect, 1, idReservation);
+    if (sqlite3_step(stmtSelect) != SQLITE_ROW) {
+        std::cerr << "Réservation non trouvée : " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmtSelect);
+        throw std::runtime_error("Réservation non trouvée");
+    }
+    idTrajet = sqlite3_column_int(stmtSelect, 0);
+    sqlite3_finalize(stmtSelect);
+
+    // 2. Supprimer la réservation
+    std::string sqlDelete = "DELETE FROM reservations WHERE idReservation = ?;";
+    sqlite3_stmt* stmtDelete;
+    if (sqlite3_prepare_v2(db, sqlDelete.c_str(), -1, &stmtDelete, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête DELETE réservation : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
+    }
+    sqlite3_bind_int(stmtDelete, 1, idReservation);
+    if (sqlite3_step(stmtDelete) != SQLITE_DONE) {
+        std::cerr << "Erreur lors de la suppression de la réservation : " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmtDelete);
+        throw std::runtime_error("Suppression réservation échouée");
+    }
+    sqlite3_finalize(stmtDelete);
+
+    // 3. Incrémenter le nombre de places disponibles du trajet
+    int nbPlaceDispo = 0;
+    int dispo = 1; // 1 = true, 0 = false
+
+    std::string sqlUpdateSelect = "SELECT nombrePlaceDispo, disponible FROM trajets WHERE idTrajet = ?;";
+    sqlite3_stmt* stmtUpdateSelect;
+    if (sqlite3_prepare_v2(db, sqlUpdateSelect.c_str(), -1, &stmtUpdateSelect, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtUpdateSelect, 1, idTrajet);
+        if (sqlite3_step(stmtUpdateSelect) == SQLITE_ROW) {
+            nbPlaceDispo = sqlite3_column_int(stmtUpdateSelect, 0);
+            dispo = sqlite3_column_int(stmtUpdateSelect, 1);
+        }
+        sqlite3_finalize(stmtUpdateSelect);
+    } else {
+        std::cerr << "Erreur récupération nombre de places : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
+    }
+
+    // Incrémenter le nombre de places disponibles
+    nbPlaceDispo++;
+
+    // Si le nombre de places passe de 0 à 1, mettre l’état à "vrai"
+    if (nbPlaceDispo == 1 && dispo == 0) {
+        dispo = 1;
+    }
+
+    // Mettre à jour le trajet
+    std::string sqlUpdate = "UPDATE trajets SET nombrePlaceDispo = ?, disponible = ? WHERE idTrajet = ?;";
+    sqlite3_stmt* stmtUpdate;
+    if (sqlite3_prepare_v2(db, sqlUpdate.c_str(), -1, &stmtUpdate, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtUpdate, 1, nbPlaceDispo);
+        sqlite3_bind_int(stmtUpdate, 2, dispo);
+        sqlite3_bind_int(stmtUpdate, 3, idTrajet);
+        if (sqlite3_step(stmtUpdate) != SQLITE_DONE) {
+            std::cerr << "Erreur mise à jour trajet : " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_finalize(stmtUpdate);
+            throw std::runtime_error("Erreur base de données");
+        }
+        sqlite3_finalize(stmtUpdate);
+    } else {
+        std::cerr << "Erreur préparation mise à jour trajet : " << sqlite3_errmsg(db) << std::endl;
+        throw std::runtime_error("Erreur base de données");
+    }
 }
+
 
 
