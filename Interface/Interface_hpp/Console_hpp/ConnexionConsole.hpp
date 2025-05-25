@@ -1,7 +1,3 @@
-//
-// Created by amzil on 20/05/25.
-//
-
 #ifndef CONNEXIONCONSOLE_HPP
 #define CONNEXIONCONSOLE_HPP
 
@@ -10,7 +6,15 @@
 
 class ConnexionConsole : public ConnexionInterface {
 public:
-    bool seConnecter(const std::string& email, const std::string& motDePasse) override;
+    // surcharge de l'interface
+    bool seConnecter(const std::string& email,
+                     const std::string& motDePasse) override;
+
+    // votre méthode sans paramètres
+    bool seConnecter();
+
+    // destructeur virtuel
+    ~ConnexionConsole() override;
 };
 
-#endif //CONNEXIONCONSOLE_HPP
+#endif // CONNEXIONCONSOLE_HPP

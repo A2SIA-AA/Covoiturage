@@ -1,59 +1,60 @@
-#include "Interface_hpp/Console_hpp/modifierProfilConsole.hpp"
-#include "../Controlleur_hpp/modifierProfilControlleur.hpp"
+#include "../Interface_hpp/Console_hpp/ModifierProfilConsole.hpp"
+#include "../../Controlleur/Controlleur_hpp/ModifierProfilControlleur.hpp"
 #include <iostream>
-#include <string>
+#include <limits>
 
+ModifierProfilConsole::~ModifierProfilConsole() = default;
+
+// 1) Méthode « pure » : on reçoit tout depuis l’appelant
 bool ModifierProfilConsole::modifierCoordonnees(
-    const std::string& nom, const std::string& prenom,
-    const std::string& email, const std::string& motPasse,
-    const std::string& adressePostale, bool fumeur)
+    const std::string& nom,
+    const std::string& prenom,
+    const std::string& email,
+    const std::string& motPasse,
+    const std::string& adressePostale,
+    bool fumeur)
 {
-    // 1. Afficher le profil actuel
-    std::cout << "=== Profil actuel ===" << std::endl;
-    std::cout << "Nom: " << nom << std::endl;
-    std::cout << "Prénom: " << prenom << std::endl;
-    std::cout << "Email: " << email << std::endl;
-    std::cout << "Mot de passe: [masqué]" << std::endl; // Pour la sécurité
-    std::cout << "Adresse postale: " << adressePostale << std::endl;
-    std::cout << "Fumeur: " << (fumeur ? "Oui" : "Non") << std::endl;
-
-    // 2. Demander l'ID de l'utilisateur
+    // Demander l’ID, le champ et la nouvelle valeur
     int idUtilisateur;
+    std::string champ, nouvelleValeur;
+
     std::cout << "Entrez l'ID de l'utilisateur à modifier : ";
     std::cin >> idUtilisateur;
-    std::cin.ignore(); // Pour consommer le retour à la ligne restant
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    // 3. Demander le champ à modifier
-    std::cout << "=== Modification du profil ===" << std::endl;
-    std::cout << "Quel champ souhaitez-vous modifier ?\n"
-              << "1. nom\n2. prenom\n3. email\n4. motPasse\n5. adressePostale\n6. fumeur\n"
-              << "Votre choix (1-6) : ";
-    std::string choixMenu;
-    std::getline(std::cin, choixMenu);
+    std::cout << "Champ à modifier (nom, prenom, email, motPasse, adressePostale, fumeur) : ";
+    std::getline(std::cin, champ);
 
-    std::string champ;
-    if (choixMenu == "1") champ = "nom";
-    else if (choixMenu == "2") champ = "prenom";
-    else if (choixMenu == "3") champ = "email";
-    else if (choixMenu == "4") champ = "motPasse";
-    else if (choixMenu == "5") champ = "adressePostale";
-    else if (choixMenu == "6") champ = "fumeur";
-    else {
-        std::cout << "Choix invalide !" << std::endl;
-        return false;
-    }
-
-    // 4. Demander la nouvelle valeur
     std::cout << "Nouvelle valeur pour " << champ << " : ";
-    std::string nouvelleValeur;
     std::getline(std::cin, nouvelleValeur);
 
-    // 5. Appeler le contrôleur
-    Database db("maBase.sqlite");
-    ModifierProfilControlleur controlleur(db);
+    // Appel au contrôleur
+    try {
+        Database db("maBase.sqlite");
+        ModifierProfilControlleur ctrl(db);
+        ctrl.ModifierProfil(idUtilisateur, champ, nouvelleValeur);
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Erreur de modification : " << e.what() << "\n";
+        return false;
+    }
+}
 
-    controlleur.ModifierProfil(idUtilisateur, champ, nouvelleValeur);
+// 2) Version interactive qui ne prend rien en paramètre
+bool ModifierProfilConsole::modifierCoordonnees()
+{
+    std::string nom, prenom, email, motPasse, adressePostale;
+    bool fumeur = false;
 
-    std::cout << "Modification effectuée !" << std::endl;
-    return true;
+    std::cout << "=== Modification de profil ===\n";
+    std::cout << "Nom actuel : ";    std::getline(std::cin, nom);
+    std::cout << "Prénom actuel : "; std::getline(std::cin, prenom);
+    std::cout << "Email actuel : ";  std::getline(std::cin, email);
+    std::cout << "Mot de passe actuel : [masqué]\n";
+    std::cout << "Adresse postale actuelle : "; std::getline(std::cin, adressePostale);
+    std::cout << "Fumeur (O/N) actuel : "; std::string rep; std::getline(std::cin, rep);
+    fumeur = (rep == "O" || rep == "o");
+
+    // On délègue tout de suite à la version « pure »
+    return modifierCoordonnees(nom, prenom, email, motPasse, adressePostale, fumeur);
 }

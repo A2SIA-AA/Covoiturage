@@ -3,7 +3,7 @@
 #define ACCUEILCONSOLE_HPP
 
 #include <string>
-#include "Interface_hpp/AccueilInterface.hpp"
+#include "../AccueilInterface.hpp"
 
 class AccueilConsole : public AccueilInterface {
 public:
