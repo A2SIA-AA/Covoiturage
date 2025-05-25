@@ -952,7 +952,7 @@ std::string Database::getVilleDepartByIdTrajet(int IDTrajet) {
 }
 
 Utilisateur Database::getUtilisateurByID(int idUtilisateur) {
-    std::string sql = R"(SELECT id, nom, prenom, email, mdp, adressePostale, fumeur FROM utilisateurs WHERE id = ?)";
+    std::string sql = R"(SELECT idUtilisateur, nom, prenom, email, mdp, adressePostale, fumeur FROM utilisateurs WHERE id = ?)";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
