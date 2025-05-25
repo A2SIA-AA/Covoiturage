@@ -199,9 +199,6 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
 
 
 void Database::modifierUtilisateur(Utilisateur u) {
-    // Préparer une requête SQL UPDATE pour modifier les données utilisateur
-    // Exemple : UPDATE Utilisateurs SET nom=?, prenom=?, email=?, mdp=?, ... WHERE id=?
-
     const char* sql = "UPDATE Utilisateurs SET nom = ?, prenom = ?, email = ?, mdp = ? WHERE id = ?;";
 
     sqlite3_stmt* stmt;
@@ -211,14 +208,12 @@ void Database::modifierUtilisateur(Utilisateur u) {
         throw std::runtime_error("Erreur préparation requête modifierUtilisateur");
     }
 
-    // Bind des paramètres
     sqlite3_bind_text(stmt, 1, u.getNom().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, u.getPrenom().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, u.getEmail().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, u.getMotPasse().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 5, u.getIdUtilisateur());
 
-    // Exécuter la requête
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         std::cerr << "Erreur lors de l'exécution de la requête: " << sqlite3_errmsg(db) << std::endl;
@@ -226,7 +221,6 @@ void Database::modifierUtilisateur(Utilisateur u) {
         throw std::runtime_error("Erreur execution requete modifierUtilisateur");
     }
 
-    // Finaliser la requête pour libérer la mémoire
     sqlite3_finalize(stmt);
 
     std::cout << "Utilisateur modifié avec succès (id=" << u.getIdUtilisateur() << ")" << std::endl;
@@ -664,16 +658,11 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
         // Si le segment demandé n'est pas trouvé dans les segments mais que le trajet principal correspond aux villes et prix demandés,
         // on ajoute le trajet principal complet
         if (lieuDepart == villeDepart && lieuArrivee == villeArrivee) {
-            // Il faut aussi vérifier que le prix total du trajet correspond au prix demandé
-            float prixTotal = 0.f;
-            for (const auto& seg : segmentsPrix) {
-                prixTotal += seg.second;
-            }
-            if (static_cast<int>(prixTotal) == prix) {
+            if (std::abs(trajetPrincipal.getPrixTotal() - prix) < 0.01f) { // Comparaison précise des floats
                 resultats.push_back(trajetPrincipal);
             }
         }
-    }
+        }
 
     sqlite3_finalize(stmt);
     return resultats;
@@ -746,7 +735,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(
             sqlite3_finalize(stmtSeg);
         }
 
-        // VillesEtapes (inchangé)
+        // VillesEtapes
         std::vector<std::string> villesEtapes;
         {
             std::string sqlEtape = "SELECT ville FROM ville_etape WHERE idTrajet = ?";
@@ -798,7 +787,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(
             resultats.push_back(trajetPrincipal);
         }
 
-    } // fin while
+    }
 
     sqlite3_finalize(stmt);
     return resultats;
