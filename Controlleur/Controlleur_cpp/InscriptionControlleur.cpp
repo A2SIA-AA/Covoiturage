@@ -6,9 +6,6 @@
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 #include "../Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp"
 
-InscriptionControlleur::InscriptionControlleur(): baseDeDonnees() {}
-
-
 bool InscriptionControlleur::verifierSaisieInscription(
     std::string nom,
     std::string prenom,

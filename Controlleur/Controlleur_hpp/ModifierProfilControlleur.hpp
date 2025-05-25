@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "BaseControlleur.hpp"
 
 /**
  * @class ModifierProfilControlleur
@@ -13,16 +14,20 @@
  * d'un utilisateur. Elle encapsule la logique nécessaire pour effectuer cette
  * opération.
  */
-class ModifierProfilControlleur {
+class ModifierProfilControlleur : public BaseControlleur{
 
-private:
-    Database& baseDeDonnees;
 
 public:
 
-    ModifierProfilControlleur();
+    /**
+    * @brief Constructeur implicite à partir de la base de données.
+    * @param db Référence à l'objet Database partagé.
+    */
+    explicit ModifierProfilControlleur(Database& db)
+        : BaseControlleur(db)
+    {
+    }
 
-    ModifierProfilControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * @brief Modifie le profil de l'utilisateur.
      * @param id l'id de l'utilisateur qui fait la demande.

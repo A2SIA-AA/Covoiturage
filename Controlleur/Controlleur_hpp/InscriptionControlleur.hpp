@@ -2,21 +2,26 @@
 #define __InscriptionControlleur_HPP__
 
 #include <string>
+
+#include "BaseControlleur.hpp"
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
  * Contient les méthodes en lien avec l'inscription d'un nouvel utilisateur
  */
-class InscriptionControlleur{
-
-private:
-    Database& baseDeDonnees;
+class InscriptionControlleur : public BaseControlleur{
 
 public:
 
-    InscriptionControlleur();
+    /**
+* @brief Constructeur implicite à partir de la base de données.
+* @param db Référence à l'objet Database partagé.
+*/
+    explicit InscriptionControlleur(Database& db)
+        : BaseControlleur(db)
+    {
+    }
 
-    InscriptionControlleur(Database& db) : baseDeDonnees(db) {}
     /**
      * Permet de vérifier la saisie lors d'une nouvelle inscription.
      * @param nom

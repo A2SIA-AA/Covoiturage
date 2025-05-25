@@ -1,11 +1,19 @@
 #ifndef ACCUEILCONTROLLEUR_H
 #define ACCUEILCONTROLLEUR_H
+#include "BaseControlleur.hpp"
+#include "Modele_hpp/BaseDonnees.hpp"
 
-class AccueilControlleur
-{
+class AccueilControlleur : public BaseControlleur{
 public:
 
-    AccueilControlleur();
+    /**
+ * @brief Constructeur implicite à partir de la base de données.
+ * @param db Référence à l'objet Database partagé.
+ */
+    explicit AccueilControlleur(Database& db)
+        : BaseControlleur(db)
+    {
+    }
 
     /**
     * @brief Redirige l'utilisateur vers "ModifierProfilInterface"

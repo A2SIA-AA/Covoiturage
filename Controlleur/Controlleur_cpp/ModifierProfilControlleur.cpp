@@ -5,9 +5,6 @@
 #include <regex>
 #include <algorithm>
 
-ModifierProfilControlleur::ModifierProfilControlleur(Database& db): baseDeDonnees(db) {}
-
-
 void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::string modification) {
     const std::vector<std::string> champsValides = {
         "nom", "prenom", "email", "motPasse", "adressePostal", "fumeur"
@@ -19,7 +16,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
     }
 
     // Récupère l'utilisateur depuis la base
-    Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id);
+    Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id))
 
     if (choix == "nom" || choix == "prenom") {
         if (modification.empty()) {

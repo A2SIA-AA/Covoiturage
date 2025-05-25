@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+
+#include "BaseControlleur.hpp"
 #include "../../Modele/Modele_hpp/Trajet.hpp"
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 #include "../../Modele/Modele_hpp/Reservation.hpp"
@@ -11,19 +13,19 @@
  * @class TrajetControlleur
  * @brief Gère la gestion des trajets et les réservations associées.
  */
-class TrajetControlleur{
-
-private:
-
-    Database& baseDeDonnees;
-
+class TrajetControlleur : public BaseControlleur{
 
 public:
 
-    TrajetControlleur();
+    /**
+    * @brief Constructeur implicite à partir de la base de données.
+    * @param db Référence à l'objet Database partagé.
+    */
+    explicit TrajetControlleur(Database& db)
+        : BaseControlleur(db)
+    {
 
-
-    TrajetControlleur(Database& db) : baseDeDonnees(db) {}
+    }
     /**
      * @brief Vérifie que toutes les informations du trajet sont valides.
      * @param idTrajet Identifiant unique du trajet.

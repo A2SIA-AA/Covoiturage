@@ -3,16 +3,25 @@
 
 #include <vector>
 #include <string>
+
+#include "BaseControlleur.hpp"
 #include "../../Modele/Modele_hpp/Trajet.hpp"
 
 /**
  * Contient les méthodes en lien avec la recherche d'un trajet.
  */
-class RechercheControlleur {
+class RechercheControlleur : public BaseControlleur{
 
 public:
 
-    RechercheControlleur();
+    /**
+    * @brief Constructeur implicite à partir de la base de données.
+    * @param db Référence à l'objet Database partagé.
+    */
+    explicit RechercheControlleur(Database& db)
+        : BaseControlleur(db)
+    {
+    }
 
     /**
      * Permet de récuperer tout les trajet des covoiturages et les affiche

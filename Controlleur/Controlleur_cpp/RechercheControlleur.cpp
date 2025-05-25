@@ -4,8 +4,6 @@
 #include <numeric>
 #include <sstream>
 
-RechercheControlleur::RechercheControlleur() {}
-
 
 std::vector<Trajet> RechercheControlleur::rechercherTrajet(std::string villeDepart,
                                                            std::string villeArrivee,
@@ -105,14 +103,17 @@ std::vector<Trajet> RechercheControlleur::comparerHeureDepart(const std::vector<
     return sorted;
 }
 
-std::vector<Trajet> RechercheControlleur::comparerPointIntermediaire(const std::vector<Trajet>& trajetsDisponibles) {
+std::vector<Trajet> RechercheControlleur::comparerPointIntermediaire(
+    const std::vector<Trajet>& trajetsDisponibles)
+{
     if (trajetsDisponibles.empty()) {
         return {};
     }
     auto sorted = trajetsDisponibles;
-    std::sort(sorted.begin(), sorted.end(), [](auto& a, auto& b) {
-        return a.getNbEtapes() < b.getNbEtapes();
-    });
+    std::sort(sorted.begin(), sorted.end(),
+        [](auto& a, auto& b) {
+            return a.getVillesEtapes().size() < b.getVillesEtapes().size();
+        });
     return sorted;
 }
 
