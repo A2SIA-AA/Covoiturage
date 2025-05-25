@@ -104,6 +104,15 @@ int main() {
     }
     std::cout << "---------------------------\n";
 
+    RechercheControlleur rechercheCtrl(db);
+
+    float x = rechercheCtrl.calculerEmission(200, "diesel", 6.5f, 10);
+    std::cout << "emission 10 ans : " << x << "\n";
+
+    float x1 = rechercheCtrl.calculerEmission(200, "diesel", 6.5f, 20);
+    std::cout << "emission 20 ans : " << x1 << "\n";
+
+
     /*
     RechercheControlleur rechercheCtrl;
 

@@ -47,13 +47,60 @@ std::vector<Trajet> RechercheControlleur::comparerEmission(const std::vector<Tra
     return sorted;
 }
 
-float RechercheControlleur::calculerEmission(float distance,
-                                             std::string voiture,
-                                             float consommationMoyenne) {
-    const float facteurCO2_parLitre = 2.31f; // kg CO2 par litre
-    // Calcul : (distance en km) * (L/100km) * facteur, converti en tonnes
-    return (distance * consommationMoyenne / 100.0f) * facteurCO2_parLitre / 1000.0f;
+float RechercheControlleur::calculerEmission(
+    float distance,
+    const std::string& typeVehiculeStr,
+    float consommationMoyenne,
+    int anciennete           // âge du véhicule en années
+) {
+    // 1) Définit un enum local
+    enum class TypeVehicule { Essence, Diesel, Electrique, Inconnu };
+
+    // 2) Passe la chaîne en minuscules
+    std::string s = typeVehiculeStr;
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c){ return std::tolower(c); });
+
+    // 3) Convertis la chaîne en enum
+    TypeVehicule type = TypeVehicule::Inconnu;
+    if (s == "diesel") {
+        type = TypeVehicule::Diesel;
+    }
+    else if (s == "essence") {
+        type = TypeVehicule::Essence;
+    }
+    else if (s == "electrique") {
+        type = TypeVehicule::Electrique;
+    }
+
+    // 4) Choisis le facteur CO₂ selon le type
+    float facteurKgParUnite;
+    switch (type) {
+        case TypeVehicule::Diesel:
+            facteurKgParUnite = 2.7f;   // kg CO₂ / L
+            break;
+        case TypeVehicule::Essence:
+            facteurKgParUnite = 2.31f;   // kg CO₂ / L
+            break;
+        case TypeVehicule::Electrique:
+            facteurKgParUnite = 0.09f;   // kg CO₂ / kWh (mix moyen)
+            break;
+        default:
+            // si inconnu, on choisit essence par défaut
+            facteurKgParUnite = 2.31f;
+            break;
+    }
+
+    constexpr float alpha = 0.02f;
+    float majoration = 1.0f + anciennete * alpha;
+
+    // calcul
+    float emissionKg = (distance * consommationMoyenne / 100.0f)
+                       * facteurKgParUnite
+                       * majoration;
+    return emissionKg / 1000.0f;  // en tonnes
 }
+
 
 
 static int minutesDepuisMinuit(const std::string& hhmm) {

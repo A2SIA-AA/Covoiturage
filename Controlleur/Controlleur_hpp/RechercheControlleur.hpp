@@ -46,14 +46,14 @@ public:
      */
     std::vector<Trajet> comparerEmission(const std::vector<Trajet>& trajetsDisponibles);
 
-    /**
+/**
      * Calcule l'empreinte carbone d'un véhicule.
      * @param distance Distance entre le départ et l'arrivée
      * @param voiture Type de voiture (diesel, essence, ...)
      * @param consommationMoyenne
      * @return L'empreinte carbone estimée
      */
-    float calculerEmission(float distance, std::string voiture, float consommationMoyenne);
+    float calculerEmission(float distance, const std::string& typeVehiculeStr, float consommationMoyenne, int anciennete);
 
     /**
      * Trie les trajets de covoiturage selon la durée (ordre croissant).
