@@ -30,7 +30,8 @@ bool InscriptionConsole::sInscrire(const std::string& /*nom*/, const std::string
     std::getline(std::cin, choixFumeur);
     fumeur = (choixFumeur == "O" || choixFumeur == "o");
 
-    InscriptionControlleur controlleur;
+    Database db("maBase.sqlite");
+    InscriptionControlleur controlleur(db);
 
     // On vérifie la saisie avec le contrôleur
     if (controlleur.verifierSaisieInscription(nom, prenom, email, motPasse, adressePostale, fumeur)) {
