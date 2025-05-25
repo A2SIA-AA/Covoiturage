@@ -106,8 +106,8 @@ void TrajetControlleur::creerTrajet(
 	float emissionCO2,
 	std::string description){
 
-    if (verifierSaisieTrajet(idConducteur, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, villesEtapes, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description)) {
-    	Trajet nouveauTrajet(date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, villesEtapes, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description);
+    if (verifierSaisieTrajet(idConducteur, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description)) {
+    	Trajet nouveauTrajet(date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description);
     	baseDeDonnees.ajouterTrajet(nouveauTrajet, idConducteur);
     	std::cout << "trajet ajouté.\n";
 		} else {
@@ -120,9 +120,11 @@ void TrajetControlleur::creerTrajet(
 
 void TrajetControlleur::supprimerTrajet(int idTrajet){
 	baseDeDonnees.supprimerTrajetByIDTrajet(idTrajet);
+	std::cout << "trajet supprimé.\n";
 }
 
 
 void TrajetControlleur::supprimerReservation(int idReservation){
 	baseDeDonnees.supprimerReservationByIDReservation(idReservation);
+
 }

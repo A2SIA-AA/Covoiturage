@@ -5,7 +5,7 @@
 #include <regex>
 #include <algorithm>
 
-ModifierProfilControlleur::ModifierProfilControlleur(): baseDeDonnees() {}
+ModifierProfilControlleur::ModifierProfilControlleur(Database& db): baseDeDonnees(db) {}
 
 
 void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::string modification) {
@@ -17,6 +17,9 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
         std::cerr << "Champ invalide pour modification : " << choix << std::endl;
         return;
     }
+
+    // Récupère l'utilisateur depuis la base
+    Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id);
 
     if (choix == "nom" || choix == "prenom") {
         if (modification.empty()) {
@@ -41,7 +44,12 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
         }
     }
 
-    // Pas de validation pour motPasse ici, tu peux en ajouter si besoin
-
-    baseDeDonnees.mettreAJourChampProfil(id, choix, modification);
+    // Appliquer la modification
+    if (choix == "nom") utilisateur.setNom(modification);
+    else if (choix == "prenom") utilisateur.setPrenom(modification);
+    else if (choix == "email") utilisateur.setEmail(modification);
+    else if (choix == "motPasse") utilisateur.setMotPasse(modification);
+    else if (choix == "adressePostal") utilisateur.setAdressePostal(std::stoi(modification));
+    else if (choix == "fumeur") utilisateur.setFumeur(modification == "1");
+    baseDeDonnees.modifierUtilisateur(utilisateur);
 }
