@@ -1,10 +1,10 @@
 #include "../Controlleur_hpp/InscriptionControlleur.hpp"
-#include "../../Interface/Interface_hpp/ConnexionInterface.hpp"
+#include "../../Interface/Interface_hpp/Console_hpp/ConnexionConsole.hpp"
 #include <regex>
 #include <iostream>
 #include "../../Modele/Modele_hpp/Utilisateur.hpp"
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
-#include "../Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp"
+#include "../../Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp"
 
 bool InscriptionControlleur::verifierSaisieInscription(
     std::string nom,

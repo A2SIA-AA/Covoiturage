@@ -6,7 +6,7 @@
 #define CONNEXIONCONSOLE_HPP
 
 #include <string>
-#include "Interface_hpp/ConnexionInterface.hpp"
+#include "../ConnexionInterface.hpp"
 
 class ConnexionConsole : public ConnexionInterface {
 public:

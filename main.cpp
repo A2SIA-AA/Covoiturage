@@ -108,7 +108,7 @@ int main() {
     RechercheControlleur rechercheCtrl;
 
     rechercheCtrl.comparerHeureDepart()
-    /*
+
     TrajetControlleur trajetCtrl(db);
     trajetCtrl.supprimerTrajet(4);
 

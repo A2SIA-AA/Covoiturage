@@ -5,7 +5,7 @@
 #ifndef INSCRIPTIONCONSOLE_HPP
 #define INSCRIPTIONCONSOLE_HPP
 
-#include "Interface_hpp/InscriptionInterface.hpp"
+#include "../InscriptionInterface.hpp"
 #include <string>
 
 

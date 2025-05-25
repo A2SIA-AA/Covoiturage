@@ -16,27 +16,34 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
     }
 
     // Récupère l'utilisateur depuis la base
-    Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id))
+    Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id));
 
-    if (choix == "nom" || choix == "prenom") {
+    if (choix == "nom" || choix == "prenom" || choix == "motPasse") {
         if (modification.empty()) {
             std::cerr << choix << " ne peut pas être vide." << std::endl;
             return;
         }
-    } else if (choix == "email") {
+    }
+    else if (choix == "email") {
         const std::regex emailPattern(R"(^[^@\s]+@[^@\s]+\.[^@\s]+$)");
         if (!std::regex_match(modification, emailPattern)) {
             std::cerr << "Email invalide : " << modification << std::endl;
             return;
         }
-    } else if (choix == "adressePostal") {
+    }
+    else if (choix == "adressePostal") {
+        // On attend une chaîne numérique (ex. code postal)
         if (!std::all_of(modification.begin(), modification.end(), ::isdigit)) {
-            std::cerr << "Adresse postale doit être un entier valide : " << modification << std::endl;
+            std::cerr << "Adresse postale doit être un entier valide : "
+                      << modification << std::endl;
             return;
         }
-    } else if (choix == "fumeur") {
+    }
+    else if (choix == "fumeur") {
+        // On attend "0" (non fumeur) ou "1" (fumeur)
         if (modification != "0" && modification != "1") {
-            std::cerr << "Valeur invalide pour fumeur (doit être '0' ou '1') : " << modification << std::endl;
+            std::cerr << "Valeur invalide pour fumeur (doit être '0' ou '1') : "
+                      << modification << std::endl;
             return;
         }
     }
@@ -46,7 +53,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
     else if (choix == "prenom") utilisateur.setPrenom(modification);
     else if (choix == "email") utilisateur.setEmail(modification);
     else if (choix == "motPasse") utilisateur.setMotPasse(modification);
-    else if (choix == "adressePostal") utilisateur.setAdressePostal(std::stoi(modification));
+    else if (choix == "adressePostal") utilisateur.setAdressePostale(modification);
     else if (choix == "fumeur") utilisateur.setFumeur(modification == "1");
     baseDeDonnees.modifierUtilisateur(utilisateur);
 }
