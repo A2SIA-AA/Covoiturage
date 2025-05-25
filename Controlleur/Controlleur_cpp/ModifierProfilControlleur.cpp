@@ -7,7 +7,7 @@
 
 void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::string modification) {
     const std::vector<std::string> champsValides = {
-        "nom", "prenom", "email", "motPasse", "adressePostal", "fumeur"
+        "nom", "prenom", "email", "motPasse", "adressePostale", "fumeur"
     };
 
     if (std::find(champsValides.begin(), champsValides.end(), choix) == champsValides.end()) {
@@ -31,7 +31,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
             return;
         }
     }
-    else if (choix == "adressePostal") {
+    else if (choix == "adressePostale") {
         // On attend une chaîne numérique (ex. code postal)
         if (!std::all_of(modification.begin(), modification.end(), ::isdigit)) {
             std::cerr << "Adresse postale doit être un entier valide : "

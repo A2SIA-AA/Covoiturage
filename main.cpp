@@ -24,15 +24,17 @@
 
 int main() {
         Database db("maBase.sqlite");
-
+/*
     InscriptionControlleur inscriptionCtrl(db);
 
     try {
-        inscriptionCtrl.traiterInscription("farhat", "joelle", "joelle.farhat@gmail.com", "123456", "76800", false);
+        inscriptionCtrl.traiterInscription("dicko", "loraine", "loraine.dicko@gmail.com", "123457", "76800", false);
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
         return 1; // Arrêt propre du programme en cas d’erreur
     }
+
+*/
 
 
 
@@ -45,9 +47,11 @@ int main() {
     } else {
         std::cout << "Échec de la connexion : Email ou mot de passe incorrect.\n";
     }
+    ModifierProfilControlleur modifProfCtrl(db);
+    modifProfCtrl.ModifierProfil(utilisateurOptionel->getIdUtilisateur(), "motPasse", "111111");
 
 
-
+    /*
 
     TrajetControlleur trajetCtrl(db);
     trajetCtrl.creerTrajet(
@@ -65,22 +69,17 @@ int main() {
     false,                                   // allerRetour
     true,                                    // animaux
     "Renault Clio - Bleu",                   // voiture
-    3,                                       // nombrePlaceDispo
+    1,                                       // nombrePlaceDispo
     true,                                    // etat
     123,                                  // emissionCO2
     "Trajet agreable avec pause à Orléans"   // description
 );
 
+*/
 
+/*
 
-    /*
     TrajetControlleur trajetCtrl(db);
-    trajetCtrl.reservation(1, 15,   utilisateurOptionel->getIdUtilisateur(), true);
-
-    */
-
-
-    //TrajetControlleur trajetCtrl(db);
     std::vector<Trajet> trajets = trajetCtrl.obtenirTrajets("Paris", "lille", "2025-06-15" );
 
 
@@ -104,6 +103,37 @@ int main() {
     }
     std::cout << "---------------------------\n";
 
+    //TrajetControlleur trajetCtrl(db);
+    //trajetCtrl.reservation(2, 15, utilisateurOptionel->getIdUtilisateur(), true);
+    trajetCtrl.supprimerReservation(2);
+
+
+    std::vector<Trajet> trajetsNew = trajetCtrl.obtenirTrajets("Paris", "lille", "2025-06-15" );
+
+
+    if (trajetsNew.empty()) {
+        std::cout << "Aucun trajet trouvé.\n";
+
+    }
+
+    for ( auto& trajet : trajetsNew) {
+        std::cout << "---------------------------\n";
+        std::cout << "ID Trajet: " << trajet.getIdTrajet() << "\n";
+        std::cout << "Date: " << trajet.getDate() << "\n";
+        std::cout << "Heure départ: " << trajet.getHeureDepart() << "\n";
+        std::cout << "Heure arrivée: " << trajet.getHeureArrive() << "\n";
+        std::cout << "Lieu départ: " << trajet.getLieuDepart() << "\n";
+        std::cout << "Lieu arrivée: " << trajet.getLieuArrive() << "\n";
+        std::cout << "Voiture: " << trajet.getVoiture() << "\n";
+        std::cout << "Places dispo: " << trajet.getNombrePlaceDispo() << "\n";
+        std::cout << "CO2: " << trajet.getEmissionCO2() << " g/km\n";
+        std::cout << "Description: " << trajet.getDescription() << "\n";
+    }
+    std::cout << "---------------------------\n";
+
+*/
+
+    /*
     RechercheControlleur rechercheCtrl(db);
 
     float x = rechercheCtrl.calculerEmission(200, "diesel", 6.5f, 10);
@@ -111,7 +141,7 @@ int main() {
 
     float x1 = rechercheCtrl.calculerEmission(200, "diesel", 6.5f, 20);
     std::cout << "emission 20 ans : " << x1 << "\n";
-
+    */
 
     /*
     RechercheControlleur rechercheCtrl;
