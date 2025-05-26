@@ -10,7 +10,7 @@ Conducteur::Conducteur(std::string nom, std::string prenom,
 {}
 
 // Méthode getter
-std::vector<Trajet> Conducteur::getListeTrajet() {
+std::vector<Trajet> Conducteur::getListeTrajet() const{
     return listeTrajet;
 }
 

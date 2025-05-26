@@ -22,13 +22,13 @@ class Utilisateur{
 
 public:
         Utilisateur(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
-        int getIdUtilisateur();
-        std::string getNom();
-        std::string getPrenom();
-        std::string getEmail();
-        std::string getMotPasse();
-        std::string getAdressePostale();
-        bool getFumeur();
+        int getIdUtilisateur() const;
+        std::string getNom() const;
+        std::string getPrenom() const;
+        std::string getEmail() const;
+        std::string getMotPasse() const;
+        std::string getAdressePostale() const;
+        bool getFumeur() const;
         void setIdUtilisateur(int id);
         void setNom(std::string nom);
         void setPrenom(std::string prenom);

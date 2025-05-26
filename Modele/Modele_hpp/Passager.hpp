@@ -20,7 +20,7 @@ private:
     std::vector<Reservation> listeReservation;
 
 public:
-    std::vector<Reservation> getListeReservation();
+    std::vector<Reservation> getListeReservation() const;
     void setListeReservation(std::vector<Reservation> reservation);
     Passager(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur, std::vector<Reservation> listeReservation);
     void ajouterReservation(const Reservation& res);

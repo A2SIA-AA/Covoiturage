@@ -18,9 +18,9 @@ private:
 
 public:
     Reservation(int idTrajet, bool statut,float prix, int idPassager);
-    float getPrix();
-    int getIdReservation();
-    bool getStatut();
+    float getPrix() const;
+    int getIdReservation () const;
+    bool getStatut() const;
     int getIdTrajet() const;
     int getIdPassager() const;
     void setIdPassager(int idPassager);

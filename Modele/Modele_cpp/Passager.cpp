@@ -8,7 +8,7 @@ Passager::Passager(std::string nom, std::string prenom, std::string email, std::
 }
 
 
-std::vector<Reservation> Passager::getListeReservation() {
+std::vector<Reservation> Passager::getListeReservation() const{
     return listeReservation;
 }
 

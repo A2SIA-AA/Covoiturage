@@ -15,31 +15,31 @@ Utilisateur::Utilisateur(std::string nom, std::string prenom,
 
 //getters
 
-int Utilisateur::getIdUtilisateur() {
+int Utilisateur::getIdUtilisateur() const{
     return idUtilisateur;
 }
 
-std::string Utilisateur::getNom() {
+std::string Utilisateur::getNom() const{
     return nom;
 }
 
-std::string Utilisateur::getPrenom() {
+std::string Utilisateur::getPrenom() const{
     return prenom;
 }
 
-std::string Utilisateur::getEmail() {
+std::string Utilisateur::getEmail() const{
     return email;
 }
 
-std::string Utilisateur::getMotPasse() {
+std::string Utilisateur::getMotPasse() const{
     return motPasse;
 }
 
-std::string Utilisateur::getAdressePostale() {
+std::string Utilisateur::getAdressePostale() const{
     return adressePostale;
 }
 
-bool Utilisateur::getFumeur() {
+bool Utilisateur::getFumeur() const{
     return fumeur;
 }
 
