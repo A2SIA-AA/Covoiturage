@@ -28,6 +28,7 @@ public:
     void setIdReservation(int ID);
     void setStatut(bool statut);
     void setIdTrajet(int idTrajet);
+    bool operator<(const Reservation& autre) const;
 
 };
 #endif

@@ -46,4 +46,8 @@ void Reservation::setIdTrajet(int idTrajet) {
     this->idTrajet = idTrajet;
 }
 
+bool Reservation::operator<(const Reservation& autre) const {
+    return this->getIdReservation() < autre.getIdReservation();
+}
+
 
