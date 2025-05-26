@@ -14,6 +14,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <map>
 #include "Utilisateur.hpp"
 #include "Trajet.hpp"
 #include "Reservation.hpp"
@@ -193,13 +194,13 @@ public:
 * @param idUtilisateur L’identifiant de l’utilisateur.
 * @return L'objet Conducteur correspondant.
 */
-    Conducteur getConducteurByID(int idUtilisateur);
+    Conducteur getConducteurByID(int idConducteur);
     /**
 * @brief Récupère les informations d’un passager via son ID.
 * @param idUtilisateur L’identifiant de l’utilisateur.
 * @return L'objet Passager correspondant.
 */
-    Passager getPassagerByID(int idUtilisateur);
+    Passager getPassagerByID(int inPassager);
 
 
 
@@ -252,5 +253,25 @@ public:
 
     bool verifierPrix(int idTrajet, float prix, const std::string& villeDepart, const std::string& villeArrivee);*/
 
+    /**
+     *
+     * @param idPassager
+     * @return
+     */
+    std::vector<std::pair<Reservation, Trajet>> getReservationEtTrajetByIdPassager(int idPassager);
+
+    /**
+     *
+     * @param idUtilisateur
+     * @return
+     */
+    bool ajouterConducteur(int idUtilisateur);
+
+    /**
+     *
+     * @param idUtilisateur
+     * @return
+     */
+    bool ajouterPassager(int idUtilisateur);
 };
 #endif

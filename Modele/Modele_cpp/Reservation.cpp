@@ -2,8 +2,8 @@
 
 
 
-Reservation::Reservation(int idTrajet, bool statut,float prix, int idPassager)
-        : prix(prix),
+Reservation::Reservation(int id, int idTrajet, bool statut,float prix, int idPassager)
+        : idReservation(id), prix(prix),
           statut(statut), idPassager(idPassager), idTrajet(idTrajet) {}
 
 float Reservation::getPrix() {
@@ -45,3 +45,5 @@ void Reservation::setStatut(bool statut) {
 void Reservation::setIdTrajet(int idTrajet) {
     this->idTrajet = idTrajet;
 }
+
+

@@ -2,11 +2,11 @@
 
 
 
-Trajet::Trajet(std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee,
+Trajet::Trajet(int id, std::string date, std::string heureDepart, std::string heureArrivee, std::string lieuDepart, std::string lieuArrivee,
                std::vector<std::pair<std::string, float>> segmentsPrix, std::vector<std::string> villesEtapes,
                bool disponible, bool allerRetour, bool animaux, std::string voiture, int nombrePlaceDispo,
                bool etat, float emissionCO2, std::string description)
-        : idConducteur(0),
+        : idTrajet(id), idConducteur(0),
           date(date), heureDepart(heureDepart), heureArrivee(heureArrivee),
           lieuDepart(lieuDepart), lieuArrivee(lieuArrivee),
           segmentsPrix(segmentsPrix), villesEtapes(villesEtapes),
