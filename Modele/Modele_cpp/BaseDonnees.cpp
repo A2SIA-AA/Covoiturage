@@ -217,7 +217,6 @@ bool Database::modifierUtilisateur(Utilisateur u) {
     sqlite3_bind_text(stmt, 5, u.getAdressePostale().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 6, u.getFumeur() ? 1 : 0);
     sqlite3_bind_int(stmt, 7, u.getIdUtilisateur());
-
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         std::cerr << "Erreur mise à jour utilisateur : " << sqlite3_errmsg(db) << std::endl;
         sqlite3_finalize(stmt);
@@ -972,7 +971,9 @@ Utilisateur Database::getUtilisateurByID(int idUtilisateur) {
         bool fumeur = sqlite3_column_int(stmt, 6);
 
         sqlite3_finalize(stmt);
-        return Utilisateur(nom, prenom, email, mdp, adresse, fumeur);
+        Utilisateur u = Utilisateur(nom, prenom, email, mdp, adresse, fumeur);
+        u.setIdUtilisateur(id);
+        return u;
     } else {
         sqlite3_finalize(stmt);
         throw std::runtime_error("Utilisateur non trouvé");
