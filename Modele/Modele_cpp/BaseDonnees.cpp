@@ -391,12 +391,14 @@ Trajet Database::getTrajetByIdTrajet(int idTrajet) {
 
     sqlite3_stmt* stmt;
 
-    sqlite3_bind_int(stmt, 1, idTrajet);
+
 
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
         throw std::runtime_error("Erreur base de données");
     }
+
+    sqlite3_bind_int(stmt, 1, idTrajet);
 
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         int idTrajet = sqlite3_column_int(stmt, 0);
