@@ -20,7 +20,7 @@ private:
     std::vector<Trajet> listeTrajet;
 
 public:
-    std::vector<Trajet> getListeTrajet();
+    std::vector<Trajet> getListeTrajet() const;
     void setListeTrajet(std::vector<Trajet> trajet);
     Conducteur(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur,std::vector<Trajet> listeTrajet);
 

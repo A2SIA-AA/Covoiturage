@@ -6,15 +6,15 @@ Reservation::Reservation(int idTrajet, bool statut,float prix, int idPassager)
         : prix(prix),
           statut(statut), idPassager(idPassager), idTrajet(idTrajet) {}
 
-float Reservation::getPrix() {
+float Reservation::getPrix() const{
     return prix;
 }
 
-int Reservation::getIdReservation() {
+int Reservation::getIdReservation() const{
     return idReservation;
 }
 
-bool Reservation::getStatut() {
+bool Reservation::getStatut() const{
     return statut;
 }
 

@@ -16,22 +16,22 @@ Trajet::Trajet( std::string date, std::string heureDepart, std::string heureArri
 
 
 // Getters
-int Trajet::getIdTrajet() { return idTrajet; }
-std::string Trajet::getDate() { return date; }
-std::string Trajet::getHeureDepart() { return heureDepart; }
-std::string Trajet::getHeureArrive() { return heureArrivee; }
-std::string Trajet::getLieuDepart() { return lieuDepart; }
-std::string Trajet::getLieuArrive() { return lieuArrivee; }
-std::vector<std::pair<std::string, float>> Trajet::getSegmentsPrix() { return segmentsPrix; }
-std::vector<std::string> Trajet::getVillesEtapes() { return villesEtapes; }
-std::string Trajet::getVoiture() { return voiture; }
-int Trajet::getNombrePlaceDispo() { return nombrePlaceDispo; }
-bool Trajet::getDisponible() { return disponible; }
-bool Trajet::getAllerRetour() { return allerRetour; }
-bool Trajet::getAnimaux() { return animaux; }
-bool Trajet::getEtat() { return etat; }
-float Trajet::getEmissionCO2() { return emissionCO2; }
-std::string Trajet::getDescription() { return description; }
+int Trajet::getIdTrajet() const{ return idTrajet; }
+std::string Trajet::getDate() const{ return date; }
+std::string Trajet::getHeureDepart() const{ return heureDepart; }
+std::string Trajet::getHeureArrive() const{ return heureArrivee; }
+std::string Trajet::getLieuDepart() const{ return lieuDepart; }
+std::string Trajet::getLieuArrive() const{ return lieuArrivee; }
+std::vector<std::pair<std::string, float>> Trajet::getSegmentsPrix() const{ return segmentsPrix; }
+std::vector<std::string> Trajet::getVillesEtapes() const{ return villesEtapes; }
+std::string Trajet::getVoiture() const{ return voiture; }
+int Trajet::getNombrePlaceDispo() const{ return nombrePlaceDispo; }
+bool Trajet::getDisponible() const{ return disponible; }
+bool Trajet::getAllerRetour() const{ return allerRetour; }
+bool Trajet::getAnimaux() const{ return animaux; }
+bool Trajet::getEtat() const{ return etat; }
+float Trajet::getEmissionCO2() const{ return emissionCO2; }
+std::string Trajet::getDescription() const{ return description; }
 
 // Setters
 void Trajet::setIdTrajet(int idTrajet) { this->idTrajet = idTrajet; }
