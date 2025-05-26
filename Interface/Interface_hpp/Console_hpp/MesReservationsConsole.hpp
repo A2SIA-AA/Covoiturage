@@ -6,12 +6,16 @@
 #define MESRESERVATIONSCONSOLE_HPP
 
 #include "../../Modele/Modele_hpp/Passager.hpp"
-#include "Interface_hpp/MesReservationsInterface.hpp"
+#include "../MesReservationsInterface.hpp"
 
 
-class MesReservationsConsole : public MesReservations {
+class MesReservationsConsole : public MesReservationsInterface {
 public:
+    ~MesReservationsConsole() override;
+
     void afficherReservations(const Passager& passager) override;
+
+    void afficherReservations();
 };
 
 #endif //MESRESERVATIONSCONSOLE_HPP

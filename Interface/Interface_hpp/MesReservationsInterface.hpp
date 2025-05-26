@@ -4,10 +4,10 @@
 #include "../../Modele/Modele_hpp/Passager.hpp"
 
 /**
- * @class MesReservations
+ * @class MesReservationsInterface
  * @brief Cette classe permet l'affichage des réservations du passager connecté.
  */
-class MesReservations {
+class MesReservationsInterface {
 public:
     /**
      * @brief Affiche toutes les réservations du passager connecté.
@@ -16,7 +16,7 @@ public:
     virtual void afficherReservations(const Passager& passager) = 0 ;
 
     virtual ~MesReservationsInterface() = default;
-    
+
 };
 
 #endif
