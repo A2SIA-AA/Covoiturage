@@ -1247,6 +1247,8 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
     return resultat;
 }
 
+
+
 bool Database::ajouterConducteur(int idUtilisateur) {
     std::string sql = "INSERT INTO conducteurs (id) VALUES (?);";
     sqlite3_stmt* stmt;
