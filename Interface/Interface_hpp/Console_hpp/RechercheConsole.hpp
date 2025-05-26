@@ -7,7 +7,7 @@
 
 #include <tuple>
 #include <string>
-#include "Interface_hpp/RechercheInterface.hpp"
+#include "../RechercheInterface.hpp"
 
 
 class RechercheConsole : public RechercheInterface {
@@ -15,7 +15,14 @@ private:
     void afficherMenuPrincipal() const override;
 
 public:
-    std::tuple<std::string, std::string, std::string> rechercher() const override;
+    [[nodiscard]] std::tuple<std::string, std::string, std::string> rechercher() const override;
+
+    [[nodiscard]] static std::tuple<std::string, std::string, std::string> rechercher(const std::string& villeDepart,
+                                                                                      const std::string& villeArrivee,
+                                                                                      const std::string& date);
+
+    // destructeur virtuel
+    ~RechercheConsole() override;
 };
 
 #endif //RECHERCHECONSOLE_HPP

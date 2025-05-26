@@ -2,8 +2,6 @@
 #define RECHERCHE_INTERFACE_HPP
 
 #include <string>
-#include <vector>
-#include "../../Modele/Modele_hpp/Trajet.hpp"
 
 /**
  * @class RechercheInterface
@@ -26,9 +24,9 @@ public:
      * 
      * @return std::tuple<std::string, std::string, std::string> un tuple contenant le lieu de départ, le lieu d'arrivée et la date de départ souhaité pour le trajet  
      */
-    virtual std::tuple<std::string, std::string, std::string> rechercher() const =0 ;
+    [[nodiscard]] virtual std::tuple<std::string, std::string, std::string> rechercher() const =0 ;
     
-    virtual ~TrajetInterface() = default;
+    virtual ~RechercheInterface() = default;
 };
 
 #endif
