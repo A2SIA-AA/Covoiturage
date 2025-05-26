@@ -2,7 +2,6 @@
 #define TRAJET_INTERFACE_HPP
 
 #include <vector>
-#include <string>
 #include "../../Modele/Modele_hpp/Trajet.hpp"
 
 /**
@@ -24,14 +23,14 @@ class TrajetInterface {
          * @brief Affiche le menu de filtres disponibles à l'utilisateur.
          * 
          */
-        virtual afficherMenuFiltres() = 0;
+        virtual void afficherMenuFiltres() = 0;
 
         /**
          * @brief Affiche le résultat du filtrage choisi par l'utilisateur
          * 
          * @param trajets Référence au vecteur de trajets à filtrer.
          */
-        virtual  afficherFiltrage(const std::vector<Trajet>& trajets) =0;
+        virtual void afficherFiltrage(const std::vector<Trajet>& trajets) =0;
 
         /**
         * @brief Affiche un message pour permettre à l'utilisateur de retourner à l'accueil.
