@@ -25,6 +25,7 @@
 int main() {
         Database db("maBase.sqlite");
 /*
+
     InscriptionControlleur inscriptionCtrl(db);
 
     try {
@@ -40,29 +41,33 @@ int main() {
 
 
     ConnexionControlleur connexionCtrl(db);
-    auto utilisateurOptionel = connexionCtrl.verifierUtilisateur("joelle.farhat@gmail.com", "123456");
+    auto utilisateurOptionel = connexionCtrl.verifierUtilisateur("loraine.dicko@gmail.com", "111111");
 
     if (utilisateurOptionel) {
         std::cout << "Connexion réussie ! Bienvenue.\n";
     } else {
         std::cout << "Échec de la connexion : Email ou mot de passe incorrect.\n";
     }
+
+/*
+
     ModifierProfilControlleur modifProfCtrl(db);
     modifProfCtrl.ModifierProfil(utilisateurOptionel->getIdUtilisateur(), "motPasse", "111111");
 
+*/
 
-    /*
+/*
 
     TrajetControlleur trajetCtrl(db);
     trajetCtrl.creerTrajet(
     utilisateurOptionel->getIdUtilisateur(),
-    "2025-06-15",                            // date
+    "2025-08-15",                            // date
     "08:45",                                 // heureDepart
     "12:00",                                 // heureArrivee
     "Paris",                                 // lieuDepart
-    "lille",                                  // lieuArrivee
+    "rouen",                                  // lieuArrivee
     {                                        // segmentsPrix
-        {"Paris-lille", 15.0}
+        {"Paris-rouen", 15.0}
     },
     {},                             // villesEtapes
     true,                                    // disponible
@@ -74,13 +79,50 @@ int main() {
     123,                                  // emissionCO2
     "Trajet agreable avec pause à Orléans"   // description
 );
+ */
 
+
+     TrajetControlleur trajetCtrl(db);
+     std::vector<Trajet> trajets = trajetCtrl.obtenirTrajetsUtilisateur(utilisateurOptionel->getIdUtilisateur());
+     std::cout <<"tout va bien"<< std::endl;
+
+    if (trajets.empty()) {
+        std::cout << "Aucun trajet trouvé.\n";
+
+    }
+
+    for ( auto& trajet : trajets) {
+        std::cout << "---------------------------\n";
+        std::cout << "ID Trajet: " << trajet.getIdTrajet() << "\n";
+        std::cout << "Date: " << trajet.getDate() << "\n";
+        std::cout << "Heure départ: " << trajet.getHeureDepart() << "\n";
+        std::cout << "Heure arrivée: " << trajet.getHeureArrive() << "\n";
+        std::cout << "Lieu départ: " << trajet.getLieuDepart() << "\n";
+        std::cout << "Lieu arrivée: " << trajet.getLieuArrive() << "\n";
+        std::cout << "Voiture: " << trajet.getVoiture() << "\n";
+        std::cout << "Places dispo: " << trajet.getNombrePlaceDispo() << "\n";
+        std::cout << "CO2: " << trajet.getEmissionCO2() << " g/km\n";
+        std::cout << "Description: " << trajet.getDescription() << "\n";
+    }
+    std::cout << "---------------------------\n";
+
+
+
+/*
+    TrajetControlleur trajetCtrl(db);
+    std::map<Reservation, Trajet>  trajets = trajetCtrl.obtenirResvervationEtTrajetUtilisateur(utilisateurOptionel->getIdUtilisateur());
+
+    if (trajets.empty()) {
+        std::cout << "Aucune réservation trouvée." << std::endl;
+    } else {
+        std::cout << "Des réservations ont été trouvées." << std::endl;
+    }
 */
 
 /*
 
     TrajetControlleur trajetCtrl(db);
-    std::vector<Trajet> trajets = trajetCtrl.obtenirTrajets("Paris", "lille", "2025-06-15" );
+    std::vector<Trajet> trajets = trajetCtrl.obtenirTrajets("Paris", "rouen", "2025-06-15" );
 
 
     if (trajets.empty()) {
@@ -104,11 +146,14 @@ int main() {
     std::cout << "---------------------------\n";
 
     //TrajetControlleur trajetCtrl(db);
-    //trajetCtrl.reservation(2, 15, utilisateurOptionel->getIdUtilisateur(), true);
-    trajetCtrl.supprimerReservation(2);
+    trajetCtrl.reservation(4, 15, utilisateurOptionel->getIdUtilisateur(), true);
+    trajetCtrl.reservation(5, 15, utilisateurOptionel->getIdUtilisateur(), true);
+    //trajetCtrl.supprimerReservation(6);
 
+*/
 
-    std::vector<Trajet> trajetsNew = trajetCtrl.obtenirTrajets("Paris", "lille", "2025-06-15" );
+/*
+    std::vector<Trajet> trajetsNew = trajetCtrl.obtenirTrajets("Paris", "rouen", "2025-06-15" );
 
 
     if (trajetsNew.empty()) {

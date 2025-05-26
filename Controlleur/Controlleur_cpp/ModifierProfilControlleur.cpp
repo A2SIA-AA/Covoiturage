@@ -17,6 +17,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
 
     // Récupère l'utilisateur depuis la base
     Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id));
+    std::cout << "id : " << utilisateur.getIdUtilisateur() << utilisateur.getNom() << std::endl;
 
     if (choix == "nom" || choix == "prenom" || choix == "motPasse") {
         if (modification.empty()) {
@@ -53,7 +54,8 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
     else if (choix == "prenom") utilisateur.setPrenom(modification);
     else if (choix == "email") utilisateur.setEmail(modification);
     else if (choix == "motPasse") utilisateur.setMotPasse(modification);
-    else if (choix == "adressePostal") utilisateur.setAdressePostale(modification);
+    else if (choix == "adressePostale") utilisateur.setAdressePostale(modification);
     else if (choix == "fumeur") utilisateur.setFumeur(modification == "1");
     baseDeDonnees.modifierUtilisateur(utilisateur);
+    std::cout << "modification reussi "<< std::endl;
 }
