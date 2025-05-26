@@ -76,6 +76,7 @@ bool TrajetControlleur::verifierSaisieTrajet(
 void TrajetControlleur::reservation(int idTrajet, float prix, int idPassager, bool statut){
     Reservation nouvelleReservation(idTrajet, statut, prix, idPassager);
     baseDeDonnees.ajouterReservation(nouvelleReservation);
+	baseDeDonnees.ajouterPassager(idPassager);
     std::cout << "Réservation créée et enregistrée  avec succès.\n";
 }
 
@@ -103,9 +104,10 @@ void TrajetControlleur::creerTrajet(
 	float emissionCO2,
 	std::string description){
 
-    if (verifierSaisieTrajet(idConducteur, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description)) {
-    	Trajet nouveauTrajet(date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, allerRetour, animaux, voiture, nombrePlaceDispo, etat, emissionCO2, description);
+    if (verifierSaisieTrajet(idConducteur, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, false, animaux, voiture, nombrePlaceDispo, true, emissionCO2, description)) {
+    	Trajet nouveauTrajet(date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segmentsPrix, {}, disponible, false, animaux, voiture, nombrePlaceDispo, true, emissionCO2, description);
     	baseDeDonnees.ajouterTrajet(nouveauTrajet, idConducteur);
+    	baseDeDonnees.ajouterConducteur(idConducteur);
     	std::cout << "trajet ajouté.\n";
 		} else {
 			std::cout << "trajet non ajouté veuillez verifier vos infos.\n";
@@ -123,5 +125,27 @@ void TrajetControlleur::supprimerTrajet(int idTrajet){
 
 void TrajetControlleur::supprimerReservation(int idReservation){
 	baseDeDonnees.supprimerReservationByIDReservation(idReservation);
+	std::cout << "Reservation supprimé.\n";
+}
 
+
+std::vector<Trajet> TrajetControlleur::obtenirTrajetsUtilisateur(int idConducteur) {
+	Conducteur cond = baseDeDonnees.getConducteurByID(idConducteur);
+	std::cout << "ID utilisateur envoyé : " << cond.getIdUtilisateur() << std::endl;
+	std::cout <<"tout va bien"<< std::endl;
+	std::vector<Trajet> liste = cond.getListeTrajet();
+	std::cout <<"tout va bien"<< std::endl;
+	return liste;
+}
+
+
+std::map<Reservation, Trajet> TrajetControlleur::obtenirResvervationEtTrajetUtilisateur(int idUtilisateur) {
+	std::vector<std::pair<Reservation, Trajet>> listePaires = baseDeDonnees.getReservationEtTrajetByIdPassager(idUtilisateur);
+	std::map<Reservation, Trajet> dictionnaire;
+
+	for (const auto& paire : listePaires) {
+		dictionnaire.insert(paire);
+
+	}
+	return dictionnaire;
 }

@@ -111,6 +111,7 @@ public:
      */
     void TraiterTrajet();
 
-
+    std::vector<Trajet> obtenirTrajetsUtilisateur(int idConducteur);
+    std::map<Reservation, Trajet> obtenirResvervationEtTrajetUtilisateur(int idUtilisateur);
 };
 #endif
