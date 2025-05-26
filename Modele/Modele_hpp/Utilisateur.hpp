@@ -21,7 +21,7 @@ class Utilisateur{
 
 
 public:
-        Utilisateur(int id, std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
+        Utilisateur(std::string nom, std::string prenom, std::string email, std::string motPasse,std::string adressePostale, bool fumeur);
         int getIdUtilisateur();
         std::string getNom();
         std::string getPrenom();

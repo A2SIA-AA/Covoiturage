@@ -2,10 +2,9 @@
 
 
 
-Utilisateur::Utilisateur(int id, std::string nom, std::string prenom,
+Utilisateur::Utilisateur(std::string nom, std::string prenom,
                          std::string email, std::string motPasse,
                          std::string adressePostale, bool fumeur) {
-    this->idUtilisateur = id;
     this->nom = nom;
     this->prenom = prenom;
     this->email = email;

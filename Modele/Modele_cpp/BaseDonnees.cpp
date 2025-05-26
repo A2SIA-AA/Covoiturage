@@ -185,7 +185,7 @@ Utilisateur Database::getUtilisateurByEmailAndMDP(std::string email, std::string
         std::string adressePostale = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
         bool fumeur = sqlite3_column_int(stmt, 6);
 
-        Utilisateur user(idUtilisateur, nom, prenom, emailDB, mdpDB, adressePostale, fumeur);
+        Utilisateur user(nom, prenom, emailDB, mdpDB, adressePostale, fumeur);
         user.setIdUtilisateur(idUtilisateur);
         sqlite3_finalize(stmt);
         return user;
@@ -447,7 +447,7 @@ Trajet Database::getTrajetByIdTrajet(int idTrajet) {
         }
 
         Trajet trajet(
-                idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
+                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                 segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
                 voiture, nombrePlaceDispo, etat, emissionCO2, description
         );
@@ -524,7 +524,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepart(const 
             sqlite3_finalize(stmtEtape);
         }*/
         Trajet trajet(
-                idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
+                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                 segmentsPrix, {}, disponible, allerRetour, animaux,
                 voiture, nombrePlaceDispo, etat, emissionCO2, description
         );
@@ -603,7 +603,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(
             sqlite3_finalize(stmtEtape);
         }*/
         Trajet trajet(
-                idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
+                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                 segmentsPrix, {}, disponible, allerRetour, animaux,
                 voiture, nombrePlaceDispo, etat, emissionCO2, description
         );
@@ -680,7 +680,7 @@ std::vector<Trajet> Database::getTrajetByVilleDepartEtArriveeEtEmissionCO2(const
             sqlite3_finalize(stmtEtape);
         }*/
         Trajet trajet(
-                idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
+                date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                 segmentsPrix, {}, disponible, allerRetour, animaux,
                 voiture, nombrePlaceDispo, etat, emissionCO2, description
         );
@@ -759,7 +759,7 @@ Reservation Database::getReservationByID(int ID) {
         int idPassager = sqlite3_column_int(stmt, 4);
 
 
-        Reservation res(idReservation, idTrajet, statut, prix, idPassager);
+        Reservation res(idTrajet, statut, prix, idPassager);
         res.setIdReservation(idReservation);
         res.setIdPassager(idPassager);
         res.setIdTrajet(idTrajet);
@@ -972,7 +972,7 @@ Utilisateur Database::getUtilisateurByID(int idUtilisateur) {
         bool fumeur = sqlite3_column_int(stmt, 6);
 
         sqlite3_finalize(stmt);
-        return Utilisateur(id, nom, prenom, email, mdp, adresse, fumeur);
+        return Utilisateur(nom, prenom, email, mdp, adresse, fumeur);
     } else {
         sqlite3_finalize(stmt);
         throw std::runtime_error("Utilisateur non trouvé");
@@ -1208,7 +1208,7 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
         float prix = static_cast<float>(sqlite3_column_double(stmt, 3));
         int idPassagerRes = sqlite3_column_int(stmt, 4);
 
-        Reservation reservation(idReservation, idTrajet, statut, prix, idPassagerRes);
+        Reservation reservation(idTrajet, statut, prix, idPassagerRes);
 
         // Récupère les champs du trajet
         int idTrajetT = sqlite3_column_int(stmt, 5);
@@ -1237,8 +1237,7 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
         // Récupère les segments prix
         std::vector<std::pair<std::string, float>> segmentsPrix = getPrixByIdTrajet(idTrajetT);
 
-        Trajet trajet(
-                idTrajetT,date,heureDepart,heureArrivee,lieuDepart,lieuArrivee,segmentsPrix,{},disponible,allerRetour,animaux,voiture,nombrePlaceDispo,etat,emissionCO2,description);
+        Trajet trajet(date,heureDepart,heureArrivee,lieuDepart,lieuArrivee,segmentsPrix,{},disponible,allerRetour,animaux,voiture,nombrePlaceDispo,etat,emissionCO2,description);
 
         resultat.push_back({reservation, trajet});
     }
