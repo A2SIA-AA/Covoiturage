@@ -7,12 +7,16 @@
 
 #include <vector>
 #include <string>
-#include "Interface_hpp/MesAnnoncesInterface.hpp"
+#include "../MesAnnoncesInterface.hpp"
 
 
 class MesAnnoncesConsole : public MesAnnoncesInterface {
 public:
+    ~MesAnnoncesConsole() override;
+
     std::vector<std::string> listerAnnonces(int utilisateurId) override;
+
+    std::vector<std::string> listerAnnonces();
 };
 
 
