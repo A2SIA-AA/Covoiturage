@@ -8,9 +8,12 @@
 std::vector<Trajet> RechercheControlleur::rechercherTrajet(std::string villeDepart,
                                                            std::string villeArrivee,
                                                            std::string Date) {
-    //  récupérer les trajets le modèle
-    throw std::logic_error("rechercherTrajet non implémentée");
+    // Au lieu de throw, on interroge la BD
+    return baseDeDonnees.getTrajetByVilleDepartEtArriveeEtDateDepart(
+        villeDepart, villeArrivee, Date
+    );
 }
+
 
 std::vector<Trajet> RechercheControlleur::comparerPrix(const std::vector<Trajet>& trajetsDisponibles) {
     if (trajetsDisponibles.empty()) {
@@ -47,58 +50,27 @@ std::vector<Trajet> RechercheControlleur::comparerEmission(const std::vector<Tra
     return sorted;
 }
 
-float RechercheControlleur::calculerEmission(
-    float distance,
-    const std::string& typeVehiculeStr,
-    float consommationMoyenne,
-    int anciennete           // âge du véhicule en années
-) {
-    // 1) Définit un enum local
-    enum class TypeVehicule { Essence, Diesel, Electrique, Inconnu };
+float RechercheControlleur::calculerEmission(float distance,
+                                             const std::string& typeVehiculeStr,
+                                             float consommationMoyenne,
+                                             int anciennete) {
+    // Facteurs (kg CO₂ / litre)
+    float facteur = 2.31f;              // essence par défaut
+    std::string type = typeVehiculeStr;
+    std::transform(type.begin(), type.end(), type.begin(), [](unsigned char c){ return std::tolower(c); });
+    if (type == "diesel")      facteur = 2.68f;
+    else if (type == "essence") facteur = 2.31f;
+    else if (type == "electrique" || type == "électrique") facteur = 0.0f;
 
-    // 2) Passe la chaîne en minuscules
-    std::string s = typeVehiculeStr;
-    std::transform(s.begin(), s.end(), s.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
+    // Émission brute en kg
+    float emission = (distance * consommationMoyenne / 100.0f) * facteur;
 
-    // 3) Convertis la chaîne en enum
-    TypeVehicule type = TypeVehicule::Inconnu;
-    if (s == "diesel") {
-        type = TypeVehicule::Diesel;
+    // Ajustement selon ancienneté (max 30 ans)
+    constexpr float DUREE_MAX = 30.0f;
+    if (anciennete >= 0 && anciennete < DUREE_MAX) {
+        emission *= (1.0f - anciennete / DUREE_MAX);
     }
-    else if (s == "essence") {
-        type = TypeVehicule::Essence;
-    }
-    else if (s == "electrique") {
-        type = TypeVehicule::Electrique;
-    }
-
-    // 4) Choisis le facteur CO₂ selon le type
-    float facteurKgParUnite;
-    switch (type) {
-        case TypeVehicule::Diesel:
-            facteurKgParUnite = 2.7f;   // kg CO₂ / L
-            break;
-        case TypeVehicule::Essence:
-            facteurKgParUnite = 2.31f;   // kg CO₂ / L
-            break;
-        case TypeVehicule::Electrique:
-            facteurKgParUnite = 0.09f;   // kg CO₂ / kWh (mix moyen)
-            break;
-        default:
-            // si inconnu, on choisit essence par défaut
-            facteurKgParUnite = 2.31f;
-            break;
-    }
-
-    constexpr float alpha = 0.02f;
-    float majoration = 1.0f + anciennete * alpha;
-
-    // calcul
-    float emissionKg = (distance * consommationMoyenne / 100.0f)
-                       * facteurKgParUnite
-                       * majoration;
-    return emissionKg / 1000.0f;  // en tonnes
+    return emission;
 }
 
 

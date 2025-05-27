@@ -4,7 +4,9 @@
 #include "Modele/Modele_hpp/BaseDonnees.hpp"
 #include <iostream>
 
+#include "RechercheControlleur.hpp"
 #include "Interface/Interface_hpp/Console_hpp/ModifierProfilConsole.hpp"
+#include "Interface_hpp/Console_hpp/TrajetConsole.hpp"
 
 int main() {
     Database db("maBase.sqlite");
@@ -47,6 +49,7 @@ int main() {
     // 2) Affichage du menu principal
     AccueilConsole accueil;
     ModifierProfilConsole modifConsole;
+    RechercheControlleur rechercheCtrl(db);
     bool quitter = false;
     while (!quitter) {
         std::string choix = accueil.accueil();
@@ -58,6 +61,21 @@ int main() {
             }
         }
         else if (choix == "2") {
+            std::string depart, arrivee, date;
+            std::cout << "Ville de départ : ";   std::getline(std::cin, depart);
+            std::cout << "Ville d'arrivée : ";  std::getline(std::cin, arrivee);
+            std::cout << "Date (AAAA-MM-JJ) : "; std::getline(std::cin, date);
+
+            std::vector<Trajet> trajets = rechercheCtrl.rechercherTrajet(depart, arrivee, date);
+
+            // 3) On crée la console et on lui passe la liste
+            TrajetConsole vueTrajets;
+            vueTrajets.afficherInterfaceRecherche(trajets);
+
+            // 4) après que l'utilisateur ait fait son affaire dans la vue,
+            //    on peut revenir au menu principal ou quitter…
+            std::cout << "Appuyez sur Entrée pour revenir au menu principal…" << std::endl;
+            std::cin.get();
             std::cout << "[À implémenter] Recherche de trajet\n";
         }
         else if (choix == "3") {
