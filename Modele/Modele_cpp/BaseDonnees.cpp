@@ -1293,6 +1293,91 @@ bool Database::ajouterPassager(int idUtilisateur) {
     return true;
 }
 
+std::vector<Reservation> Database::getReservationsPassees(int idPassager) {
+    std::vector<Reservation> listeReservations;
+    std::string sql = R"(
+        SELECT r.idReservation, r.prix, r.statut, r.idPassager, r.idTrajet
+        FROM reservations r
+        JOIN trajets t ON r.idTrajet = t.idTrajet
+        WHERE r.idPassager = ?
+          AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now'))))";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+        return listeReservations;
+    }
+    sqlite3_bind_int(stmt, 1, idPassager);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        Reservation res(
+                sqlite3_column_int(stmt, 4),         // idTrajet
+                sqlite3_column_int(stmt, 2) == 1,    // statut
+                static_cast<float>(sqlite3_column_double(stmt, 1)), // prix
+                sqlite3_column_int(stmt, 3)          // idPassager
+        );
+        listeReservations.push_back(res);
+    }
+    sqlite3_finalize(stmt);
+
+    // Mise à jour du statut à false pour ces réservations
+    sql = R"(
+        UPDATE reservations
+        SET statut = 0
+        WHERE idReservation IN (
+            SELECT r.idReservation
+            FROM reservations r
+            JOIN trajets t ON r.idTrajet = t.idTrajet
+            WHERE r.idPassager = ?
+              AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now')))))";
+
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation mise à jour statut : " << sqlite3_errmsg(db) << std::endl;
+        return listeReservations;
+    }
+    sqlite3_bind_int(stmt, 1, idPassager);
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cerr << "Erreur mise à jour statut : " << sqlite3_errmsg(db) << std::endl;
+    }
+    sqlite3_finalize(stmt);
+
+    return listeReservations;
+}
+
+
+std::vector<Reservation> Database::getReservationsAVenir(int idPassager) {
+    std::vector<Reservation> listeReservations;
+    std::string sql = R"(
+        SELECT r.idReservation, r.prix, r.statut, r.idPassager, r.idTrajet
+        FROM reservations r
+        JOIN trajets t ON r.idTrajet = t.idTrajet
+        WHERE r.idPassager = ?
+          AND (t.date > date('now') OR (t.date = date('now') AND t.heureDepart >= time('now'))))";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
+        return listeReservations;
+    }
+    sqlite3_bind_int(stmt, 1, idPassager);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        Reservation res(
+                sqlite3_column_int(stmt, 4),
+                sqlite3_column_int(stmt, 2) == 1,
+                static_cast<float>(sqlite3_column_double(stmt, 1)),
+                sqlite3_column_int(stmt, 3)
+        );
+        listeReservations.push_back(res);
+    }
+    sqlite3_finalize(stmt);
+
+    return listeReservations;
+}
+
+
+
+
 
 
 

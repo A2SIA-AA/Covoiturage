@@ -254,24 +254,38 @@ public:
     bool verifierPrix(int idTrajet, float prix, const std::string& villeDepart, const std::string& villeArrivee);*/
 
     /**
-     *
-     * @param idPassager
-     * @return
+     * Cette methode permet de retourner la liste de toutes les reservations d'un passager avec les informations des trajets de chaque reservation
+     * @param idPassager id du passager qui veut voir ses reservations
+     * @return une pair de reservations et trajets
      */
     std::vector<std::pair<Reservation, Trajet>> getReservationEtTrajetByIdPassager(int idPassager);
 
     /**
-     *
+     * Cette methode permet d'ajouter un conducteur à la table conducteurs
      * @param idUtilisateur
-     * @return
+     * @return vrai si le conducteur a bien été ajouté et false sinon
      */
     bool ajouterConducteur(int idUtilisateur);
 
     /**
-     *
+     * Cette methode permet d'ajouter un passager à la table passagers
      * @param idUtilisateur
-     * @return
+     * @return vrai si le passager a bien été ajouté et false sinon
      */
     bool ajouterPassager(int idUtilisateur);
+
+    /**
+     * Cette methode retourne une liste de reservations passées cad dont la date de départ est déjà passée
+     * @param idPassager id du passager qui veut voir ses reservations
+     * @return une liste de reservations
+     */
+    std::vector<Reservation> getReservationsPassees(int idPassager);
+
+    /**
+     * Cette methode retourne une liste de reservations à venir cad dont la date de départ est dans le futur
+     * @param idPassager id du passager qui veut voir ses reservations
+     * @return une liste de reservations
+     */
+    std::vector<Reservation> getReservationsAVenir(int idPassager);
 };
 #endif
