@@ -1185,6 +1185,42 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
 
     std::vector<std::pair<Reservation, Trajet>> resultat;
 
+    std::string updateReservation = R"(
+        UPDATE reservations
+        SET statut = 0
+        WHERE idReservation IN (
+            SELECT r.idReservation
+            FROM reservations r
+            JOIN trajets t ON r.idTrajet = t.idTrajet
+            WHERE r.idPassager = ?
+              AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now')))
+        ))";
+
+    std::string updateTrajet = R"(
+        UPDATE trajets
+        SET disponible = 0
+        WHERE idTrajet IN (
+            SELECT t.idTrajet
+            FROM reservations r
+            JOIN trajets t ON r.idTrajet = t.idTrajet
+            WHERE r.idPassager = ?
+              AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now')))
+        ))";
+
+    // Exécution des mises à jour
+    sqlite3_stmt* stmtupd;
+    if (sqlite3_prepare_v2(db, updateReservation.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtupd, 1, idPassager);
+        sqlite3_step(stmtupd);
+        sqlite3_finalize(stmtupd);
+    }
+    if (sqlite3_prepare_v2(db, updateTrajet.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtupd, 1, idPassager);
+        sqlite3_step(stmtupd);
+        sqlite3_finalize(stmtupd);
+    }
+
+    //Recuperation des reservations et trajets
     std::string sql = R"(
         SELECT r.idReservation, r.idTrajet, r.statut, r.prix, r.idPassager,
                t.idTrajet, t.idConducteur, t.date, t.heureDepart, t.heureArrivee,
@@ -1204,7 +1240,6 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
     sqlite3_bind_int(stmt, 1, idPassager);
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        // Récupère les champs de la réservation
         int idReservation = sqlite3_column_int(stmt, 0);
         int idTrajet = sqlite3_column_int(stmt, 1);
         bool statut = sqlite3_column_int(stmt, 2) != 0;
@@ -1213,7 +1248,6 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
 
         Reservation reservation(idTrajet, statut, prix, idPassagerRes);
 
-        // Récupère les champs du trajet
         int idTrajetT = sqlite3_column_int(stmt, 5);
         int idConducteur = sqlite3_column_int(stmt, 6);
         const char* datePtr = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
@@ -1237,7 +1271,6 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
         const char* descriptionPtr = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 19));
         std::string description = descriptionPtr ? descriptionPtr : "";
 
-        // Récupère les segments prix
         std::vector<std::pair<std::string, float>> segmentsPrix = getPrixByIdTrajet(idTrajetT);
 
         Trajet trajet(date,heureDepart,heureArrivee,lieuDepart,lieuArrivee,segmentsPrix,{},disponible,allerRetour,animaux,voiture,nombrePlaceDispo,etat,emissionCO2,description);
@@ -1293,87 +1326,6 @@ bool Database::ajouterPassager(int idUtilisateur) {
     return true;
 }
 
-std::vector<Reservation> Database::getReservationsPassees(int idPassager) {
-    std::vector<Reservation> listeReservations;
-    std::string sql = R"(
-        SELECT r.idReservation, r.prix, r.statut, r.idPassager, r.idTrajet
-        FROM reservations r
-        JOIN trajets t ON r.idTrajet = t.idTrajet
-        WHERE r.idPassager = ?
-          AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now'))))";
-
-    sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
-        return listeReservations;
-    }
-    sqlite3_bind_int(stmt, 1, idPassager);
-
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        Reservation res(
-                sqlite3_column_int(stmt, 4),         // idTrajet
-                sqlite3_column_int(stmt, 2) == 1,    // statut
-                static_cast<float>(sqlite3_column_double(stmt, 1)), // prix
-                sqlite3_column_int(stmt, 3)          // idPassager
-        );
-        listeReservations.push_back(res);
-    }
-    sqlite3_finalize(stmt);
-
-    // Mise à jour du statut à false pour ces réservations
-    sql = R"(
-        UPDATE reservations
-        SET statut = 0
-        WHERE idReservation IN (
-            SELECT r.idReservation
-            FROM reservations r
-            JOIN trajets t ON r.idTrajet = t.idTrajet
-            WHERE r.idPassager = ?
-              AND (t.date < date('now') OR (t.date = date('now') AND t.heureDepart < time('now')))))";
-
-    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Erreur préparation mise à jour statut : " << sqlite3_errmsg(db) << std::endl;
-        return listeReservations;
-    }
-    sqlite3_bind_int(stmt, 1, idPassager);
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        std::cerr << "Erreur mise à jour statut : " << sqlite3_errmsg(db) << std::endl;
-    }
-    sqlite3_finalize(stmt);
-
-    return listeReservations;
-}
-
-
-std::vector<Reservation> Database::getReservationsAVenir(int idPassager) {
-    std::vector<Reservation> listeReservations;
-    std::string sql = R"(
-        SELECT r.idReservation, r.prix, r.statut, r.idPassager, r.idTrajet
-        FROM reservations r
-        JOIN trajets t ON r.idTrajet = t.idTrajet
-        WHERE r.idPassager = ?
-          AND (t.date > date('now') OR (t.date = date('now') AND t.heureDepart >= time('now'))))";
-
-    sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Erreur préparation requête : " << sqlite3_errmsg(db) << std::endl;
-        return listeReservations;
-    }
-    sqlite3_bind_int(stmt, 1, idPassager);
-
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        Reservation res(
-                sqlite3_column_int(stmt, 4),
-                sqlite3_column_int(stmt, 2) == 1,
-                static_cast<float>(sqlite3_column_double(stmt, 1)),
-                sqlite3_column_int(stmt, 3)
-        );
-        listeReservations.push_back(res);
-    }
-    sqlite3_finalize(stmt);
-
-    return listeReservations;
-}
 
 
 
