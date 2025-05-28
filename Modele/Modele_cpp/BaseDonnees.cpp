@@ -1209,12 +1209,12 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
 
     // Exécution des mises à jour
     sqlite3_stmt* stmtupd;
-    if (sqlite3_prepare_v2(db, updateReservation.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, updateReservation.c_str(), -1, &stmtupd, nullptr) == SQLITE_OK) {
         sqlite3_bind_int(stmtupd, 1, idPassager);
         sqlite3_step(stmtupd);
         sqlite3_finalize(stmtupd);
     }
-    if (sqlite3_prepare_v2(db, updateTrajet.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, updateTrajet.c_str(), -1, &stmtupd, nullptr) == SQLITE_OK) {
         sqlite3_bind_int(stmtupd, 1, idPassager);
         sqlite3_step(stmtupd);
         sqlite3_finalize(stmtupd);
