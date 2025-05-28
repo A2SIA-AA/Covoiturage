@@ -25,13 +25,13 @@ class Database {
 
 private:
     std::string filename;
-    sqlite3* db; ///< Pointeur vers l'objet base de données SQLite
+    sqlite3 *db; ///< Pointeur vers l'objet base de données SQLite
 public:
     /**
  * @brief Constructeur de la classe Database.
  * @param filename Chemin du fichier SQLite à ouvrir ou créer.
  */
-    explicit Database(const std::string& filename);
+    explicit Database(const std::string &filename);
 
     /**
      * @brief Destructeur de la classe Database.
@@ -49,10 +49,12 @@ public:
     bool isConnected() const;
 
     void close();
+
     /**
     * @brief Initialise les tables nécessaires dans la base de données si elles n'existent pas.
     */
     void initTables();
+
 /**
  * Ajouter un utilisateur dans la base de donnees
  * @param u un utilisateur a rajouter
@@ -84,7 +86,6 @@ public:
     bool ajouterTrajet(Trajet t, int idConducteur);
 
 
-
     /**
      * Ajouter une reservation a la base de donnees
      * @param r une reservation a rajouter
@@ -99,7 +100,10 @@ public:
  * @param date La date de depart du trajet
  * @return L'objet Trajet correspondant.
  */
-    std::vector<Trajet>getTrajetByVilleDepartEtArriveeEtDateDepart(const std::string& villeDepart, const std::string& villeArrivee, const std::string& date);
+    std::vector<Trajet>
+    getTrajetByVilleDepartEtArriveeEtDateDepart(const std::string &villeDepart, const std::string &villeArrivee,
+                                                const std::string &date);
+
 /**
  * Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
  * @param villeDepart
@@ -108,7 +112,9 @@ public:
  * @param prix
  * @return  L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(const std::string& villeDepart,const std::string& villeArrivee,const std::string& date,int prix);
+    std::vector<Trajet>
+    getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(const std::string &villeDepart, const std::string &villeArrivee,
+                                                      const std::string &date, int prix);
 
 /**
  * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
@@ -118,7 +124,9 @@ public:
  * @param emissionCO2
  * @return  L'objet Trajet correspondant.
  */
-    std::vector<Trajet> getTrajetByVilleDepartEtArriveeEtEmissionCO2(const std::string& villeDepart, const std::string& villeArrivee,const std::string& date, const float emissionCO2);
+    std::vector<Trajet>
+    getTrajetByVilleDepartEtArriveeEtEmissionCO2(const std::string &villeDepart, const std::string &villeArrivee,
+                                                 const std::string &date, const float emissionCO2);
 
     /**
      * Obtenir un trajet par son ID
@@ -133,36 +141,42 @@ public:
 * @return L'objet Reservation correspondant.
 */
     Reservation getReservationByID(int ID);
+
     /**
 * @brief Récupère les émissions de CO2 d’un trajet donné.
 * @param IDTrajet L’identifiant du trajet.
 * @return La quantité de CO2 émise.
 */
     float getEmissionCO2ByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère les prix par segment pour un trajet donné.
 * @param IDTrajet L’identifiant du trajet.
 * @return Un vecteur de paires <ville, prix>.
 */
     std::vector<std::pair<std::string, float>> getPrixByIdTrajet(int idTrajet);
+
     /**
 * @brief Récupère les villes étapes d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
 * @return Les noms de villes étapes du trajet.
 */
     std::vector<std::string> getPointIntermediaireByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère la date de départ d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
 * @return La date du départ du trajet correspondant.
 */
     std::string getDateDepatByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère la date d’arrivée d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
 * @return La date d'arrivée du trajet correspondant.
 */
     std::string getDateArriveeByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère l’heure d’arrivée d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
@@ -176,12 +190,14 @@ public:
      * @return  L'heure de départ du trajet indiqué.
      */
     std::string getHeureDepartByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère la ville d’arrivée d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
 * @return Le nom de la ville d’arrivée.
 */
     std::string getVilleArriveeByIdTrajet(int IDTrajet);
+
     /**
 * @brief Récupère la ville de départ d’un trajet.
 * @param IDTrajet L’identifiant du trajet.
@@ -195,13 +211,13 @@ public:
 * @return L'objet Conducteur correspondant.
 */
     Conducteur getConducteurByID(int idConducteur);
+
     /**
 * @brief Récupère les informations d’un passager via son ID.
 * @param idUtilisateur L’identifiant de l’utilisateur.
 * @return L'objet Passager correspondant.
 */
     Passager getPassagerByID(int inPassager);
-
 
 
     /**
@@ -219,7 +235,7 @@ public:
      * @param prix
      * @return vrai si il a bien etait ajouter et faux sinon
      */
-    bool ajouterSegmentsPrix(int idTrajet, const std::string& segment, float prix);
+    bool ajouterSegmentsPrix(int idTrajet, const std::string &segment, float prix);
 
     /**
      * Supprimer un trajet de la base de donnees
@@ -274,18 +290,5 @@ public:
      */
     bool ajouterPassager(int idUtilisateur);
 
-    /**
-     * Cette methode retourne une liste de reservations passées cad dont la date de départ est déjà passée
-     * @param idPassager id du passager qui veut voir ses reservations
-     * @return une liste de reservations
-     */
-    std::vector<Reservation> getReservationsPassees(int idPassager);
-
-    /**
-     * Cette methode retourne une liste de reservations à venir cad dont la date de départ est dans le futur
-     * @param idPassager id du passager qui veut voir ses reservations
-     * @return une liste de reservations
-     */
-    std::vector<Reservation> getReservationsAVenir(int idPassager);
 };
 #endif
