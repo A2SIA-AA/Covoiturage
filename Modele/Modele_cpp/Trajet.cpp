@@ -52,12 +52,12 @@ void Trajet::setEmissionCO2(float emissionCO2) { this->emissionCO2 = emissionCO2
 void Trajet::setDescription(std::string description) { this->description = description; }
 void Trajet::setPrixTotal(float prix) {this->prixTotal = prix;}
 
-float Trajet::getPrixTotal() {
+float Trajet::getPrixTotal() const {
     float somme = 0.0f;
     for (const auto& segment : this->segmentsPrix) {
         somme += segment.second;
     }
-    this->prixTotal = somme;
-    return this->prixTotal;
+    //this->prixTotal = somme;
+    return somme;
 }
 

@@ -13,10 +13,10 @@ bool ConnexionConsole::seConnecter(const std::string& email,
     // On peut soit refactorer une version "console" qui prend email/motDePasse
     // en argument, soit déléguer à la version interactive.
     // Ici on fait simple : on appelle le contrôleur directement :
-    Database db("maBase.sqlite");
     ConnexionControlleur controller(db);
-    auto utilisateur = controller.verifierUtilisateur(email, motDePasse);
-    if (utilisateur) {
+    utilisateurConnecte = controller.verifierUtilisateur(email, motDePasse);
+    if (utilisateurConnecte) {
+        std::cout << "ID de l'utilisateur connecté : " << utilisateurConnecte->getIdUtilisateur() << std::endl;
         std::cout << "Connexion réussie !" << std::endl;
         return true;
     } else {

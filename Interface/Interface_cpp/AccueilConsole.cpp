@@ -8,7 +8,8 @@ std::string AccueilConsole::accueil() {
     std::cout << "2. Recherche" << std::endl;
     std::cout << "3. Mes réservations" << std::endl;
     std::cout << "4. Mes annonces" << std::endl;
-    std::cout << "5. Quitter" << std::endl;
+    std::cout << "5. Ajouter un trajet" << std::endl;
+    std::cout << "6. Quitter" << std::endl;
     std::cout << "Votre choix : ";
 
     std::string choix;

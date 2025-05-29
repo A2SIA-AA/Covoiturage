@@ -4,8 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 
-// 1) définition du destructeur
-InscriptionConsole::~InscriptionConsole() = default;
 
 // 2) implémentation de la méthode pure virtuelle
 bool InscriptionConsole::sInscrire(const std::string& nom,
@@ -15,9 +13,7 @@ bool InscriptionConsole::sInscrire(const std::string& nom,
                                    const std::string& adressePostale,
                                    bool fumeur)
 {
-    Database db("maBase.sqlite");
     InscriptionControlleur controller(db);
-
     // Vérification de la saisie
     if (!controller.verifierSaisieInscription(nom, prenom, email, motPasse, adressePostale, fumeur)) {
         std::cout << "Erreur lors de l'inscription : données invalides.\n";

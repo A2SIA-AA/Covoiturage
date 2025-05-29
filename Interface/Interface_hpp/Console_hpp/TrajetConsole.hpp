@@ -6,11 +6,10 @@
 #define TRAJETCONSOLE_HPP
 
 #include <vector>
-#include "Interface_hpp/TrajetInterface.hpp"
+#include "../TrajetInterface.hpp"
 
 class TrajetConsole : public TrajetInterface {
-private:
-    ~TrajetConsole() override;
+    private:
 
 
     void afficherTrajets(const std::vector<Trajet>& trajets) override;
@@ -33,6 +32,7 @@ private:
 public:
     void afficherInterfaceRecherche(const std::vector<Trajet>& trajets) override;
     void afficherInterfaceRecherche();
+    ~TrajetConsole() override;
 };
 
 #endif //TRAJETCONSOLE_HPP

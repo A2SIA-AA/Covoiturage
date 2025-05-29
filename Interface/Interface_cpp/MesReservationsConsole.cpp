@@ -5,7 +5,13 @@
 // 1) Définition du destructeur
 MesReservationsConsole::~MesReservationsConsole() = default;
 
-// 2) Implémentation de la méthode pure virtuelle
+// 2) Constructeur avec base de données et contrôleur
+MesReservationsConsole::MesReservationsConsole(Database& db)
+    : db(db), controller(db)
+{
+}
+
+// 3) Affichage des réservations à partir d’un passager donné
 void MesReservationsConsole::afficherReservations(const Passager& passager) {
     std::cout << "=== Vos réservations ===" << std::endl;
     auto reservations = passager.getListeReservation();
@@ -20,31 +26,31 @@ void MesReservationsConsole::afficherReservations(const Passager& passager) {
     }
 }
 
-// 3) Version interactive qui pose les questions à l'utilisateur
+// 4) Version interactive : l’utilisateur entre son ID
 void MesReservationsConsole::afficherReservations() {
-    // On suppose que tu as un moyen de récupérer le Passager connecté (par exemple via un ID)
-    // Ici, on va demander l'ID du passager à l’utilisateur pour simuler la connexion
-
     int idPassager;
     std::cout << "=== Consultation de vos réservations ===" << std::endl;
     std::cout << "Veuillez entrer votre identifiant utilisateur (passager) : ";
     std::cin >> idPassager;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    // Exemple de récupération du Passager (à adapter selon ton modèle)
-    // Database db("maBase.sqlite");
-    // Passager passager = db.getPassagerByID(idPassager);
-    // Si tu n’as pas cette méthode, il faut l’ajouter ou adapter la logique
+    // Récupération des réservations depuis le contrôleur
+    std::map<Reservation, Trajet> reservationsMap = controller.obtenirResvervationEtTrajetUtilisateur(idPassager);
 
-    // Pour l’exemple, on crée un Passager vide (à remplacer par ta logique)
-    // (Dans la vraie application, il faut récupérer le Passager dans la base ou le service)
+    if (reservationsMap.empty()) {
+        std::cout << "Aucune réservation trouvée." << std::endl;
+        return;
+    }
+
+    // Création du Passager pour compatibilité avec méthode existante
     Passager passager("", "", "", "", "", false, {});
-    passager.setIdUtilisateur(idPassager); // Si tu as un setter pour l’ID (sinon, il faut l’ajouter ou adapter)
+    passager.setIdUtilisateur(idPassager);
 
-    // Ici, il faudrait récupérer les réservations du passager depuis la base de données
-    // Exemple : std::vector<Reservation> reservations = db.getReservationsByPassagerId(idPassager);
-    // passager.setListeReservation(reservations);
+    // Ajouter les réservations à l’objet Passager
+    for (const auto& pair : reservationsMap) {
+        passager.ajouterReservation(pair.first);
+    }
 
-    // Appel à la méthode principale
+    // Affichage via la méthode principale
     afficherReservations(passager);
 }

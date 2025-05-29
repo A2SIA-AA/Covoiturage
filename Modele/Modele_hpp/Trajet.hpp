@@ -67,7 +67,7 @@ public:
     std::string getDescription() const;
     std::vector<std::pair<std::string, float>> getSegmentsPrix() const;
     std::vector<std::string> getVillesEtapes() const;
-    float getPrixTotal();
+    float getPrixTotal() const;
 
 };
 
