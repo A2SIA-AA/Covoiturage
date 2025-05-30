@@ -7,12 +7,15 @@
 // 1) Définition du destructeur
 MesAnnoncesConsole::~MesAnnoncesConsole() = default;
 
+MesAnnoncesConsole::MesAnnoncesConsole(Database& db): db(db)
+{
+}
+
 
 // 2) Implémentation de la méthode pure virtuelle
 std::vector<std::string> MesAnnoncesConsole::listerAnnonces(int utilisateurId) {
     std::vector<std::string> annonces;
     try {
-        Database db("maBase.sqlite");
         Conducteur conducteur = db.getConducteurByID(utilisateurId);
         auto trajets = conducteur.getListeTrajet();
         for (const auto& trajet : trajets) {

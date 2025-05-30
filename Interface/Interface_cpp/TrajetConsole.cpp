@@ -10,6 +10,11 @@
 // 1) Définition du destructeur
 TrajetConsole::~TrajetConsole() = default;
 
+
+TrajetConsole::TrajetConsole(Database& db) : db(db), trajetCtrl(db), rechercheCtrl(db)
+{
+}
+
 // 2) Implémentation de la méthode pure virtuelle (interface)
 void TrajetConsole::afficherTrajets(const std::vector<Trajet>& trajets) {
     if (trajets.empty()) {
@@ -56,13 +61,8 @@ void TrajetConsole::afficherMenuFiltres() {
 
 
 // 2) Implémentation de la méthode pure virtuelle (interface)
-void TrajetConsole::afficherFiltrage(const std::vector<Trajet>& trajets) {
-    Database db("maBase.sqlite");
+void TrajetConsole::afficherFiltrage(const std::vector<Trajet>& trajets, int choix) {
     RechercheControlleur ctrl(db);
-    int choix;
-    std::cout << "Choisissez un filtre : ";
-    std::cin >> choix;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::vector<Trajet> resultats;
     switch (choix) {
@@ -120,7 +120,6 @@ void TrajetConsole::afficherDetailsTrajet(const Trajet& trajet) {
         std::cin >> idPassager;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         float prix = trajet.getPrixTotal();
-        Database db("maBase.sqlite");
         TrajetControlleur ctrl(db);
         ctrl.reservation(trajet.getIdTrajet(), prix, idPassager, true);
     }
@@ -157,7 +156,7 @@ void TrajetConsole::afficherInterfaceRecherche(const std::vector<Trajet>& trajet
 
         switch (choix) {
             case 1: case 2: case 3: case 4: case 5:
-                afficherFiltrage(trajets);
+                afficherFiltrage(trajets,choix);
                 break;
             case 6:
                 continuer = false;
@@ -204,7 +203,6 @@ void TrajetConsole::afficherInterfaceRecherche() {
 
     // Ici, il faudrait utiliser le contrôleur pour récupérer les trajets
     // Par exemple :
-     Database db("maBase.sqlite");
      TrajetControlleur ctrl(db);
      std::vector<Trajet> trajets = ctrl.obtenirTrajets(villeDepart, villeArrivee, date);
      afficherInterfaceRecherche(trajets);

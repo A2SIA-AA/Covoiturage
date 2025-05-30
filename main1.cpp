@@ -84,12 +84,12 @@ int main() {
 
 
     AccueilConsole accueil;
-    ModifierProfilConsole modifConsole;
+    ModifierProfilConsole modifConsole(db);
     RechercheControlleur rechercheCtrl(db);
     TrajetControlleur trajetCtrl(db);
     MesReservationsConsole reservationsConsole(db);
-    MesAnnoncesConsole annoncesConsole;
-    TrajetConsole trajetConsole;
+    MesAnnoncesConsole annoncesConsole(db);
+    TrajetConsole trajetConsole(db);
 
     bool quitter = false;
     while (!quitter) {

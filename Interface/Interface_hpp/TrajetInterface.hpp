@@ -29,8 +29,9 @@ class TrajetInterface {
          * @brief Affiche le résultat du filtrage choisi par l'utilisateur
          * 
          * @param trajets Référence au vecteur de trajets à filtrer.
+         * @param choix
          */
-        virtual void afficherFiltrage(const std::vector<Trajet>& trajets) =0;
+        virtual void afficherFiltrage(const std::vector<Trajet>& trajets,int choix) =0;
 
         /**
         * @brief Affiche un message pour permettre à l'utilisateur de retourner à l'accueil.

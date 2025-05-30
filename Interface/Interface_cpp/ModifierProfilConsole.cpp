@@ -5,6 +5,11 @@
 
 ModifierProfilConsole::~ModifierProfilConsole() = default;
 
+ModifierProfilConsole::ModifierProfilConsole(Database& db) : db(db)
+{
+}
+
+
 // 1) Méthode « pure » : on reçoit tout depuis l’appelant
 bool ModifierProfilConsole::modifierCoordonnees(
     const std::string& nom,
@@ -30,7 +35,6 @@ bool ModifierProfilConsole::modifierCoordonnees(
 
     // Appel au contrôleur
     try {
-        Database db("maBase.sqlite");
         ModifierProfilControlleur ctrl(db);
         ctrl.ModifierProfil(idUtilisateur, champ, nouvelleValeur);
         return true;
