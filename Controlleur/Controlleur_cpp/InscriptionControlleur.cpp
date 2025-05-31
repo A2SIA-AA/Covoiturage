@@ -28,11 +28,6 @@ bool InscriptionControlleur::verifierSaisieInscription(
     if (motPasse.length() < 6) {
         return false;
     }
-    // Vérifier que l'adresse postale contient uniquement des chiffres
-    const std::regex adresse(R"(^\d+$)");
-    if (!std::regex_match(adressePostal, adresse)) {
-        return false;
-    }
     return true;
 }
 
