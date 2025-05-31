@@ -28,9 +28,9 @@ bool InscriptionControlleur::verifierSaisieInscription(
     if (motPasse.length() < 6) {
         return false;
     }
-    // Vérifier que le numéro de téléphone contient uniquement des chiffres
-    const std::regex phonePattern(R"(^\d+$)");
-    if (!std::regex_match(adressePostal, phonePattern)) {
+    // Vérifier que l'adresse postale contient uniquement des chiffres
+    const std::regex adresse(R"(^\d+$)");
+    if (!std::regex_match(adressePostal, adresse)) {
         return false;
     }
     return true;
@@ -41,13 +41,13 @@ void InscriptionControlleur::traiterInscription(
     std::string prenom,
     std::string email,
     std::string motPasse,
-    std::string telephone,
+    std::string adressePostale,
     bool fumeur) {
-    if (!verifierSaisieInscription(nom, prenom, email, motPasse, telephone, fumeur)) {
+    if (!verifierSaisieInscription(nom, prenom, email, motPasse, adressePostale, fumeur)) {
         throw std::runtime_error("Erreur lors de l'inscription : données invalides.");
     }
 
-    Utilisateur utilisateur(nom, prenom, email, motPasse, telephone, fumeur);
+    Utilisateur utilisateur(nom, prenom, email, motPasse, adressePostale, fumeur);
 
     if (!baseDeDonnees.ajouterUtilisateur(utilisateur)) {
         throw std::runtime_error("Erreur : impossible d'ajouter l'utilisateur en base.");

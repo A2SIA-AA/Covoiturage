@@ -53,6 +53,7 @@ set(SOURCES
         Interface/Interface_hpp/Console_hpp/ModifierProfilConsole.hpp
         Interface/Interface_hpp/Console_hpp/RechercheConsole.hpp
         Interface/Interface_hpp/Console_hpp/TrajetConsole.hpp
+        main1.cpp
 )
 
 add_executable(Covoiturage ${SOURCES})
