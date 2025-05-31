@@ -432,7 +432,7 @@ Trajet Database::getTrajetByIdTrajet(int idTrajet) {
             sqlite3_finalize(stmtSeg);
         }
 
-        // Récupérer les villesEtapes associées à ce trajet
+        /*Récupérer les villesEtapes associées à ce trajet
         std::vector<std::string> villesEtapes;
         {
             std::string sqlEtape = "SELECT ville FROM ville_etape WHERE idTrajet = ?";
@@ -445,11 +445,11 @@ Trajet Database::getTrajetByIdTrajet(int idTrajet) {
                 }
             }
             sqlite3_finalize(stmtEtape);
-        }
+        }*/
 
         Trajet trajet(
                 date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
-                segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
+                segmentsPrix, {}, disponible, allerRetour, animaux,
                 voiture, nombrePlaceDispo, etat, emissionCO2, description
         );
         trajet.setIdTrajet(idTrajet);
@@ -1247,6 +1247,7 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
         int idPassagerRes = sqlite3_column_int(stmt, 4);
 
         Reservation reservation(idTrajet, statut, prix, idPassagerRes);
+        reservation.setIdReservation(idReservation);
 
         int idTrajetT = sqlite3_column_int(stmt, 5);
         int idConducteur = sqlite3_column_int(stmt, 6);
@@ -1274,6 +1275,7 @@ std::vector<std::pair<Reservation, Trajet>> Database::getReservationEtTrajetById
         std::vector<std::pair<std::string, float>> segmentsPrix = getPrixByIdTrajet(idTrajetT);
 
         Trajet trajet(date,heureDepart,heureArrivee,lieuDepart,lieuArrivee,segmentsPrix,{},disponible,allerRetour,animaux,voiture,nombrePlaceDispo,etat,emissionCO2,description);
+        trajet.setIdTrajet(idTrajet);
 
         resultat.push_back({reservation, trajet});
     }
