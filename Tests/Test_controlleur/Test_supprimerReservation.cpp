@@ -4,21 +4,22 @@
 #include <iostream>
 
 void testSuppressionReservation() {
+    Database db(":memory");
+    TrajetControlleur controller(db);
     // Cas nominal : suppression d'une réservation existante
     try {
-        // Initialisation
-        Passager p(1, "Alice", "Durant", "alice@email.com", "pwd", "Nice", false);
-        Reservation r1(25.0f, 1001, true);
-        Reservation r2(30.0f, 1002, true);
+        Passager p("Durant", "Alice", "alice@email.com", "pwd", "pwd", "Nice", {});
+        Reservation r1(1,true, 10, 1);
+        Reservation r2(2, true, 15, 1);
         std::vector<Reservation> liste = {r1, r2};
         p.setListeReservation(liste);
 
-        // Création du contrôleur de suppression et appel à la méthode
-        TrajetControlleur controller;
-        controller.supprimerReservation(1002);  // Suppression de la réservation avec ID 1002
 
-        // Vérification
-        if (p.getListeReservation().size() == 1 && p.getListeReservation()[0].getIdReservation() == 1001) {
+        // Suppression de la réservation id 1
+        controller.supprimerReservation(1);
+
+
+        if (p.getListeReservation().size() == 1 && p.getListeReservation()[0].getIdReservation() == 2) {
             std::cout << "Test Suppression Nominale : Réussi" << std::endl;
         } else {
             std::cout << "Test Suppression Nominale : Échoué (résultat inattendu)" << std::endl;
@@ -29,15 +30,13 @@ void testSuppressionReservation() {
 
     // Cas limite : suppression dans une liste contenant une seule réservation
     try {
-        Passager p(2, "Bob", "Martin", "bob@email.com", "pwd", "Lille", true);
-        Reservation r(50.0f, 2001, true);
+        Passager p("Martin", "Bob", "bob@email.com", "pwd", "76789", true, {});
+        Reservation r(3,true, 20, 2);
         p.setListeReservation({r});
 
-        // Création du contrôleur de suppression et appel à la méthode
-        TrajetControlleur controller;
-        controller.supprimerReservation(2001);   // Suppression de la seule réservation
+        controller.supprimerReservation(3);
 
-        // Vérification
+
         if (p.getListeReservation().empty()) {
             std::cout << "Test Suppression Limite : Réussi" << std::endl;
         } else {
@@ -47,18 +46,16 @@ void testSuppressionReservation() {
         std::cout << "Test Suppression Limite : Échoué (exception)" << std::endl;
     }
 
-    // Cas erreur : suppression d’un ID inexistant
+    // Cas erreur : suppression d’un ID qui n'existe pas
     try {
-        Passager p(3, "Chloe", "Durand", "chloe@email.com", "pwd", "Paris", false);
-        Reservation r(35.0f, 3001, true);
+        Passager p("Durand", "Chloe", "chloe@email.com", "pwd", "76800", true, false);
+        Reservation r(4,true, 30, 2);
         p.setListeReservation({r});
 
-        // Tentative de suppression avec un ID inexistant
-        TrajetControlleur controller;
-        controller.supprimerReservation(9999);  // ID inexistant
+        controller.supprimerReservation(9999);
 
-        // Vérification
-        if (p.getListeReservation().size() == 1 && p.getListeReservation()[0].getIdReservation() == 3001) {
+
+        if (p.getListeReservation().size() == 1 && p.getListeReservation()[0].getIdReservation() == 4) {
             std::cout << "Test Suppression ID Inexistant : Réussi" << std::endl;
         } else {
             std::cout << "Test Suppression ID Inexistant : Échoué (mauvaise suppression)" << std::endl;

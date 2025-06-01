@@ -4,7 +4,8 @@
 #include <string>
 
 void Test_VerifierSaisieTrajet() {
-    TrajetControlleur controleur;
+    Database db(":memory");
+    TrajetControlleur controleur(db);
 
     // Données valides de base
     int idTrajet = 1;

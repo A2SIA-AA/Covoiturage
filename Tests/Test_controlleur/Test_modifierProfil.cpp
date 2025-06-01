@@ -10,7 +10,7 @@ void testModifierProfil() {
 
     // Cas nominal : champ "nom"
     try {
-        controleur.ModifierProfil(1, "nom", "Alice");
+        controleur.ModifierProfil(1,"nom", "Alice");
         std::cout << "Test Nom : Réussi" << std::endl;
     } catch (...) {
         std::cout << "Test Nom : Échoué" << std::endl;

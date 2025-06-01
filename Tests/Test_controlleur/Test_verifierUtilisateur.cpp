@@ -3,10 +3,11 @@
 
 // Fonction de test qui affiche un message pour savoir si le test a réussi
 void testVerifierUtilisateur() {
-    ConnexionControlleur controleur;
+    Database db(":memory");
+    ConnexionControlleur controleur(db);
 
     // Test de l'utilisateur valide
-    bool resultat = controleur.verifierUtilisateur("utilisateur@example.com", "motdepassecorrect");
+    std::optional<Utilisateur> resultat = controleur.verifierUtilisateur("utilisateur@example.com", "motdepassecorrect");
     std::cout << "Test Utilisateur Valide : " << (resultat ? "Réussi" : "Échoué") << std::endl;
 
     // Test de l'email incorrect
