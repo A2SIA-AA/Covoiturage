@@ -3,7 +3,8 @@
 #include <iostream>
 
 void testObtenirTrajets() {
-    TrajetControlleur controleur;
+    Database db(":memory");
+    TrajetControlleur controleur(db);
 
     // Cas nominal : trajet existant
     std::vector<Trajet> trajets = controleur.obtenirTrajets("Paris", "Lyon", "2025-05-01");

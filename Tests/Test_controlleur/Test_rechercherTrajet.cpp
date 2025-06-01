@@ -6,22 +6,23 @@
 #include <stdexcept>
 
 void testRechercherTrajet() {
-    RechercheControlleur controleur;
+    Database db(":memory");
+    RechercheControlleur controleur(db);
 
     std::vector<std::pair<std::string, float>> segments = { {"Paris-Lyon", 30.0} };
     std::vector<std::string> villes = { };
 
     // Trajets de covoiturage avec différentes dates et villes de départ et d'arrivée
-    Trajet voiture1(1, "2025-06-01", "08:00", "11:00", "Paris", "Lyon",
+    Trajet voiture1("2025-06-01", "08:00", "11:00", "Paris", "Lyon",
                     segments, villes, true, false, false, "Citroën", 4, true, 40.0, "Voiture 1");
 
-    Trajet voiture2(2, "2025-06-01", "09:00", "10:30", "Paris", "Lyon",
+    Trajet voiture2("2025-06-01", "09:00", "10:30", "Paris", "Lyon",
                     segments, villes, true, false, false, "Peugeot", 2, true, 30.0, "Voiture 2");
 
-    Trajet voiture3(3, "2025-06-01", "07:00", "08:00", "Paris", "Marseille",
+    Trajet voiture3("2025-06-01", "07:00", "08:00", "Paris", "Marseille",
                     segments, villes, true, false, false, "Renault", 3, true, 35.0, "Voiture 3");
 
-    Trajet voiture4(4, "2025-06-02", "10:00", "12:00", "Paris", "Lyon",
+    Trajet voiture4("2025-06-02", "10:00", "12:00", "Paris", "Lyon",
                     segments, villes, true, false, false, "Volkswagen", 5, true, 50.0, "Voiture 4");
 
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3, voiture4 };

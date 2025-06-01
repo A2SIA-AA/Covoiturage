@@ -6,7 +6,8 @@
 #include <stdexcept>
 
 void testComparerPointIntermediaire() {
-    RechercheControlleur controleur;
+    Database db(":memory");
+    RechercheControlleur controleur(db);
 
     std::vector<std::pair<std::string, float>> segments1 = { {"Paris-Lyon", 30.0}, {"Lyon-Marseille", 200.0} };
     std::vector<std::pair<std::string, float>> segments2 = { {"Paris-Lyon", 30.0} };
@@ -17,13 +18,13 @@ void testComparerPointIntermediaire() {
     std::vector<std::string> villesEtapes3 = { "Lyon", "Aix" };
 
     // Trajets covoiturage avec différents nombres de points intermédiaires
-    Trajet voiture1(1, "2025-06-01", "08:00", "11:00", "Paris", "Marseille",  // 2 points intermédiaires
+    Trajet voiture1("2025-06-01", "08:00", "11:00", "Paris", "Marseille",  // 2 points intermédiaires
                     segments1, villesEtapes1, true, false, false, "Citroën", 4, true, 150.0, "Voiture 1");
 
-    Trajet voiture2(2, "2025-06-01", "09:00", "10:30", "Paris", "Lyon",  // 1 point intermédiaire
+    Trajet voiture2("2025-06-01", "09:00", "10:30", "Paris", "Lyon",  // 1 point intermédiaire
                     segments2, villesEtapes2, true, false, false, "Peugeot", 2, true, 100.0, "Voiture 2");
 
-    Trajet voiture3(3, "2025-06-01", "07:00", "08:00", "Paris", "Aix",  // 2 points intermédiaires
+    Trajet voiture3("2025-06-01", "07:00", "08:00", "Paris", "Aix",  // 2 points intermédiaires
                     segments3, villesEtapes3, true, false, false, "Renault", 3, true, 120.0, "Voiture 3");
 
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3 };

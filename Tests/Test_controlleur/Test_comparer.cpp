@@ -1,4 +1,5 @@
-#include "../../Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
+#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../Controlleur_hpp/RechercheControlleur.hpp"
 #include "../../Modele/Modele_hpp/Trajet.hpp"
 #include <iostream>
 #include <vector>
@@ -6,42 +7,81 @@
 #include <stdexcept>
 
 void testComparer() {
-    RechercheControlleur controleur;
+    // 1) On crée une base en mémoire (":memory:") pour satisfaire le constructeur de RechercheControlleur
+    Database db(":memory:");
 
-    std::vector<std::pair<std::string, float>> segmentsVoiture = { {"Paris-Lyon", 40.0} };
-    std::vector<std::pair<std::string, float>> segmentsVoiture2 = { {"Paris-Lyon", 35.0} };
+    // 2) On instancie le contrôleur en lui passant 'db'
+    RechercheControlleur controleur(db);
 
+    // 3) On prépare deux trajets de comparaison
+    std::vector<std::pair<std::string, float>> segmentsVoiture1 = { {"Paris-Lyon", 40.0f} };
+    std::vector<std::pair<std::string, float>> segmentsVoiture2 = { {"Paris-Lyon", 35.0f} };
     std::vector<std::string> villes = { "Paris", "Lyon" };
 
-    // Trajets voiture
-    Trajet voiture1(1, "2025-06-15", "08:00", "11:30", "Paris", "Lyon",
-                    segmentsVoiture, villes, true, false, false, "Clio", 3, true, 95.0, "Voiture A");
+    // Trajet A (prix = 40)
+    Trajet voiture1(
+        /* date */             "2025-06-15",
+        /* heureDepart */      "08:00",
+        /* heureArrivee */     "11:30",
+        /* lieuDepart */       "Paris",
+        /* lieuArrivee */      "Lyon",
+        /* segmentsPrix */     segmentsVoiture1,
+        /* villesEtapes */     villes,
+        /* disponible */       true,
+        /* allerRetour */      false,
+        /* animaux */          false,
+        /* voiture */          "Clio",
+        /* nombrePlaceDispo */ 3,
+        /* etat */             true,
+        /* emissionCO2 */      95.0f,
+        /* description */      "Voiture A"
+    );
 
-    Trajet voiture2(2, "2025-06-15", "09:00", "12:00", "Paris", "Lyon",
-                    segmentsVoiture2, villes, true, false, false, "308", 2, true, 90.0, "Voiture B");
+    // Trajet B (prix = 35)
+    Trajet voiture2(
+        /* date */             "2025-06-15",
+        /* heureDepart */      "09:00",
+        /* heureArrivee */     "12:00",
+        /* lieuDepart */       "Paris",
+        /* lieuArrivee */      "Lyon",
+        /* segmentsPrix */     segmentsVoiture2,
+        /* villesEtapes */     villes,
+        /* disponible */       true,
+        /* allerRetour */      false,
+        /* animaux */          false,
+        /* voiture */          "308",
+        /* nombrePlaceDispo */ 2,
+        /* etat */             true,
+        /* emissionCO2 */      90.0f,
+        /* description */      "Voiture B"
+    );
+
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2 };
 
-    // Cas nominal
+    // --- Cas nominal : on s'attend à ce que le trajet le moins cher (voiture B) soit en tête ---
     try {
-        std::vector<Trajet> resultats = controleur.comparer(trajetsDispo);
-
-        if (!resultats.empty()) {
-            std::cout << "Test Cas Nominal : Réussi - Trajet top = " << resultats[0].getDescription() << "\n";
+        auto resultats = controleur.comparer(trajetsDispo);
+        if (!resultats.empty() && resultats[0].getDescription() == "Voiture B") {
+            std::cout << "Test Cas Nominal : Réussi - Trajet top = "
+                      << resultats[0].getDescription() << "\n";
         } else {
-            std::cout << "Test Cas Nominal : Échoué - Liste retournée vide\n";
+            std::cout << "Test Cas Nominal : Échoué - ordre inattendu\n";
         }
     } catch (const std::exception& e) {
         std::cout << "Exception dans Test Cas Nominal : " << e.what() << "\n";
     }
 
-    // Cas : liste vide
+    // --- Cas liste vide : on s'attend à recevoir une liste vide (sans exception) ---
     try {
         std::vector<Trajet> vide;
-        std::vector<Trajet> resultats = controleur.comparer(vide);
-
-        std::cout << "Test Liste Vide : Échoué (exception attendue ou liste vide)\n";
+        auto resultats = controleur.comparer(vide);
+        if (resultats.empty()) {
+            std::cout << "Test Liste Vide : Réussi - Liste vide retournée\n";
+        } else {
+            std::cout << "Test Liste Vide : Échoué - La liste n'est pas vide\n";
+        }
     } catch (const std::exception& e) {
-        std::cout << "Test Liste Vide : Réussi - Exception capturée : " << e.what() << "\n";
+        std::cout << "Test Liste Vide : Échoué - Exception capturée : " << e.what() << "\n";
     }
 }
 

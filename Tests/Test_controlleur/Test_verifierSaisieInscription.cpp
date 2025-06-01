@@ -3,7 +3,8 @@
 
 // Fonction de test
 void testVerifierSaisie() {
-    InscriptionControlleur controleur;
+    Database db(":memory:");
+    InscriptionControlleur controleur(db);
 
     // Cas nominal : tous les champs sont valides
     try {
