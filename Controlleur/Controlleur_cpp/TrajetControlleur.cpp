@@ -130,12 +130,17 @@ void TrajetControlleur::supprimerReservation(int idReservation){
 
 
 std::vector<Trajet> TrajetControlleur::obtenirTrajetsUtilisateur(int idConducteur) {
-	Conducteur cond = baseDeDonnees.getConducteurByID(idConducteur);
-	std::cout << "ID utilisateur envoyé : " << cond.getIdUtilisateur() << std::endl;
-	std::cout <<"tout va bien"<< std::endl;
-	std::vector<Trajet> liste = cond.getListeTrajet();
-	std::cout <<"tout va bien"<< std::endl;
-	return liste;
+    try {
+        Conducteur cond = baseDeDonnees.getConducteurByID(idConducteur);
+        std::cout << "ID utilisateur envoyé : " << cond.getIdUtilisateur() << std::endl;
+        std::cout << "tout va bien" << std::endl;
+        std::vector<Trajet> liste = cond.getListeTrajet();
+        std::cout << "tout va bien" << std::endl;
+        return liste;
+    } catch (const std::exception& e) {
+        std::cerr << "Erreur : " << e.what() << std::endl;
+        return {};
+    }
 }
 
 

@@ -5,9 +5,9 @@
 #ifndef MESRESERVATIONSCONSOLE_HPP
 #define MESRESERVATIONSCONSOLE_HPP
 
-#include "ConnexionControlleur.hpp"
-#include "TrajetControlleur.hpp"
-#include "../../Modele/Modele_hpp/Passager.hpp"
+#include "../../../Controlleur/Controlleur_hpp/ConnexionControlleur.hpp"
+#include "../../../Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
+#include "../../../Modele/Modele_hpp/Passager.hpp"
 #include "../MesReservationsInterface.hpp"
 
 

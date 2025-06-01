@@ -4,8 +4,8 @@
 #include "../InscriptionInterface.hpp"
 #include <string>
 
-#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
-#include "../../Controlleur/Controlleur_hpp/InscriptionControlleur.hpp"
+#include "../../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../../../Controlleur/Controlleur_hpp/InscriptionControlleur.hpp"
 
 class InscriptionConsole : public InscriptionInterface {
 private:

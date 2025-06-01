@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "ConnexionControlleur.hpp"
+#include "../../../Controlleur/Controlleur_hpp/ConnexionControlleur.hpp"
 #include "../ConnexionInterface.hpp"
-#include "../../Modele/Modele_hpp/Utilisateur.hpp"
+#include "../../../Modele/Modele_hpp/Utilisateur.hpp"
 
 class ConnexionConsole : public ConnexionInterface {
 

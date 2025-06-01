@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "RechercheControlleur.hpp"
-#include "../../Modele/Modele_hpp/BaseDonnees.hpp"
-#include "../../Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
+#include "../../../Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
+#include "../../../Modele/Modele_hpp/BaseDonnees.hpp"
+#include "../../../Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
 #include "../TrajetInterface.hpp"
 
 class TrajetConsole : public TrajetInterface {
