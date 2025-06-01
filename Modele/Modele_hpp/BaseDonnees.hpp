@@ -56,7 +56,7 @@ public:
     void initTables();
 
 /**
- * Ajouter un utilisateur dans la base de donnees
+ * @ brief Ajouter un utilisateur dans la base de donnees
  * @param u un utilisateur a rajouter
  * @return vrai si il a bien etait ajouter et faux sinon
  */
@@ -71,14 +71,14 @@ public:
     Utilisateur getUtilisateurByEmailAndMDP(std::string email, std::string mdp);
 
     /**
-     * Cette methode permet me modifier les informations d'un utilisateur dans la table quand il modifie son compte
+     * @brief Cette methode permet me modifier les informations d'un utilisateur dans la table quand il modifie son compte
      * @param u
      * @return vrai si la modification a reussi et faux sinon
      */
     bool modifierUtilisateur(Utilisateur u);
 
 /**
- * Ajouter un trajet dans la base de donnees
+ * @brief Ajouter un trajet dans la base de donnees
  * @param t un trajet a rajouter
  * @param idConducteur id du conducteur qui publie le trajet
  * @return vrai si il a bien etait ajouter et faux sinon
@@ -87,7 +87,7 @@ public:
 
 
     /**
-     * Ajouter une reservation a la base de donnees
+     * @brief Ajouter une reservation a la base de donnees
      * @param r une reservation a rajouter
      * return vrai si elle a bien etait ajouter et faux sinon
      */
@@ -105,7 +105,7 @@ public:
                                                 const std::string &date);
 
 /**
- * Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
+ *  @brief Récupère une liste de trajet connaissant sa ville de départ et d’arrivée et sa date et son prix.
  * @param villeDepart
  * @param villeArrivee
  * @param date
@@ -117,7 +117,7 @@ public:
                                                       const std::string &date, int prix);
 
 /**
- * Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
+ * @brief Récupère un trajet connaissant sa ville de départ et d’arrivée et sa date et son emission CO2.
  * @param villeDepart
  * @param villeArrivee
  * @param date
@@ -129,7 +129,7 @@ public:
                                                  const std::string &date, const float emissionCO2);
 
     /**
-     * Obtenir un trajet par son ID
+     * @brief Obtenir un trajet par son ID
      * @param idTrajet id du trajet qu'on veut obtenir
      * @return un objet Trajet correcpondant
      */
@@ -221,7 +221,7 @@ public:
 
 
     /**
-     * Ajouter un point intermediaire dans le trajet
+     * @brief Ajouter un point intermediaire dans le trajet
      * @param idTrajet
      * @param NomVille
      * return vrai si il a bien etait ajouter et faux sinon
@@ -230,7 +230,7 @@ public:
     bool ajouterPointIntermediaire(int idTrajet, std::string nomVille);
 
     /**
-     * Ajouter le prix d'un segment du trajet
+     * @brief Ajouter le prix d'un segment du trajet
      * @param idTrajet
      * @param prix
      * @return vrai si il a bien etait ajouter et faux sinon
@@ -238,20 +238,20 @@ public:
     bool ajouterSegmentsPrix(int idTrajet, const std::string &segment, float prix);
 
     /**
-     * Supprimer un trajet de la base de donnees
+     * @brief Supprimer un trajet de la base de donnees
      * @param idTrajet respresente l'id du trajet qu'on veut supprimer
      */
     void supprimerTrajetByIDTrajet(int idTrajet);
 
 
     /**
-     * Supprimer une reservation de la base de donnees
+     * @brief Supprimer une reservation de la base de donnees
      * @param idReservation id de la reservation à annuler
      */
     void supprimerReservationByIDReservation(int idReservation);
 
 /**
- * Cette methode permet d'obtenir un utilisateur a partir de son ID
+ * @brief Cette methode permet d'obtenir un utilisateur a partir de son ID
  * @param idUtilisateur
  * @return un objet Utilisateur correspondant a l'ID
  */
@@ -277,14 +277,14 @@ public:
     std::vector<std::pair<Reservation, Trajet>> getReservationEtTrajetByIdPassager(int idPassager);
 
     /**
-     * Cette methode permet d'ajouter un conducteur à la table conducteurs
+     * @brief Cette methode permet d'ajouter un conducteur à la table conducteurs
      * @param idUtilisateur
      * @return vrai si le conducteur a bien été ajouté et false sinon
      */
     bool ajouterConducteur(int idUtilisateur);
 
     /**
-     * Cette methode permet d'ajouter un passager à la table passagers
+     * @brief Cette methode permet d'ajouter un passager à la table passagers
      * @param idUtilisateur
      * @return vrai si le passager a bien été ajouté et false sinon
      */
