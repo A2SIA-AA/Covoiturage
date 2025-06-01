@@ -14,7 +14,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
         return;
     }
 
-    // Récupère l'utilisateur depuis la base
+    // On récupère l'utilisateur depuis la base
     Utilisateur utilisateur = baseDeDonnees.getUtilisateurByID((id));
     std::cout << "id : " << utilisateur.getIdUtilisateur() << utilisateur.getNom() << std::endl;
 
@@ -32,7 +32,6 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
         }
     }
     else if (choix == "adressePostale") {
-        // On attend une chaîne numérique (ex. code postal)
         if (!std::all_of(modification.begin(), modification.end(), ::isdigit)) {
             std::cerr << "Adresse postale doit être un entier valide : "
                       << modification << std::endl;
@@ -40,15 +39,12 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
         }
     }
     else if (choix == "fumeur") {
-        // On attend "0" (non fumeur) ou "1" (fumeur)
         if (modification != "0" && modification != "1") {
             std::cerr << "Valeur invalide pour fumeur (doit être '0' ou '1') : "
                       << modification << std::endl;
             return;
         }
     }
-
-    // Appliquer la modification
     if (choix == "nom") utilisateur.setNom(modification);
     else if (choix == "prenom") utilisateur.setPrenom(modification);
     else if (choix == "email") utilisateur.setEmail(modification);

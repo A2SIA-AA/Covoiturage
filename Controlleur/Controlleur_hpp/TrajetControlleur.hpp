@@ -29,9 +29,9 @@ public:
     /**
      * @brief Vérifie que toutes les informations du trajet sont valides.
      * @param idTrajet Identifiant unique du trajet.
-     * @param date Date du trajet ().
-     * @param heureDepart Heure de départ ().
-     * @param heureArrivee Heure d'arrivée ().
+     * @param date Date du trajet.
+     * @param heureDepart Heure de départ.
+     * @param heureArrivee Heure d'arrivée.
      * @param lieuDepart Lieu de départ du trajet.
      * @param lieuArrivee Lieu d'arrivée du trajet.
      * @param segmentsPrix Liste des segments du trajet avec leur prix associé.
@@ -106,12 +106,27 @@ public:
      */
     void supprimerReservation(int idReservation);
 
-    /**
-     * @brief Redirige l'utilisateur vers "TrajetInterface"
-     */
-    void TraiterTrajet();
-
+      /**
+      * @brief Récupère les trajets publiés par un conducteur.
+      *
+      * Cette méthode retourne un vecteur contenant tous les trajets
+      * créés par un utilisateur identifié comme conducteur.
+      *
+      * @param idConducteur L'identifiant unique du conducteur.
+      * @return std::vector<Trajet> Liste des trajets associés à ce conducteur.
+      */
     std::vector<Trajet> obtenirTrajetsUtilisateur(int idConducteur);
+
+        /**
+         * @brief Récupère les réservations d'un utilisateur ainsi que les trajets associés.
+         *
+         * Cette méthode retourne une map associant chaque réservation effectuée par l'utilisateur
+         * au trajet correspondant.
+         *
+         * @param idUtilisateur L'identifiant unique de l'utilisateur (conducteur ou passager).
+         * @return std::map<Reservation, Trajet> Une map des réservations avec leurs trajets liés.
+         */
     std::map<Reservation, Trajet> obtenirResvervationEtTrajetUtilisateur(int idUtilisateur);
+
 };
 #endif
