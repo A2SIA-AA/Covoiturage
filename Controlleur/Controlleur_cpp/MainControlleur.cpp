@@ -181,6 +181,8 @@ void MainControlleur::connecterSignauxSlots() {
                                  champ.toStdString(),
                                  valeur.toStdString()
                                  );
+                             mettreAJourUtilisateur(champ, valeur);    
+                             fenetreModifierProfil->afficherUtilisateur(utilisateurConnecte.value());   
                              qDebug() << "Modification demandée pour" << champ << "=>" << valeur;
                          } else {
                              qDebug() << "Aucun utilisateur connecté. Modification ignorée.";
@@ -391,6 +393,19 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
 }
+
+void MainControlleur::mettreAJourUtilisateur(const QString &champ, const QString &valeur) {
+    if (!utilisateurConnecte.has_value()) return;
+
+    std::string valStr = valeur.toStdString();
+    if (champ == "nom") utilisateurConnecte->setNom(valStr);
+    else if (champ == "prenom") utilisateurConnecte->setPrenom(valStr);
+    else if (champ == "email") utilisateurConnecte->setEmail(valStr);
+    else if (champ == "motPasse") utilisateurConnecte->setMotPasse(valStr);
+    else if (champ == "adressePostal") utilisateurConnecte->setAdressePostale(valStr);
+    else if (champ == "fumeur") utilisateurConnecte->setFumeur(valStr == "1");
+}
+
 
 
 MainControlleur::~MainControlleur() {

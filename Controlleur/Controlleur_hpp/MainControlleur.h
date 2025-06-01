@@ -93,6 +93,20 @@ private:
      * @brief Connecte tous les signaux et slots entre les fenêtres et les contrôleurs.
      */
     void connecterSignauxSlots();
+
+    /**
+     * @brief Met à jour l'utilisateur connecté en mémoire après une modification.
+     *
+     * Cette méthode est appelée après la modification en base de données pour
+     * synchroniser les champs de l'objet utilisateur en mémoire avec les nouvelles valeurs saisies.
+     *
+     * @param champ Le champ modifié ("nom", "prenom", "email", "motPasse", "adressePostal", "fumeur").
+     * @param valeur La nouvelle valeur à affecter au champ.
+     */
+    void mettreAJourUtilisateur(const QString &champ, const QString &valeur);
+
+
+
 };
 
 
