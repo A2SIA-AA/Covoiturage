@@ -36,14 +36,14 @@ void MainControlleur::demarrerApplication() {
 
 void MainControlleur::connecterSignauxSlots() {
 
-    // 🔁 Passage de l'inscription vers la connexion
+    // Passage de l'inscription vers la connexion
     QObject::connect(fenetreInscription, &InscriptionFenetre::retourConnexion, [=]() {
         fenetreInscription->hide();
         fenetreConnexion->reinitialiserChamps();
         fenetreConnexion->show();
     });
 
-    // 🔁 Connexion → Inscription
+    // Passage de la connexion vers l'inscription
     QObject::connect(fenetreConnexion, &ConnexionFenetre::demandeInscription, [=]() {
         fenetreConnexion->hide();
         fenetreInscription->reinitialiserChamps();
@@ -80,12 +80,11 @@ void MainControlleur::connecterSignauxSlots() {
                                  "Erreur d'inscription",
                                  QString("Échec de l'inscription :\n") + e.what()
                                  );
-                             // la fenêtre reste affichée pour corriger
                          }
                      });
 
 
-    // ✅ Traitement de la connexion
+    // Traitement de la connexion
     QObject::connect(fenetreConnexion, &ConnexionFenetre::connexionDemandee,
                      [=](QString email, QString motDePasse) {
                          try {
@@ -111,8 +110,7 @@ void MainControlleur::connecterSignauxSlots() {
 
 
 
-
-    // 🔁 Accueil → autre page
+    // Passage de l'accueil vers les autres fenêtres de l'application 
     QObject::connect(fenetreAccueil, &AccueilFenetre::demandeNavigation,
                      [=](const QString &nomPage) {
                          fenetreAccueil->hide();
@@ -120,7 +118,7 @@ void MainControlleur::connecterSignauxSlots() {
                         if (nomPage == "modifierProfil") {
                             if (utilisateurConnecte.has_value()) {
                                 fenetreModifierProfil->reinitialiserChamps();
-                                fenetreModifierProfil->afficherUtilisateur(utilisateurConnecte.value()); // ✅ Ajout
+                                fenetreModifierProfil->afficherUtilisateur(utilisateurConnecte.value()); 
                                 fenetreModifierProfil->show();
                             } else {
                                 QMessageBox::warning(fenetreAccueil, "Erreur", "Aucun utilisateur connecté.");
@@ -174,7 +172,7 @@ void MainControlleur::connecterSignauxSlots() {
 
 
 
-    // ✅ Modifier Profil → ModifierProfilControlleur
+    // Modification  du Profil
     QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::modificationDemandee,
                      [=](const QString &champ, const QString &valeur) {
                          if (utilisateurConnecte.has_value()) {
@@ -189,13 +187,13 @@ void MainControlleur::connecterSignauxSlots() {
                          }
                      });
 
-    // 🔁 Retour vers l'accueil depuis ModifierProfil
+    // Retour vers l'accueil depuis ModifierProfil
     QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::retourAccueil, [=]() {
         fenetreModifierProfil->hide();
         fenetreAccueil->show();
     });
 
-    // ✅ Publier Trajet → appeler creerTrajet() via trajetSoumis
+    //  Publier Trajet 
     QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::trajetSoumis,
                      [=](const QString &date,
                          const QString &heureDepart,
@@ -216,7 +214,7 @@ void MainControlleur::connecterSignauxSlots() {
                              std::vector<std::pair<std::string, float>> segmentsPrix = {
                                  {lieuArrivee.toStdString(), prix}
                              };
-                             std::vector<std::string> villesEtapes = {};  // vide
+                             std::vector<std::string> villesEtapes = {};  
                              bool disponible = true;
                              bool allerRetour = false;
                              bool etat = true;
@@ -236,29 +234,29 @@ void MainControlleur::connecterSignauxSlots() {
                                  voiture.toStdString(),
                                  nombrePlaces,
                                  etat,
-                                 consommation,  // utilisé ici pour emissionCO2
+                                 consommation,  
                                  description.toStdString()
                                  );
 
-                             qDebug() << "✅ Trajet publié avec succès.";
+                             qDebug() << " Trajet publié avec succès.";
                              QMessageBox::information(fenetrePublierTrajet, "Trajet publié", "Votre trajet a bien été publié.");
                              fenetrePublierTrajet->hide();
                              fenetreAccueil->show();
                          } else {
-                             qDebug() << "❌ Aucun utilisateur connecté. Publication échouée.";
+                             qDebug() << " Aucun utilisateur connecté. Publication échouée.";
                              QMessageBox::warning(fenetrePublierTrajet, "Erreur", "Aucun utilisateur connecté.");
                          }
                      });
 
 
-    // 🔁 Retour vers l'accueil depuis PublierTrajet
+    // Retour vers l'accueil depuis PublierTrajet
     QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::retourAccueil, [=]() {
         fenetrePublierTrajet->hide();
         fenetreAccueil->show();
     });
 
 
-    // 🔁 Retour vers l'accueil depuis RechercherTrajet
+    // Retour vers l'accueil depuis RechercherTrajet
     QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::retourAccueil, [=]() {
         fenetreRechercherTrajet->hide();
         fenetreAccueil->show();
@@ -272,13 +270,6 @@ void MainControlleur::connecterSignauxSlots() {
                              lieuArrivee.toStdString(),
                              date.toStdString()
                              );
-                            qDebug() << "Trajets reçus: " << trajetsTrouves.size();
-                            for (const Trajet& t : trajetsTrouves) {
-                                qDebug() << "Trajet id:" << t.getIdTrajet()
-                                << " | Lieu départ:" << QString::fromStdString(t.getLieuDepart())
-                                << " | Heure départ:" << QString::fromStdString(t.getHeureDepart())
-                                << " | Segments prix:" << t.getSegmentsPrix().size();  // ⚠️ à surveiller ici !
-                            }
 
                          trajetsCourants = rechercheControlleur.comparer(trajetsTrouves);
 
@@ -286,7 +277,7 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
 
-    // 🔁 RechercherTrajet → application d’un filtre
+    // Application d’un filtre dans RechercherTrajet
     QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::filtrageDemande,
                      [=](const QString &critere) {
                          if (trajetsCourants.empty()) {
@@ -313,20 +304,20 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
 
-    // 🔁 Retour vers l'accueil depuis MesAnnonces
+    // Retour vers l'accueil depuis MesAnnonces
     QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::retourAccueil, [=]() {
         fenetreMesAnnonces->hide();
         fenetreAccueil->show();
     });
 
-    //suppresion d'une annonces
+    // Suppresion d'une annonce
     QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::demandeSuppression,
                      [=](int idTrajet) {
                          try {
                              trajetControlleur.supprimerTrajet(idTrajet);
                              QMessageBox::information(fenetreMesAnnonces, "Suppression", "Trajet supprimé avec succès.");
 
-                             // 🔁 Recharger les annonces après suppression
+                             // Recharger les annonces après suppression
                              if (utilisateurConnecte.has_value()) {
                                  std::vector<Trajet> annonces = trajetControlleur.obtenirTrajetsUtilisateur(
                                      utilisateurConnecte->getIdUtilisateur()
@@ -340,7 +331,7 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
 
-    // 🔁 Trajet sélectionné dans mes annonces → ouvrir détail trajet
+    // Trajet sélectionné dans mes annonces pour ouvrir détailTrajet
     QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::annonceSelectionnee,
                      [=](const Trajet& trajet) {
                          if (fenetreDetailTrajet) delete fenetreDetailTrajet;
@@ -353,7 +344,7 @@ void MainControlleur::connecterSignauxSlots() {
                          fenetreDetailTrajet->show();
                      });
 
-    // 🔁 Trajet sélectionné dans la recherche → ouvrir fenêtre de réservation
+    // Trajet sélectionné dans la recherche pour ouvrir fenêtre de réservation
     QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::trajetClique,
                      [=](const Trajet &trajet) {
                          if (fenetreDetailReservation) delete fenetreDetailReservation;
@@ -373,20 +364,20 @@ void MainControlleur::connecterSignauxSlots() {
                          fenetreDetailReservation->show();
                      });
 
-    // 🔁 Retour vers l'accueil depuis MesReservations
+    // Retour vers l'accueil depuis MesReservations
     QObject::connect(fenetreMesReservations, &MesReservationsFenetre::retourAccueil, [=]() {
         fenetreMesReservations->hide();
         fenetreAccueil->show();
     });
 
-    //Supppresion d'une reservation
+    // Supppresion d'une reservation
     QObject::connect(fenetreMesReservations, &MesReservationsFenetre::demandeSuppression,
                      [=](int idReservation) {
                          try {
                              trajetControlleur.supprimerReservation(idReservation);
                              QMessageBox::information(fenetreMesReservations, "Suppression", "Réservation supprimée avec succès.");
 
-                             // 🔁 Recharge les réservations
+                             // Recharge les réservations
                              if (utilisateurConnecte.has_value()) {
                                  std::map<Reservation, Trajet> reservations = trajetControlleur.obtenirResvervationEtTrajetUtilisateur(
                                      utilisateurConnecte->getIdUtilisateur()
@@ -399,11 +390,6 @@ void MainControlleur::connecterSignauxSlots() {
                          }
                      });
 
-
-
-    // Connecte le signal messageInscription au slot afficherMessage
-   // QObject::connect(&inscriptionControlleur, &InscriptionControlleur::messageInscription,
-                     //fenetreInscription, &InscriptionFenetre::afficherMessage);
 }
 
 

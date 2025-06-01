@@ -10,7 +10,7 @@ AccueilFenetre::AccueilFenetre(QWidget *parent)
     setWindowTitle("Page d'Accueil");
     setFixedSize(900, 900);
 
-    // Couleur unifiée comme les autres fenêtres
+    
     this->setStyleSheet("background-color: #2E2B2C; color: white; font-family: Arial;");
 
     // Création du menu
@@ -42,7 +42,7 @@ AccueilFenetre::AccueilFenetre(QWidget *parent)
     connect(actionMesAnnonces, &QAction::triggered, this, &AccueilFenetre::onMesAnnonces);
     connect(actionDeconnecter, &QAction::triggered, this, &AccueilFenetre::onDeconnecter);
 
-    // Création du widget central
+    
     centralWidget = new QWidget(this);
     layout = new QVBoxLayout(centralWidget);
 

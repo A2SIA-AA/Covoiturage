@@ -10,7 +10,7 @@ ModifierProfilFenetre::ModifierProfilFenetre(QWidget *parent) : QWidget(parent) 
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
-    // ✅ Champs info utilisateur (lecture seule)
+    
     nomLineEdit = new QLineEdit();
     prenomLineEdit = new QLineEdit();
     emailLineEdit = new QLineEdit();
@@ -25,7 +25,7 @@ ModifierProfilFenetre::ModifierProfilFenetre(QWidget *parent) : QWidget(parent) 
     adresseLineEdit->setReadOnly(true);
     fumeurCheckBox->setEnabled(false);
 
-    // ✅ Champs modification
+    
     champCombo = new QComboBox();
     champCombo->addItems({"nom", "prenom", "email", "motPasse", "adressePostal", "fumeur"});
     connect(champCombo, &QComboBox::currentTextChanged, this, &ModifierProfilFenetre::onChampChanged);
@@ -44,7 +44,7 @@ ModifierProfilFenetre::ModifierProfilFenetre(QWidget *parent) : QWidget(parent) 
     accueilBtn->setStyleSheet("background-color: #B183A7; color: white; padding: 8px; border-radius: 8px;");
     connect(accueilBtn, &QPushButton::clicked, this, &ModifierProfilFenetre::onAccueilClicked);
 
-    // ✅ Layout
+    
     QFormLayout *formLayout = new QFormLayout;
     formLayout->addRow("Nom", nomLineEdit);
     formLayout->addRow("Prénom", prenomLineEdit);
@@ -108,15 +108,15 @@ void ModifierProfilFenetre::onAccueilClicked() {
 }
 
 void ModifierProfilFenetre::reinitialiserChamps() {
-    champCombo->setCurrentIndex(0);     // Revenir à "nom"
-    valeurEdit->clear();                // Vider le champ texte
-    valeurEdit->show();                 // Réafficher si caché
-    fumeurCheck->setChecked(false);     // Décocher
-    fumeurCheck->hide();                // Cacher la case
+    champCombo->setCurrentIndex(0);     
+    valeurEdit->clear();                
+    valeurEdit->show();               
+    fumeurCheck->setChecked(false);     
+    fumeurCheck->hide();                
 }
 
 void ModifierProfilFenetre::afficherUtilisateur(const Utilisateur& utilisateur) {
-    // Remplace par les bons noms de QLineEdit dans ton interface
+    
     nomLineEdit->setText(QString::fromStdString(utilisateur.getNom()));
     prenomLineEdit->setText(QString::fromStdString(utilisateur.getPrenom()));
     emailLineEdit->setText(QString::fromStdString(utilisateur.getEmail()));
