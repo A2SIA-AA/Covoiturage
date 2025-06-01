@@ -22,7 +22,6 @@ set(SOURCES
         Interface/Interface_cpp/InscriptionConsole.cpp
         Interface/Interface_cpp/MesAnnoncesConsole.cpp
         Interface/Interface_cpp/MesReservationsConsole.cpp
-        Interface/Interface_cpp/RechercheConsole.cpp
         Interface/Interface_cpp/TrajetConsole.cpp
         Modele/Modele_cpp/BaseDonnees.cpp
         Modele/Modele_cpp/Conducteur.cpp
@@ -51,7 +50,6 @@ set(SOURCES
         Interface/Interface_hpp/Console_hpp/MesAnnoncesConsole.hpp
         Interface/Interface_hpp/Console_hpp/MesReservationsConsole.hpp
         Interface/Interface_hpp/Console_hpp/ModifierProfilConsole.hpp
-        Interface/Interface_hpp/Console_hpp/RechercheConsole.hpp
         Interface/Interface_hpp/Console_hpp/TrajetConsole.hpp
         main1.cpp
 )

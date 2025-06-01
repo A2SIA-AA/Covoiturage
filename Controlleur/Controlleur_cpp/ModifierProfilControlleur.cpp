@@ -1,6 +1,5 @@
 #include "../Controlleur_hpp/ModifierProfilControlleur.hpp"
 #include "../../Interface/Interface_hpp/ConnexionInterface.hpp"
-#include "../../Interface/Interface_hpp/AccueilInterface.hpp"
 #include <iostream>
 #include <regex>
 #include <algorithm>

@@ -6,12 +6,9 @@
 #include "Interface/Interface_hpp/Console_hpp/ModifierProfilConsole.hpp"
 #include "Interface/Interface_hpp/Console_hpp/TrajetConsole.hpp"
 #include "Modele/Modele_hpp/BaseDonnees.hpp"
-#include "Modele/Modele_hpp/Passager.hpp"
-#include "Modele/Modele_hpp/Conducteur.hpp"
 #include "Controlleur/Controlleur_hpp/RechercheControlleur.hpp"
 #include "Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
 #include <iostream>
-#include <limits>
 
 void saisirEtAjouterTrajet(int userId, TrajetControlleur& trajetCtrl) {
     int idTrajet = userId; // Pour simplifier, on utilise l'ID de l'utilisateur

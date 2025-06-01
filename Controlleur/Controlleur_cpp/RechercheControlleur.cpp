@@ -1,6 +1,5 @@
 #include "../Controlleur_hpp/RechercheControlleur.hpp"
 #include <algorithm>
-#include <stdexcept>
 #include <numeric>
 #include <sstream>
 
@@ -15,27 +14,25 @@ std::vector<Trajet> RechercheControlleur::rechercherTrajet(std::string villeDepa
 }
 
 
-std::vector<Trajet> RechercheControlleur::comparerPrix(const std::vector<Trajet>& trajetsDisponibles) {
-    if (trajetsDisponibles.empty()) {
-        return {};
-    }
-    //Copie de la liste pour ne pas la modifier
+std::vector<Trajet> RechercheControlleur::comparerPrix (const std::vector<Trajet>& trajetsDisponibles) {
+    if (trajetsDisponibles.empty()) return {};
+
     auto sorted = trajetsDisponibles;
-    std::sort(sorted.begin(), sorted.end(), [](auto& a, auto& b) {
-        float prixA = std::accumulate(
-                a.getSegmentsPrix().begin(), a.getSegmentsPrix().end(),
-                0.0f,
-                [](float sum, const auto& seg){
-                    return sum + seg.second;
-                });
-        float prixB = std::accumulate(
-                b.getSegmentsPrix().begin(), b.getSegmentsPrix().end(),
-                0.0f,
-                [](float sum, const auto& seg){
-                    return sum + seg.second;
-                });
+
+    std::sort(sorted.begin(), sorted.end(), [](const Trajet& a, const Trajet& b) {
+        float prixA = 0;
+        for (const auto& seg : a.getSegmentsPrix()) {
+            prixA += seg.second;
+        }
+
+        float prixB = 0;
+        for (const auto& seg : b.getSegmentsPrix()) {
+            prixB += seg.second;
+        }
+
         return prixA < prixB;
     });
+
     return sorted;
 }
 

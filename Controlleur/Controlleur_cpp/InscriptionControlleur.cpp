@@ -4,7 +4,6 @@
 #include <iostream>
 #include "../../Modele/Modele_hpp/Utilisateur.hpp"
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
-#include "../../Interface/Interface_hpp/Console_hpp/InscriptionConsole.hpp"
 
 bool InscriptionControlleur::verifierSaisieInscription(
     std::string nom,
@@ -48,6 +47,4 @@ void InscriptionControlleur::traiterInscription(
         throw std::runtime_error("Erreur : impossible d'ajouter l'utilisateur en base.");
     }
     std::cout << "Inscription réussie ! Vous pouvez désormais vous connecter." << std::endl;
-    //InscriptionConsole vue;
-    //vue.sInscrire(nom, prenom, email,telephone, motPasse);
 }
