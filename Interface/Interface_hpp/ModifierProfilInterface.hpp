@@ -19,12 +19,7 @@ public:
      * @param fumeur Indique si l'utilisateur est fumeur.
      * @return true si la modification a réussi, false sinon.
      */
-    virtual bool modifierCoordonnees(const std::string& nom,
-                           const std::string& prenom,
-                           const std::string& email,
-                           const std::string& motPasse,
-                           const std::string& adressePostale,
-                           bool fumeur) = 0;
+    virtual bool modifierCoordonnees() = 0;
 
     virtual ~ModifierProfilInterface() = default;
 };

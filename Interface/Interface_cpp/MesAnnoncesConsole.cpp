@@ -53,3 +53,47 @@ std::vector<std::string> MesAnnoncesConsole::listerAnnonces() {
 
     return annonces;
 }
+
+
+
+void MesAnnoncesConsole::afficherAnnonces() {
+    int utilisateurId;
+    std::cout << "=== Gestion de vos annonces ===" << std::endl;
+    std::cout << "Veuillez entrer votre identifiant utilisateur (conducteur) : ";
+    std::cin >> utilisateurId;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        auto annonces = listerAnnonces(utilisateurId);
+
+        if (annonces.empty()) {
+            std::cout << "Aucune annonce trouvée pour cet utilisateur." << std::endl;
+            return;
+        }
+
+        std::cout << "\nVos annonces :" << std::endl;
+        for (size_t i = 0; i < annonces.size(); ++i) {
+            std::cout << i + 1 << ". " << annonces[i] << std::endl;
+        }
+
+        std::cout << "\nQue souhaitez-vous faire ?" << std::endl;
+        std::cout << "1. Supprimer un trajet" << std::endl;
+        std::cout << "2. Retour" << std::endl;
+        std::cout << "Votre choix : ";
+        int choix;
+        std::cin >> choix;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (choix == 1) {
+            std::cout << "Entrez l’ID du trajet à supprimer : ";
+            int idTrajet;
+            std::cin >> idTrajet;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            db.supprimerTrajetByIDTrajet(idTrajet);
+        } else if (choix == 2) {
+            break;
+        } else {
+            std::cout << "Choix invalide.\n";
+        }
+    }
+}

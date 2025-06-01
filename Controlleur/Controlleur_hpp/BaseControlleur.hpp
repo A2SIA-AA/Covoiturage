@@ -4,8 +4,7 @@
 #include "../../Modele/Modele_hpp/BaseDonnees.hpp"
 
 /**
- * @class BaseControlleur
- * @brief Classe de base pour tous les contrôleurs, fournit l'accès à la base de données.
+ *
  */
 class BaseControlleur {
 protected:
@@ -13,13 +12,23 @@ protected:
 
 public:
     /**
-     * @brief Constructeur de la classe de base.
-     * @param db Référence à l'objet Database partagé.
+     * @brief Constructeur explicit de la classe BaseControlleur utilisant une base de données.
+     *
+     * Empêche l'initialisation de l'objet sans fournir une référence à un objet Database.
+     *
+     * @param db Référence à un objet Database utilisé pour l'initialisation.
      */
     explicit BaseControlleur(Database& db) : baseDeDonnees(db) {}
 
-    // empêcher l'utilisation du constructeur par défaut sans DB
+
     BaseControlleur() = delete;
+
+    /**
+     * @brief Destructeur virtuel par défaut de la classe BaseControlleur.
+     *
+     * Permet la destruction adéquate des objets dérivés tout en garantissant la libération
+     * correcte des ressources associées à la classe de base.
+     */
     virtual ~BaseControlleur() = default;
 };
 

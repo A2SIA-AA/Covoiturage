@@ -10,13 +10,15 @@
 #include "Controlleur/Controlleur_hpp/TrajetControlleur.hpp"
 #include <iostream>
 
-void saisirEtAjouterTrajet(int userId, TrajetControlleur& trajetCtrl) {
+void saisirEtAjouterTrajet(int userId, TrajetControlleur& trajetCtrl, RechercheControlleur& rechercheCtrl) {
     int idTrajet = userId; // Pour simplifier, on utilise l'ID de l'utilisateur
     std::string date, heureDepart, heureArrivee, lieuDepart, lieuArrivee;
-    std::string voiture, description;
+    std::string voiture, description, typeVoiture;
     float prix;
     int nbPlaces;
-    float emissionCO2;
+    float consoMoy;
+    float distance;
+    int anciennete;
     bool disponible = true, allerRetour, animaux, etat = false;
 
     std::cout << "Date (AAAA-MM-JJ): "; std::getline(std::cin, date);
@@ -24,20 +26,22 @@ void saisirEtAjouterTrajet(int userId, TrajetControlleur& trajetCtrl) {
     std::cout << "Heure d'arrivée (HH:MM): "; std::getline(std::cin, heureArrivee);
     std::cout << "Lieu de départ: "; std::getline(std::cin, lieuDepart);
     std::cout << "Lieu d'arrivée: "; std::getline(std::cin, lieuArrivee);
-
+    std::cout << "Distance (en km): "; std::cin >> distance; std::cin.ignore();
     std::cout << "Prix: "; std::cin >> prix; std::cin.ignore();
-    std::cout << "Voiture utilisée: "; std::getline(std::cin, voiture);
+    std::cout << "Marque voiture utilisée: "; std::getline(std::cin, voiture);
+    std::cout<< "Type de voiture: (diesel, essence ou electrique)"; std::getline(std::cin, typeVoiture);
+    std::cout << "Anciennete de la voiture:"; std::cin >> anciennete; std::cin.ignore();
     std::cout << "Nombre de places disponibles: "; std::cin >> nbPlaces; std::cin.ignore();
     std::cout << "Aller-retour ? (1: Oui, 0: Non): "; std::cin >> allerRetour; std::cin.ignore();
     std::cout << "Animaux acceptés ? (1: Oui, 0: Non): "; std::cin >> animaux; std::cin.ignore();
-    std::cout << "Émissions de CO2 (g/km): "; std::cin >> emissionCO2; std::cin.ignore();
+    std::cout << "Consommation Moyenne: "; std::cin >> consoMoy; std::cin.ignore();
     std::cout << "Description: "; std::getline(std::cin, description);
 
     std::vector<std::pair<std::string, float>> segments = {{lieuDepart + " - " + lieuArrivee, prix}};
     std::vector<std::string> villesEtapes;
 
-    if (trajetCtrl.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segments, villesEtapes, disponible, allerRetour, animaux, voiture, nbPlaces, etat, emissionCO2, description)) {
-        trajetCtrl.creerTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segments, villesEtapes, disponible, allerRetour, animaux, voiture, nbPlaces, etat, emissionCO2, description);
+    if (trajetCtrl.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segments, villesEtapes, disponible, allerRetour, animaux, voiture, nbPlaces, etat, rechercheCtrl.calculerEmission(distance,typeVoiture,consoMoy,anciennete), description)) {
+        trajetCtrl.creerTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee, segments, villesEtapes, disponible, allerRetour, animaux, voiture, nbPlaces, etat, rechercheCtrl.calculerEmission(distance,typeVoiture,consoMoy,anciennete), description);
         std::cout << "Trajet crée avec succés !\n";
     } else {
         std::cout << "Erreur lors de la saisie du trajet.\n";
@@ -108,11 +112,10 @@ int main() {
             reservationsConsole.afficherReservations();
         }
         else if (choix == "4") {
-            auto annonces = annoncesConsole.listerAnnonces(userId);
-            for (const auto& annonce : annonces) std::cout << annonce << "\n";
+            annoncesConsole.afficherAnnonces();
         }
         else if (choix == "5") {
-            saisirEtAjouterTrajet(userId, trajetCtrl);
+            saisirEtAjouterTrajet(userId, trajetCtrl,rechercheCtrl);
         }
         else if (choix == "6") {
             quitter = true;

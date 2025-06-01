@@ -22,6 +22,8 @@ public:
     std::vector<std::string> listerAnnonces();
 
     MesAnnoncesConsole(Database& db);
+
+    void afficherAnnonces();
 };
 
 
