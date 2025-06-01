@@ -1,31 +1,31 @@
-# Makefile pour CovoiturageApp
-
 # -----------------------------------------------------------------------
-# 1. Variables générales
+# Makefile pour CovoiturageApp + tests unitaires (Test_*.cpp)
 # -----------------------------------------------------------------------
 
-CXX        := g++
-CXXFLAGS   := -std=c++17 -Wall
-INCLUDES   := -IControlleur/Controlleur_hpp \
-              -IModele/Modele_hpp \
-              -IInterface/Interface_hpp
-LDFLAGS    := -lsqlite3
-TARGET     := CovoiturageApp
+# 1) Variables générales
+# -----------------------------------------------------------------------
+CXX       := g++
+CXXFLAGS  := -std=c++17 -Wall
+INCLUDES  := -IControlleur/Controlleur_hpp \
+             -IModele/Modele_hpp \
+             -IInterface/Interface_hpp
+
+LDFLAGS   := -lsqlite3
+TARGET    := CovoiturageApp
 
 # -----------------------------------------------------------------------
-# 2. Listes des sources par répertoire
+# 2) Sources de l’application principale
 # -----------------------------------------------------------------------
+SRC_MAIN        := main1.cpp
 
-SRC_MAIN          := main1.cpp
-
-SRC_CONTROLLEUR   := \
+SRC_CONTROLLEUR := \
     Controlleur/Controlleur_cpp/InscriptionControlleur.cpp \
     Controlleur/Controlleur_cpp/ConnexionControlleur.cpp    \
     Controlleur/Controlleur_cpp/TrajetControlleur.cpp       \
     Controlleur/Controlleur_cpp/RechercheControlleur.cpp    \
     Controlleur/Controlleur_cpp/ModifierProfilControlleur.cpp
 
-SRC_MODELE        := \
+SRC_MODELE      := \
     Modele/Modele_cpp/BaseDonnees.cpp \
     Modele/Modele_cpp/Utilisateur.cpp \
     Modele/Modele_cpp/Conducteur.cpp  \
@@ -33,7 +33,7 @@ SRC_MODELE        := \
     Modele/Modele_cpp/Reservation.cpp \
     Modele/Modele_cpp/Trajet.cpp
 
-SRC_INTERFACE     := \
+SRC_INTERFACE   := \
     Interface/Interface_cpp/TrajetConsole.cpp         \
     Interface/Interface_cpp/ConnexionConsole.cpp       \
     Interface/Interface_cpp/InscriptionConsole.cpp     \
@@ -42,10 +42,6 @@ SRC_INTERFACE     := \
     Interface/Interface_cpp/MesAnnoncesConsole.cpp     \
     Interface/Interface_cpp/MesReservationsConsole.cpp
 
-# -----------------------------------------------------------------------
-# 3. Construction de la liste complète des sources
-# -----------------------------------------------------------------------
-
 SRCS := \
     $(SRC_MAIN) \
     $(SRC_CONTROLLEUR) \
@@ -53,24 +49,32 @@ SRCS := \
     $(SRC_INTERFACE)
 
 # -----------------------------------------------------------------------
-# 4. Conversion noms de .cpp en .o (même arborescence d’objets)
+# 3) Conversion noms de .cpp → .o (dans obj/…)
 # -----------------------------------------------------------------------
-
-# Pour chaque .cpp, on définit le .o correspondant dans obj/…
-# Exemple : Controlleur/Controlleur_cpp/InscriptionControlleur.cpp → obj/Controlleur/InscriptionControlleur.o
-
 OBJDIR := obj
 OBJS   := $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
 # -----------------------------------------------------------------------
-# 5. Règles principales
+# 4) Sources des tests (fichiers Test_*.cpp dans Tests/)
 # -----------------------------------------------------------------------
+TEST_DIR   := Tests
+# Rechercher tous les fichiers Tests/Test_controlleur/Test_*.cpp
+TEST_SRCS  := $(wildcard $(TEST_DIR)/Test_controlleur/Test_*.cpp)
+# Extraire le nom simple (ex: “Test_monFonctionnalité”) sans le .cpp
+TEST_NAMES := $(notdir $(TEST_SRCS:.cpp=))
+# On produira pour chaque TEST_NAMES un exécutable bin/Test_monFonctionnalité
+TEST_BINS  := $(addprefix bin/,$(TEST_NAMES))
 
-.PHONY: all clean
+# -----------------------------------------------------------------------
+# 5) Cibles principales
+# -----------------------------------------------------------------------
+.PHONY: all app tests clean
 
-all: $(TARGET)
+all: app tests
 
-# Règle d’édition de liens finale
+# 5.1 Compilation de l’application principale
+app: $(TARGET)
+
 $(TARGET): $(OBJS)
 	@echo "----------------------------"
 	@echo "Édition des liens → $@"
@@ -78,24 +82,44 @@ $(TARGET): $(OBJS)
 	@echo "Compilation terminée : $@ généré."
 	@echo "----------------------------"
 
-# -----------------------------------------------------------------------
-# 6. Règle générique de compilation .cpp → .o
-# -----------------------------------------------------------------------
-# Chaque .cpp produit obj/<même_chemin>.o
-
-# $(OBJDIR)/%.o dépend de %.cpp
-# Exemple : obj/Controlleur/InscriptionControlleur.o dépend de Controlleur/Controlleur_cpp/InscriptionControlleur.cpp
-
+# 5.2 Règle générique .cpp → .o pour l’application principale
 $(OBJDIR)/%.o: %.cpp
 	@echo "Compilation de $< → $@"
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # -----------------------------------------------------------------------
-# 7. Nettoyage
+# 6) Compilation des tests unitaires
 # -----------------------------------------------------------------------
+# Pour chaque Tests/Test_controlleur/Test_*.cpp, on produit bin/Test_*.
+# On lie chaque test avec toutes les sources de l’application.
 
+# 6.1 Création du dossier bin/ s’il n’existe pas
+bin:
+	@mkdir -p bin
+
+# 6.2 Règle globale « tests » qui dépend de bin/ et de tous les exécutables bin/Test_*
+tests: | bin $(TEST_BINS)
+
+# 6.3 Construire chaque exécutable de test
+#     Exemple : Tests/Test_controlleur/Test_example.cpp → bin/Test_example
+$(foreach T,$(TEST_NAMES),\
+  $(eval \
+    bin/$(T): $(TEST_DIR)/Test_controlleur/$(T).cpp $(SRCS) ; \
+        @echo "=== Compilation du test $< → bin/$(T) ===" ; \
+        $(CXX) $(CXXFLAGS) $(INCLUDES) \
+            $(TEST_DIR)/Test_controlleur/$(T).cpp \
+            $(SRC_CONTROLLEUR) \
+            $(SRC_MODELE) \
+            $(SRC_INTERFACE) \
+            -o bin/$(T) $(LDFLAGS) ; \
+  )\
+)
+
+# -----------------------------------------------------------------------------
+# 7) Nettoyage
+# -----------------------------------------------------------------------------
 clean:
-	@echo "Suppression des .o et de l’exécutable…"
-	@rm -rf $(OBJDIR) $(TARGET)
+	@echo "Suppression des .o et des exécutables…"
+	@rm -rf $(OBJDIR) $(TARGET) bin
 	@echo "Nettoyage effectué."
