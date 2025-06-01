@@ -9,10 +9,6 @@
 /**
  * @class ModifierProfilControlleur
  * @brief Contrôleur responsable de la modification du profil utilisateur.
- *
- * Cette classe fournit une interface pour modifier les informations du profil
- * d'un utilisateur. Elle encapsule la logique nécessaire pour effectuer cette
- * opération.
  */
 class ModifierProfilControlleur : public BaseControlleur{
 
@@ -37,12 +33,6 @@ public:
      * informations fournies dans le paramètre.
      */
     void ModifierProfil(int id, std::string choix, std::string modification);
-
-    /**
-     * @brief Redirige l'utilisateur vers "AccueilInterface" ou "ConnexionInterface" selon la modification
-     * @param choix Une chaîne représentant l'element du profil à modifier.
-     */
-    void TraiterModificationProfil(std::string choix);
 };
 
 #endif // MODIFIERPROFILCONTROLLEUR_H

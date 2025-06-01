@@ -22,27 +22,27 @@ bool TrajetControlleur::verifierSaisieTrajet(
     float emissionCO2,
     std::string description
 ) {
-    // Vérifier format de la date (YYYY-MM-DD)
+    // On vérifie le format de la date
     std::regex regexDate(R"(^\d{4}-\d{2}-\d{2}$)");
     if (!std::regex_match(date, regexDate)) {
        // std::cerr << "Erreur : le format de la date est invalide (attendu : YYYY-MM-DD).\n";
         return false;
     }
 
-    // Vérifier format des heures (HH:MM)
+    //  On vérifie le format des heures
     std::regex regexHeure(R"(^\d{2}:\d{2}$)");
     if (!std::regex_match(heureDepart, regexHeure) || !std::regex_match(heureArrivee, regexHeure)) {
         //std::cerr << "Erreur : le format des heures est invalide (attendu : HH:MM).\n";
         return false;
     }
 
-    // Vérifier que les lieux ne sont pas vides
+    //  On vérifie que les lieux ne sont pas vides
     if (lieuDepart.empty() || lieuArrivee.empty()) {
        // std::cerr << "Erreur : les lieux de départ et d’arrivée ne doivent pas être vides.\n";
         return false;
     }
 
-    // Vérifier que les segments de prix ont des valeurs positives
+    //  On vérifie que les segments de prix ont des valeurs positives
     for (const auto& segment : segmentsPrix) {
         if (segment.second < 0) {
             //std::cerr << "Erreur : un segment a un prix négatif.\n";
@@ -50,25 +50,25 @@ bool TrajetControlleur::verifierSaisieTrajet(
         }
     }
 
-    // Vérifier que le nombre de places est positif
+    // On vérifie que le nombre de places est positif
     if (nombrePlaceDispo <= 0) {
         //std::cerr << "Erreur : le nombre de places disponibles doit être supérieur à 0.\n";
         return false;
     }
 
-    // Vérifier que la voiture n'est pas vide
+    // On vérifie que la voiture n'est pas vide
     if (voiture.empty()) {
         //std::cerr << "Erreur : le champ voiture ne doit pas être vide.\n";
         return false;
     }
 
-    // Vérifier que les émissions de CO2 sont cohérentes
+    //  On vérifie que les émissions de CO2 sont cohérentes
     if (emissionCO2 < 0) {
         std::cerr << "Erreur : les émissions de CO2 ne peuvent pas être négatives.\n";
         return false;
     }
 
-    // Si tout est bon
+    // et si tout est bon
     return true;
 }
 
@@ -113,8 +113,6 @@ void TrajetControlleur::creerTrajet(
 			std::cout << "trajet non ajouté veuillez verifier vos infos.\n";
 		}
     }
-
-
 
 
 void TrajetControlleur::supprimerTrajet(int idTrajet){

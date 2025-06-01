@@ -24,21 +24,12 @@ public:
     {
     }
 
-    /**private:
-    Database& baseDeDonnees;
-    * @brief Vérifie si un utilisateur existe dans la base de données et si le mot de passe est correct.
+    /**
+    * @brief Vérifie si un utilisateur existe dans la base de données en fonction de son mdp et mail.
     * @param email L'adresse e-mail de l'utilisateur.
     * @param motPasse Le mot de passe de l'utilisateur.
-    * @return l'utlisateur si il est present sinon un nulopt
+    * @return l'utlisateur si il est present sinon un nulopt.
     */
     std::optional<Utilisateur> verifierUtilisateur(std::string email, std::string motPasse);
-
-    /**
-    * @brief Traite la connexion d'un utilisateur (si la connexion s'est bien passé, on le renvoie à "AccueilInterface")
-    * @param email L'adresse e-mail de l'utilisateur.
-    * @param motPasse Le mot de passe de l'utilisateur.
-    */
-    void traiterConnexion(std::string email, std::string motPasse);
-
 };
 #endif
