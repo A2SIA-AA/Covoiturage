@@ -37,22 +37,22 @@ void MainControlleur::demarrerApplication() {
 void MainControlleur::connecterSignauxSlots() {
 
     // Passage de l'inscription vers la connexion
-    QObject::connect(fenetreInscription, &InscriptionFenetre::retourConnexion, [=]() {
+    QObject::connect(fenetreInscription, &InscriptionFenetre::retourConnexion, this, [this]() {
         fenetreInscription->hide();
         fenetreConnexion->reinitialiserChamps();
         fenetreConnexion->show();
     });
 
     // Passage de la connexion vers l'inscription
-    QObject::connect(fenetreConnexion, &ConnexionFenetre::demandeInscription, [=]() {
+    QObject::connect(fenetreConnexion, &ConnexionFenetre::demandeInscription, this,  [this]() {
         fenetreConnexion->hide();
         fenetreInscription->reinitialiserChamps();
         fenetreInscription->show();
     });
 
     // Connecte le signal du bouton d'inscription à la méthode traiterInscription
-    QObject::connect(fenetreInscription, &InscriptionFenetre::inscriptionDemandee,
-                     [=](QString nom, QString prenom, QString email, QString motDePasse, QString adressePostale, bool fumeur) {
+    QObject::connect(fenetreInscription, &InscriptionFenetre::inscriptionDemandee, this,
+                     [this](QString nom, QString prenom, QString email, QString motDePasse, QString adressePostale, bool fumeur) {
                          try {
                              inscriptionControlleur.traiterInscription(
                                  nom.toStdString(),
@@ -85,8 +85,8 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Traitement de la connexion
-    QObject::connect(fenetreConnexion, &ConnexionFenetre::connexionDemandee,
-                     [=](QString email, QString motDePasse) {
+    QObject::connect(fenetreConnexion, &ConnexionFenetre::connexionDemandee, this, 
+                     [this](QString email, QString motDePasse) {
                          try {
                              std::optional<Utilisateur> utilisateur = connexionControlleur.verifierUtilisateur(
                                  email.toStdString(), motDePasse.toStdString()
@@ -111,8 +111,8 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Passage de l'accueil vers les autres fenêtres de l'application 
-    QObject::connect(fenetreAccueil, &AccueilFenetre::demandeNavigation,
-                     [=](const QString &nomPage) {
+    QObject::connect(fenetreAccueil, &AccueilFenetre::demandeNavigation, this,
+                     [this](const QString &nomPage) {
                          fenetreAccueil->hide();
 
                         if (nomPage == "modifierProfil") {
@@ -173,8 +173,8 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Modification  du Profil
-    QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::modificationDemandee,
-                     [=](const QString &champ, const QString &valeur) {
+    QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::modificationDemandee,this,
+                     [this](const QString &champ, const QString &valeur) {
                          if (utilisateurConnecte.has_value()) {
                              modifierProfilControlleur.ModifierProfil(
                                  utilisateurConnecte->getIdUtilisateur(),
@@ -188,14 +188,14 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
     // Retour vers l'accueil depuis ModifierProfil
-    QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::retourAccueil, [=]() {
+    QObject::connect(fenetreModifierProfil, &ModifierProfilFenetre::retourAccueil, this,  [this]() {
         fenetreModifierProfil->hide();
         fenetreAccueil->show();
     });
 
     //  Publier Trajet 
-    QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::trajetSoumis,
-                     [=](const QString &date,
+    QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::trajetSoumis, this,
+                     [this](const QString &date,
                          const QString &heureDepart,
                          const QString &heureArrivee,
                          const QString &lieuDepart,
@@ -250,21 +250,21 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Retour vers l'accueil depuis PublierTrajet
-    QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::retourAccueil, [=]() {
+    QObject::connect(fenetrePublierTrajet, &PublierTrajetFenetre::retourAccueil, this, [this]() {
         fenetrePublierTrajet->hide();
         fenetreAccueil->show();
     });
 
 
     // Retour vers l'accueil depuis RechercherTrajet
-    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::retourAccueil, [=]() {
+    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::retourAccueil, this, [this]() {
         fenetreRechercherTrajet->hide();
         fenetreAccueil->show();
     });
 
     //Rechercher un Trajet
-    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::rechercheLancee,
-                     [=](QString lieuDepart, QString lieuArrivee, QString date) {
+    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::rechercheLancee, this,
+                     [this](QString lieuDepart, QString lieuArrivee, QString date) {
                          std::vector<Trajet> trajetsTrouves = rechercheControlleur.rechercherTrajet(
                              lieuDepart.toStdString(),
                              lieuArrivee.toStdString(),
@@ -278,8 +278,8 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Application d’un filtre dans RechercherTrajet
-    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::filtrageDemande,
-                     [=](const QString &critere) {
+    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::filtrageDemande, this, 
+                     [this](const QString &critere) {
                          if (trajetsCourants.empty()) {
                              QMessageBox::information(fenetreRechercherTrajet, "Aucun trajet", "Aucun trajet à filtrer. Lancez une recherche d'abord.");
                              return;
@@ -305,14 +305,14 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Retour vers l'accueil depuis MesAnnonces
-    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::retourAccueil, [=]() {
+    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::retourAccueil, this, [this]() {
         fenetreMesAnnonces->hide();
         fenetreAccueil->show();
     });
 
     // Suppresion d'une annonce
-    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::demandeSuppression,
-                     [=](int idTrajet) {
+    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::demandeSuppression, this,
+                     [this](int idTrajet) {
                          try {
                              trajetControlleur.supprimerTrajet(idTrajet);
                              QMessageBox::information(fenetreMesAnnonces, "Suppression", "Trajet supprimé avec succès.");
@@ -332,11 +332,11 @@ void MainControlleur::connecterSignauxSlots() {
 
 
     // Trajet sélectionné dans mes annonces pour ouvrir détailTrajet
-    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::annonceSelectionnee,
-                     [=](const Trajet& trajet) {
+    QObject::connect(fenetreMesAnnonces, &MesAnnoncesFenetre::annonceSelectionnee, this, 
+                     [this](const Trajet& trajet) {
                          if (fenetreDetailTrajet) delete fenetreDetailTrajet;
                          fenetreDetailTrajet = new DetailTrajetFenetre(trajet);
-                         QObject::connect(fenetreDetailTrajet, &DetailTrajetFenetre::fermetureFenetre, [=]() {
+                         QObject::connect(fenetreDetailTrajet, &DetailTrajetFenetre::fermetureFenetre, this, [this]() {
                              fenetreDetailTrajet->hide();
                              fenetreMesAnnonces->show();
                          });
@@ -345,16 +345,16 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
     // Trajet sélectionné dans la recherche pour ouvrir fenêtre de réservation
-    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::trajetClique,
-                     [=](const Trajet &trajet) {
+    QObject::connect(fenetreRechercherTrajet, &RechercherTrajetFenetre::trajetClique, this, 
+                     [this](const Trajet &trajet) {
                          if (fenetreDetailReservation) delete fenetreDetailReservation;
                          fenetreDetailReservation = new DetailTrajetReservationFenetre(trajet);
-                         QObject::connect(fenetreDetailReservation, &DetailTrajetReservationFenetre::fermetureFenetre, [=]() {
+                         QObject::connect(fenetreDetailReservation, &DetailTrajetReservationFenetre::fermetureFenetre, this, [this]() {
                              fenetreDetailReservation->hide();
                              fenetreRechercherTrajet->show();
                          });
-                         QObject::connect(fenetreDetailReservation, &DetailTrajetReservationFenetre::trajetReserve,
-                                          [=](const Trajet& t) {
+                         QObject::connect(fenetreDetailReservation, &DetailTrajetReservationFenetre::trajetReserve, this,
+                                          [this](const Trajet& t) {
                                               if (utilisateurConnecte.has_value()) {
                                                   trajetControlleur.reservation(t.getIdTrajet(), t. getSegmentsPrix().front().second, utilisateurConnecte->getIdUtilisateur(), true);
                                                   QMessageBox::information(fenetreDetailReservation, "Réservation", "Votre réservation a bien été enregistrée.");
@@ -365,14 +365,14 @@ void MainControlleur::connecterSignauxSlots() {
                      });
 
     // Retour vers l'accueil depuis MesReservations
-    QObject::connect(fenetreMesReservations, &MesReservationsFenetre::retourAccueil, [=]() {
+    QObject::connect(fenetreMesReservations, &MesReservationsFenetre::retourAccueil, this, [this]() {
         fenetreMesReservations->hide();
         fenetreAccueil->show();
     });
 
     // Supppresion d'une reservation
-    QObject::connect(fenetreMesReservations, &MesReservationsFenetre::demandeSuppression,
-                     [=](int idReservation) {
+    QObject::connect(fenetreMesReservations, &MesReservationsFenetre::demandeSuppression, this, 
+                     [this](int idReservation) {
                          try {
                              trajetControlleur.supprimerReservation(idReservation);
                              QMessageBox::information(fenetreMesReservations, "Suppression", "Réservation supprimée avec succès.");
