@@ -82,7 +82,7 @@ void MesReservationsFenetre::afficherReservations(const std::map<Reservation, Tr
                 msgBox->setText("Voulez-vous vraiment supprimer cette réservation ?");
                 msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox->setStyleSheet("background-color: #2E2B2C; color: white;");
-                msgBox->resize(400, 500); // largeur 400px, hauteur 200px
+                msgBox->resize(400, 500); 
 
 
                 connect(msgBox, &QMessageBox::buttonClicked, this, [=](QAbstractButton *button) {
@@ -95,13 +95,12 @@ void MesReservationsFenetre::afficherReservations(const std::map<Reservation, Tr
                 msgBox->show();
             });
 
-            // Création et ajout dans la liste À VENIR
+            
             QListWidgetItem *item = new QListWidgetItem();
             item->setSizeHint(widget->sizeHint());
             listeAVenir->addItem(item);
             listeAVenir->setItemWidget(item, widget);
         }
-        // Sinon, réservation passée
         else {
             QListWidgetItem *item = new QListWidgetItem();
             item->setSizeHint(widget->sizeHint());

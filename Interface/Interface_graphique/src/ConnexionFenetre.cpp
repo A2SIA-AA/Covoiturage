@@ -19,7 +19,7 @@ ConnexionFenetre::ConnexionFenetre(QWidget *parent)
 
     motDePasseLineEdit = new QLineEdit();
     motDePasseLineEdit->setPlaceholderText("PASSWORD");
-    motDePasseLineEdit->setEchoMode(QLineEdit::Password);// masquer le  mot de passe
+    motDePasseLineEdit->setEchoMode(QLineEdit::Password);
     motDePasseLineEdit->setStyleSheet("padding: 10px; border-radius: 10px; background-color: #444; color: white;");
 
     loginButton = new QPushButton("LOGIN");

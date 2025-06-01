@@ -73,7 +73,7 @@ void RechercherTrajetFenetre::onRechercheClicked() {
         return;
     }
 
-    // ✅ Vérification que la date est aujourd'hui ou future
+
     QDate dateEntree = QDate::fromString(date, "yyyy-MM-dd");
     QDate aujourdHui = QDate::currentDate();
 
@@ -157,7 +157,7 @@ void RechercherTrajetFenetre::reinitialiserChamps() {
     filtreHeure->setChecked(false);
     filtreDuree->setChecked(false);
     listeResultats->clear();
-    trajetsActuels.clear(); // vide le cache interne
+    trajetsActuels.clear(); 
 }
 
 

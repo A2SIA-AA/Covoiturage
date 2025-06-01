@@ -2,7 +2,7 @@
 #include <QTimer>
 #include <QRegularExpression>
 #include <QMessageBox>
-#include <QDate>        // ✅ Ajout pour la vérification de la date
+#include <QDate>      
 #include <QTime>
 
 
@@ -87,19 +87,19 @@ void PublierTrajetFenetre::onPublierClicked() {
 
 
 
-    // Expressions régulières (déclarées en static pour éviter les warnings)
-    static const QRegularExpression dateRegex("^\\d{4}-\\d{2}-\\d{2}$");     // AAAA-MM-JJ
-    static const QRegularExpression heureRegex("^\\d{2}:\\d{2}$");           // HH:MM
-    static const QRegularExpression nombreRegex("^\\d+(\\.\\d+)?$");         // Float (ex: 12 ou 12.5)
-    static const QRegularExpression entierRegex("^\\d+$");                   // Entier positif
+    
+    static const QRegularExpression dateRegex("^\\d{4}-\\d{2}-\\d{2}$");     
+    static const QRegularExpression heureRegex("^\\d{2}:\\d{2}$");          
+    static const QRegularExpression nombreRegex("^\\d+(\\.\\d+)?$");         
+    static const QRegularExpression entierRegex("^\\d+$");                   
 
-    // Vérifications de format
+    
     if (!dateRegex.match(dateEdit->text()).hasMatch()) {
         QMessageBox::warning(this, "Erreur", "La date doit être au format AAAA-MM-JJ et contenir que des nombres.");
         return;
     }
 
-    // ✅ ✅ Nouvelle vérification de la date du jour
+    
     QDate dateTrajet = QDate::fromString(dateEdit->text(), "yyyy-MM-dd");
     QDate dateActuelle = QDate::currentDate();
 
@@ -112,7 +112,6 @@ void PublierTrajetFenetre::onPublierClicked() {
         QMessageBox::warning(this, "Erreur", "La date du trajet ne peut pas être antérieure à aujourd'hui.");
         return;
     }
-    // ✅ ✅ Fin de la modification
 
 
     if (!heureRegex.match(heureDepartEdit->text()).hasMatch() ||
@@ -121,19 +120,18 @@ void PublierTrajetFenetre::onPublierClicked() {
         return;
     }
 
-    // ✅ Nouvelle vérification heure de départ si date == aujourd'hui
+    
     if (dateTrajet == dateActuelle) {
         QTime heureDepart = QTime::fromString(heureDepartEdit->text(), "HH:mm");
         QTime heureActuelle = QTime::currentTime();
-        QTime minimumHeure = heureActuelle.addSecs(30 * 60); // +30 min
-
+        QTime minimumHeure = heureActuelle.addSecs(30 * 60); 
         if (heureDepart < minimumHeure) {
             QMessageBox::warning(this, "Erreur", "L'heure de départ doit être au moins 30 minutes après l'heure actuelle.");
             return;
         }
     }
 
-    // ✅ Vérification que l'heure d'arrivée est après celle de départ
+    
     QTime heureDepart = QTime::fromString(heureDepartEdit->text(), "HH:mm");
     QTime heureArrivee = QTime::fromString(heureArriveeEdit->text(), "HH:mm");
 
