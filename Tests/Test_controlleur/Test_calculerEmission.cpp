@@ -2,7 +2,8 @@
 #include <iostream>
 
 void TestcalculerEmission() {
-    RechercheControlleur controleur;
+    Database db(":memory");
+    RechercheControlleur controleur(db);
 
     //Cas nominal : voiture diesel, conso moyenne normale
     float distance = 100.0f;
