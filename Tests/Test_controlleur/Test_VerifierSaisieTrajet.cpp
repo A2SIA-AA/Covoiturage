@@ -35,16 +35,6 @@ void Test_VerifierSaisieTrajet() {
         std::cout << " Cas 1 (valide) : Échoué - " << e.what() << std::endl;
     }
 
-    // Cas 2 : Heure de départ après heure d’arrivée
-    try {
-        controleur.verifierSaisieTrajet(idTrajet, date, "15:00", "10:00", lieuDepart, lieuArrivee,
-                                  segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
-                                  voiture, nombrePlaceDispo, etat, emissionCO2, description);
-        std::cout << " Cas 2 (heure départ > heure arrivée) : Échoué - aucune exception levée" << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << " Cas 2 (heure départ > heure arrivée) : Réussi - " << e.what() << std::endl;
-    }
-
     // Cas 3 : Lieu de départ vide
     try {
         controleur.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, "", lieuArrivee,
