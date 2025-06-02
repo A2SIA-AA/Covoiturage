@@ -25,40 +25,40 @@ bool TrajetControlleur::verifierSaisieTrajet(
     // On vérifie le format de la date
     std::regex regexDate(R"(^\d{4}-\d{2}-\d{2}$)");
     if (!std::regex_match(date, regexDate)) {
-       // std::cerr << "Erreur : le format de la date est invalide (attendu : YYYY-MM-DD).\n";
+       std::cerr << "Erreur : le format de la date est invalide (attendu : YYYY-MM-DD).\n";
         return false;
     }
 
     //  On vérifie le format des heures
     std::regex regexHeure(R"(^\d{2}:\d{2}$)");
     if (!std::regex_match(heureDepart, regexHeure) || !std::regex_match(heureArrivee, regexHeure)) {
-        //std::cerr << "Erreur : le format des heures est invalide (attendu : HH:MM).\n";
+        std::cerr << "Erreur : le format des heures est invalide (attendu : HH:MM).\n";
         return false;
     }
 
     //  On vérifie que les lieux ne sont pas vides
     if (lieuDepart.empty() || lieuArrivee.empty()) {
-       // std::cerr << "Erreur : les lieux de départ et d’arrivée ne doivent pas être vides.\n";
+        std::cerr << "Erreur : les lieux de départ et d’arrivée ne doivent pas être vides.\n";
         return false;
     }
 
     //  On vérifie que les segments de prix ont des valeurs positives
     for (const auto& segment : segmentsPrix) {
         if (segment.second < 0) {
-            //std::cerr << "Erreur : un segment a un prix négatif.\n";
+            std::cerr << "Erreur : un segment a un prix négatif.\n";
             return false;
         }
     }
 
     // On vérifie que le nombre de places est positif
     if (nombrePlaceDispo <= 0) {
-        //std::cerr << "Erreur : le nombre de places disponibles doit être supérieur à 0.\n";
+            std::cerr << "Erreur : le nombre de places disponibles doit être supérieur à 0.\n";
         return false;
     }
 
     // On vérifie que la voiture n'est pas vide
     if (voiture.empty()) {
-        //std::cerr << "Erreur : le champ voiture ne doit pas être vide.\n";
+          std::cerr << "Erreur : le champ voiture ne doit pas être vide.\n";
         return false;
     }
 

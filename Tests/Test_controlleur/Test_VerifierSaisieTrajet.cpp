@@ -30,50 +30,50 @@ void Test_VerifierSaisieTrajet() {
         controleur.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                                   segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
                                   voiture, nombrePlaceDispo, etat, emissionCO2, description);
-        std::cout << " Cas 1 (valide) : Réussi" << std::endl;
+        std::cout << " valide : Réussi" << std::endl;
     } catch (const std::exception& e) {
-        std::cout << " Cas 1 (valide) : Échoué - " << e.what() << std::endl;
+        std::cout << " valide : Échoué - " << e.what() << std::endl;
     }
 
-    // Cas 3 : Lieu de départ vide
+    // Cas 2 : Lieu de départ vide
     try {
         controleur.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, "", lieuArrivee,
                                   segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
                                   voiture, nombrePlaceDispo, etat, emissionCO2, description);
-        std::cout << " Cas 3 (lieu départ vide) : Échoué - aucune exception levée" << std::endl;
+        std::cout << " lieu départ vide : Réussi" << std::endl;
     } catch (const std::exception& e) {
-        std::cout << "Cas 3 (lieu départ vide) : Réussi - " << e.what() << std::endl;
+        std::cout << "Cas 3 (lieu départ vide) : Echoué - " << e.what() << std::endl;
     }
 
-    // Cas 4 : Nombre de places négatif
+    // Cas 3 : Nombre de places négatif
     try {
         controleur.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                                   segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
                                   voiture, -5, etat, emissionCO2, description);
-        std::cout << " Cas 4 (places négatives) : Échoué - aucune exception levée" << std::endl;
+        std::cout << "places négatives : Reussi" << std::endl;
     } catch (const std::exception& e) {
-        std::cout <<  "Cas 4 (places négatives) : Réussi - " << e.what() << std::endl;
+        std::cout <<  "places négatives : Echoué" << e.what() << std::endl;
     }
 
-    // Cas 5 : Prix négatif dans un segment
+    // Cas 4 : Prix négatif dans un segment
     std::vector<std::pair<std::string, float>> mauvaisPrix = {{"Paris-Lyon", -20.0}};
     try {
         controleur.verifierSaisieTrajet(idTrajet, date, heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                                   mauvaisPrix, villesEtapes, disponible, allerRetour, animaux,
                                   voiture, nombrePlaceDispo, etat, emissionCO2, description);
-        std::cout << " Cas 5 (prix négatif) : Échoué - aucune exception levée" << std::endl;
+        std::cout << " prix négatif : Réussi " << std::endl;
     } catch (const std::exception& e) {
-        std::cout << " Cas 5 (prix négatif) : Réussi - " << e.what() << std::endl;
+        std::cout << "prix négatif : Échoué " << e.what() << std::endl;
     }
 
-    // Cas 6 : Date vide
+    // Cas 5 : Date vide
     try {
         controleur.verifierSaisieTrajet(idTrajet, "", heureDepart, heureArrivee, lieuDepart, lieuArrivee,
                                   segmentsPrix, villesEtapes, disponible, allerRetour, animaux,
                                   voiture, nombrePlaceDispo, etat, emissionCO2, description);
-        std::cout << " Cas 6 (date vide) : Échoué - aucune exception levée" << std::endl;
+        std::cout << " date vide :  Réussi " << std::endl;
     } catch (const std::exception& e) {
-        std::cout << " Cas 6 (date vide) : Réussi - " << e.what() << std::endl;
+        std::cout << " date vide :  Échoué " << e.what() << std::endl;
     }
 }
 
