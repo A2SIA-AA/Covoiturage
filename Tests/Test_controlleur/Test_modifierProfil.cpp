@@ -7,7 +7,8 @@
 void testModifierProfil() {
     Database db(":memory:");
     ModifierProfilControlleur controleur(db);
-
+    Utilisateur u("Dubois", "lolo", "lolo@gmail.com", "pwd", "76800", true);
+    db.ajouterUtilisateur(u);
     // Cas nominal : champ "nom"
     try {
         controleur.ModifierProfil(1,"nom", "Alice");
@@ -19,17 +20,17 @@ void testModifierProfil() {
     // Cas limite : champ inconnu "adresse"
     try {
         controleur.ModifierProfil(1,"adresse", "Paris");
-        std::cout << "Test Champ Invalide : Échoué (aucune exception levée)" << std::endl;
-    } catch (const std::invalid_argument& e) {
         std::cout << "Test Champ Invalide : Réussi (exception attrapée)" << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cout << "Test Champ Invalide : Échoué (aucune exception levée)"  << std::endl;
     }
 
     // Cas limite : champ vide
     try {
         controleur.ModifierProfil(1,"", "Quelque chose");
-        std::cout << "Test Champ Vide : Échoué (aucune exception levée)" << std::endl;
+        std::cout << "Test Champ Vide :  Réussi (exception attrapée)"<< std::endl;
     } catch (const std::invalid_argument& e) {
-        std::cout << "Test Champ Vide : Réussi (exception attrapée)" << std::endl;
+        std::cout << "Test Champ Vide : Échoué (aucune exception levée)" << std::endl;
     }
 }
 
