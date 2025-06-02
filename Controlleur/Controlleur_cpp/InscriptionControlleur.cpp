@@ -14,6 +14,7 @@ bool InscriptionControlleur::verifierSaisieInscription(
     bool fumeur) {
     // Vérifier que tous les champs sont remplis
     if (nom.empty() || prenom.empty() || email.empty() || motPasse.empty() || adressePostal.empty() || (fumeur != false && fumeur != true)) {
+        std::cout << "Veuillez à ce que tous les champs soient remplis !" << std::endl;
         return false;
     }
     // Vérification basique du format d'email
@@ -21,10 +22,12 @@ bool InscriptionControlleur::verifierSaisieInscription(
     R"(^[^@\s]+@[^@\s]+\.[^@\s]+$)");
 
     if (!std::regex_match(email, emailPattern)) {
+        std::cout << "Email invalide !" << std::endl;
         return false;
     }
     // Longueur minimale du mot de passe
     if (motPasse.length() < 6) {
+        std::cout << "Mot de passe trop court !" << std::endl;
         return false;
     }
     return true;

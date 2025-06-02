@@ -33,7 +33,7 @@ void ModifierProfilControlleur::ModifierProfil(int id, std::string choix, std::s
     }
     else if (choix == "adressePostale") {
         if (!std::all_of(modification.begin(), modification.end(), ::isdigit)) {
-            std::cerr << "Adresse postale doit être un entier valide : "
+            std::cerr << "Adresse postale doit être une valeur valide : "
                       << modification << std::endl;
             return;
         }

@@ -146,8 +146,8 @@ void TrajetConsole::afficherInterfaceRecherche(const std::vector<Trajet>& trajet
     }
 
     bool continuer = true;
+    afficherTrajets(trajets);
     while (continuer) {
-        afficherTrajets(trajets);
         afficherMenuFiltres();
         int choix;
         std::cout << "Choisissez une action : ";

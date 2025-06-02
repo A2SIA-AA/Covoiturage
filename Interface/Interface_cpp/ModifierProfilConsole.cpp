@@ -11,7 +11,6 @@ ModifierProfilConsole::ModifierProfilConsole(Database& db) : db(db)
 
 
 
-// 2) Version interactive qui ne prend rien en paramètre
 bool ModifierProfilConsole::modifierCoordonnees()
 {
     int idUtilisateur;
