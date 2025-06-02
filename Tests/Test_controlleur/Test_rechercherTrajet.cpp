@@ -27,6 +27,11 @@ void testRechercherTrajet() {
 
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3, voiture4 };
 
+    db.ajouterTrajet(voiture1,1);
+    db.ajouterTrajet(voiture2,1);
+    db.ajouterTrajet(voiture3,1);
+    db.ajouterTrajet(voiture4,1);
+
     // Cas nominal : recherche pour Paris -> Lyon le 1er juin 2025
     try {
         std::vector<Trajet> resultat = controleur.rechercherTrajet("Paris", "Lyon", "2025-06-01");

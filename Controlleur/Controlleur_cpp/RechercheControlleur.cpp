@@ -59,6 +59,11 @@ float RechercheControlleur::calculerEmission(float distance,
     else if (type == "essence") facteur = 2.31f;
     else if (type == "electrique" || type == "électrique") facteur = 0.0f;
 
+    if  (consommationMoyenne <= 0.0f)
+    {
+        std::cout << "Erreur : consommationMoyenne <= 0.0f" << std::endl;
+        return -1.0;
+    }
     // Émission brute en kg
     float emission = (distance * consommationMoyenne / 100.0f) * facteur;
 

@@ -29,14 +29,18 @@ void testComparerPointIntermediaire() {
 
     std::vector<Trajet> trajetsDispo = { voiture1, voiture2, voiture3 };
 
+    db.ajouterTrajet(voiture1,1);
+    db.ajouterTrajet(voiture2,1);
+    db.ajouterTrajet(voiture3,1);
+
     // Cas nominal
     try {
         std::vector<Trajet> resultat = controleur.comparerPointIntermediaire(trajetsDispo);
 
         if (resultat.size() == 3 &&
-            resultat[0].getDescription() == "Voiture 3" &&
+            resultat[0].getDescription() == "Voiture 2" &&
             resultat[1].getDescription() == "Voiture 1" &&
-            resultat[2].getDescription() == "Voiture 2") {
+            resultat[2].getDescription() == "Voiture 3") {
             std::cout << "Test comparerPointIntermediaire (Nominal) : Réussi\n";
         } else {
             std::cout << "Test comparerPointIntermediaire (Nominal) : Échoué - Mauvais ordre\n";
