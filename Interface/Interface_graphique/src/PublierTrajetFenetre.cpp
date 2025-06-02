@@ -85,8 +85,34 @@ void PublierTrajetFenetre::onPublierClicked() {
         return;
     }
 
+    QString lieuDepart = lieuDepartEdit->text();
+    QString lieuArrivee = lieuArriveeEdit->text();
 
+    auto verifierEtFormatterVille = [](QString& texte) -> bool {
+        if (texte.contains(" ")) {
+            return false;
+        }
+        QStringList mots = texte.split("-");
+        for (QString& mot : mots) {
+            if (mot.isEmpty()) continue;
+            mot[0] = mot[0].toUpper();
+            for (int i = 1; i < mot.length(); ++i) {
+                mot[i] = mot[i].toLower();
+            }
+        }
+        texte = mots.join("-");
+        return true;
+    };
 
+    if (!verifierEtFormatterVille(lieuDepart) || !verifierEtFormatterVille(lieuArrivee)) {
+        QMessageBox::warning(this, "Erreur", "Les lieux doivent être sans espace. Utilisez des tirets (-) pour séparer les mots, avec chaque mot commençant par une majuscule (ex : Saint-Etienne).");
+        return;
+    }
+
+    lieuDepartEdit->setText(lieuDepart);
+    lieuArriveeEdit->setText(lieuArrivee);
+
+    
     
     static const QRegularExpression dateRegex("^\\d{4}-\\d{2}-\\d{2}$");     
     static const QRegularExpression heureRegex("^\\d{2}:\\d{2}$");          

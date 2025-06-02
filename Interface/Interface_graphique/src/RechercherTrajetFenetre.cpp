@@ -62,17 +62,44 @@ RechercherTrajetFenetre::RechercherTrajetFenetre(QWidget *parent)
 
 void RechercherTrajetFenetre::onRechercheClicked() {
     QString date = dateEdit->text();
-    static const QRegularExpression regex("^\\d{4}-\\d{2}-\\d{2}$");
+    QString depart = departEdit->text();
+    QString arrivee = arriveeEdit->text();
 
-    if (departEdit->text().isEmpty() || arriveeEdit->text().isEmpty() || date.isEmpty()) {
+    auto verifierEtFormatterVille = [](QString& texte) -> bool {
+        if (texte.contains(" ")) {
+            return false;
+        }
+        QStringList mots = texte.split("-");
+        for (QString& mot : mots) {
+            if (mot.isEmpty()) continue;
+            mot[0] = mot[0].toUpper();
+            for (int i = 1; i < mot.length(); ++i) {
+                mot[i] = mot[i].toLower();
+            }
+        }
+        texte = mots.join("-");
+        return true;
+    };
+
+    if (depart.isEmpty() || arrivee.isEmpty() || date.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis.");
         return;
     }
-    if (!regex.match(date).hasMatch()) {
-        QMessageBox::warning(this, "Format incorrect", "La date doit être au format AAAA-MM-JJ et doit contenir que des chiffres");
+
+    if (!verifierEtFormatterVille(depart) || !verifierEtFormatterVille(arrivee)) {
+        QMessageBox::warning(this, "Erreur", "Les lieux ne doivent pas contenir d'espaces. Utilisez des tirets (-) et commencez chaque mot par une majuscule (ex : Saint-Etienne).");
         return;
     }
 
+    departEdit->setText(depart);
+    arriveeEdit->setText(arrivee);
+
+    static const QRegularExpression regex("^\\d{4}-\\d{2}-\\d{2}$");
+
+    if (!regex.match(date).hasMatch()) {
+        QMessageBox::warning(this, "Format incorrect", "La date doit être au format AAAA-MM-JJ.");
+        return;
+    }
 
     QDate dateEntree = QDate::fromString(date, "yyyy-MM-dd");
     QDate aujourdHui = QDate::currentDate();
@@ -87,7 +114,7 @@ void RechercherTrajetFenetre::onRechercheClicked() {
         return;
     }
 
-    emit rechercheLancee(departEdit->text(), arriveeEdit->text(), date);
+    emit rechercheLancee(depart, arrivee, date);
 }
 
 void RechercherTrajetFenetre::afficherResultats(const std::vector<Trajet>& resultats) {
