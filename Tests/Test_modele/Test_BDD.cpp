@@ -162,6 +162,13 @@ void test_getUtilisateurByID(Database& db) {
 int main() {
     const std::string test_db_filename = "test_temp.db";
 
+    // SUPPRIMER AVANT de créer la base
+    if (remove(test_db_filename.c_str()) == 0) {
+        cout << "Ancienne base de test supprimée." << endl;
+    } else {
+        cout << "Pas d'ancienne base à supprimer ou déjà supprimée." << endl;
+    }
+
     {
         Database db(test_db_filename);
         setupDatabase(db);
@@ -191,7 +198,7 @@ int main() {
         test_getUtilisateurByID(db);
     }
 
-    // Suppression du fichier de base de test
+    // SUPPRIMER APRÈS les tests pour être propre
     if (remove(test_db_filename.c_str()) != 0) {
         cerr << "Erreur lors de la suppression du fichier test_temp.db" << endl;
     } else {
@@ -200,3 +207,4 @@ int main() {
 
     return 0;
 }
+
