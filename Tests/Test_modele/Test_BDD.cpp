@@ -14,14 +14,15 @@ void setupDatabase(Database& db) {
     bool ajout2;
     bool ajout3;
     bool ajout4;
-    bool ajout5;
 
-    ajout1 = db.ajouterUtilisateur(Utilisateur( 1,"Dupont", "Jean","user1@example.com", "mdp1", "Rouen", true));
-    ajout2 = db.ajouterUtilisateur(Utilisateur( 2,"Durand", "Alice","user2@example.com", "mdp2", "Rouen", false));
 
-    ajout3 = db.ajouterTrajet(Trajet (1,"2025-04-20", "08:00","12:00","Paris","Lyon",{{"Paris-Lyon", 50.0}},{},true,false, true,"Peugeot 208",3,true,85.3f,"Trajet confortable avec clim et musique chill" ), 1);
-    ajout4 = db.ajouterReservation(Reservation(15, 1, true));
-    ajout5 = db.ajouterPointIntermediaire(1, "Dijon");
+    ajout1 = db.ajouterUtilisateur(Utilisateur("Dupont", "Jean","user1@example.com", "mdp1", "Rouen", true));
+    ajout2 = db.ajouterUtilisateur(Utilisateur("Durand", "Alice","user2@example.com", "mdp2", "Rouen", false));
+
+    ajout3 = db.ajouterTrajet(Trajet ("2025-04-20", "08:00","12:00","Paris","Lyon",{{"Paris-Lyon", 50.0}},{},true,false, true,"Peugeot 208",3,true,85.3f,"Trajet confortable avec clim et musique chill" ), 1);
+    auto trajets = db.getTrajetByVilleDepartEtArriveeEtDateDepart("Paris", "Lyon", "2025-04-20");
+    cout << "Nombre de trajets récupérés : " << trajets.size() << endl;
+    ajout4 = db.ajouterReservation(Reservation(1,true, 15, 1));
 }
 
 void test_getUtilisateurByEmailAndMDP(Database& db) {
@@ -30,19 +31,24 @@ void test_getUtilisateurByEmailAndMDP(Database& db) {
 }
 
 void test_modifierUtilisateur(Database& db) {
-    // 1. Création d'un objet utilisateur modifié, avec même id que celui créé dans setupDatabase()
-    Utilisateur u_modifie(1, "Dupont", "Jean-Marie", "user1@example.com", "mdp1", "Caen", true);
+    // Récupérer l'utilisateur existant
+    Utilisateur u_existant = db.getUtilisateurByEmailAndMDP("user1@example.com", "mdp1");
 
-    // 2. Appel de la fonction modifierUtilisateur
+    // Créer un nouvel objet Utilisateur modifié
+    Utilisateur u_modifie("Dupont", "Jean-Marie", "user1@example.com", "mdp1", "Caen", true);
+
+    // Lui affecter le même idUtilisateur que l'existant
+    u_modifie.setIdUtilisateur(u_existant.getIdUtilisateur());
+
     bool success = db.modifierUtilisateur(u_modifie);
+    Utilisateur u_resultat = db.getUtilisateurByID(u_modifie.getIdUtilisateur());
 
-    // 3. Récupération de l'utilisateur modifié avec la fonction existante getUtilisateurByEmailAndMDP
-    Utilisateur u_recupere = db.getUtilisateurByID(1);
-
-    // 4. Vérification du résultat et affichage
-    cout << "test_modifierUtilisateur: "
-         << ((success && u_recupere.getPrenom() == "Jean-Marie" && u_recupere.getVille() == "Caen") ? "OK" : "FAIL")
-         << endl;
+    // Vérification finale
+    std::cout << "test_modifierUtilisateur: "
+              << ((success &&
+                   u_resultat.getPrenom() == "Jean-Marie" &&
+                   u_resultat.getAdressePostale() == "Caen") ? "OK" : "FAIL")
+              << std::endl;
 }
 
 
@@ -50,17 +56,17 @@ void test_modifierUtilisateur(Database& db) {
 
 void test_getTrajetByVilleDepartEtArriveeEtDateDepart(Database& db) {
     auto t = db.getTrajetByVilleDepartEtArriveeEtDateDepart("Paris", "Lyon", "2025-04-20");
-    cout << "test_getTrajetByVilleDepartEtArriveeEtDateDepart: " << (t.getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
+    cout << "test_getTrajetByVilleDepartEtArriveeEtDateDepart: " << (t[0].getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
 }
 
 void test_getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(Database& db) {
-    auto t = db.getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix("Paris", "Lyon", "2025-04-20", 50);
-    cout << "test_getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix: " << (t.getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
+    auto t = db.getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix("Paris", "Lyon", "2025-04-20", 50.0);
+    cout << "test_getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix: " << (t[0].getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
 }
 
 void test_getTrajetByVilleDepartEtArriveeEtEmissionCO2(Database& db) {
     auto t = db.getTrajetByVilleDepartEtArriveeEtEmissionCO2("Paris", "Lyon", "2025-04-20" , 85.3f);
-    cout << "getTrajetByVilleDepartEtArriveeEtEmissionCO2: " << (t.getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
+    cout << "getTrajetByVilleDepartEtArriveeEtEmissionCO2: " << (t[0].getIdTrajet() ==  1 ? "OK" : "FAIL") << endl;
 }
 
 
@@ -84,13 +90,10 @@ void test_getPrixByIdTrajet(Database& db) {
     auto prix = db.getPrixByIdTrajet(1);
     float total = 0;
     for (auto &p: prix) total += p.second;
-    cout << "test_getPrixByIdTrajet: " << (total == 35.0f ? "OK" : "FAIL") << endl;
+    cout << "test_getPrixByIdTrajet: " << (total == 50.0f ? "OK" : "FAIL") << endl;
 }
 
-void test_getPointIntermediaireByIdTrajet(Database& db) {
-    auto points = db.getPointIntermediaireByIdTrajet(1);
-    cout << "test_getPointIntermediaireByIdTrajet: " << (points.empty() ? "OK" : "FAIL") << endl;
-}
+
 
 void test_getDateDepatByIdTrajet(Database& db) {
     cout << "test_getDateDepatByIdTrajet: " << (db.getDateDepatByIdTrajet(1) == "2025-04-20" ? "OK" : "FAIL") << endl;
@@ -126,19 +129,27 @@ void test_getPassagerByID(Database& db) {
 }
 
 void test_supprimerTrajetByIDTrajet(Database& db) {
-    db.supprimerTrajetByIDTrajet(1); // Supposons qu'on supprime le trajet avec ID 3
-    Trajet t = db.getTrajetByIdTrajet(1);
-    cout << "test_supprimerTrajetByIDTraget: "
-         << ( t.getIdTrajet() == -1 ? "OK" : "FAIL") << endl;
+    db.supprimerTrajetByIDTrajet(1); // Supposons qu'on supprime le trajet avec ID 1
+
+    try {
+        Trajet t = db.getTrajetByIdTrajet(1);
+        std::cout << "test_supprimerTrajetByIDTrajet : FAIL (trajet toujours trouvé)" << std::endl;
+    } catch (const std::runtime_error& e) {
+        std::cout << "test_supprimerTrajetByIDTrajet : OK (exception levée -> trajet supprimé)" << std::endl;
+    }
 }
 
 
 
-void test_supprimerReservationByIdReservation(Database& db){
-    db.supprimerReservationByIdReservation(1);
-    Reservation r = db.getReservationByID(1);
-    cout << "test_supprimerTrajetByIDTraget: "
-         << (r.getIdReservation() == -1  ? "OK" : "FAIL") << endl;
+void test_supprimerReservationByIdReservation(Database& db) {
+    db.supprimerReservationByIDReservation(1); // Supposons qu'on supprime la réservation avec ID 1
+
+    try {
+        Reservation r = db.getReservationByID(1);
+        std::cout << "test_supprimerReservationByIdReservation: FAIL (réservation toujours trouvée)" << std::endl;
+    } catch (const std::runtime_error& e) {
+        std::cout << "test_supprimerReservationByIdReservation: OK (exception levée -> réservation supprimée)" << std::endl;
+    }
 }
 
 void test_getUtilisateurByID(Database& db) {
@@ -151,37 +162,40 @@ void test_getUtilisateurByID(Database& db) {
 int main() {
     const std::string test_db_filename = "test_temp.db";
 
-    Database db(test_db_filename);
-    setupDatabase(db);
+    {
+        Database db(test_db_filename);
+        setupDatabase(db);
 
-    // Lancement des tests
-    test_execute(db);
-    test_getUtilisateurByEmailAndMDP(db);
-    test_getTrajetByVilleDepartEtArriveeEtDateDepart(db);
-    test_getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(db);
-    test_getTrajetByVilleDepartEtArriveeEtEmissionCO2(db);
-    test_getTrajetByIdTrajet(db);
-    test_getReservationByID(db);
-    test_getEmissionCO2ByIdTrajet(db);
-    test_getPrixByIdTrajet(db);
-    test_getPointIntermediaireByIdTrajet(db);
-    test_getDateDepatByIdTrajet(db);
-    test_getDateArriveeByIdTrajet(db);
-    test_getHeureDepartByIdTrajet(db);
-    test_getHeureArriveeByIdTrajet(db);
-    test_getVilleDepartByIdTrajet(db);
-    test_getVilleArriveeByIdTrajet(db);
-    test_getConducteurByID(db);
-    test_getPassagerByID(db);
-    test_supprimerReservationByIdReservation(db);
-    test_supprimerTrajetByIDTrajet(db);
-    test_getUtilisateurByID(db);
+        // Lancement des tests
+        test_execute(db);
+        test_getUtilisateurByEmailAndMDP(db);
+        test_modifierUtilisateur(db);
+        test_getTrajetByVilleDepartEtArriveeEtDateDepart(db);
+        test_getTrajetByVilleDepartEtArriveeEtDateDepartEtPrix(db);
+        test_getTrajetByVilleDepartEtArriveeEtEmissionCO2(db);
+        test_getTrajetByIdTrajet(db);
+        test_getReservationByID(db);
+        test_getEmissionCO2ByIdTrajet(db);
+        test_getPrixByIdTrajet(db);
+
+        test_getDateDepatByIdTrajet(db);
+        test_getDateArriveeByIdTrajet(db);
+        test_getHeureDepartByIdTrajet(db);
+        test_getHeureArriveeByIdTrajet(db);
+        test_getVilleDepartByIdTrajet(db);
+        test_getVilleArriveeByIdTrajet(db);
+        test_getConducteurByID(db);
+        test_getPassagerByID(db);
+        test_supprimerReservationByIdReservation(db);
+        test_supprimerTrajetByIDTrajet(db);
+        test_getUtilisateurByID(db);
+    }
 
     // Suppression du fichier de base de test
     if (remove(test_db_filename.c_str()) != 0) {
         cerr << "Erreur lors de la suppression du fichier test_temp.db" << endl;
     } else {
-        cout << "Base de test supprime avec succes." << endl;
+        cout << "Base de test supprimée avec succès." << endl;
     }
 
     return 0;
