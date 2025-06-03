@@ -26,6 +26,9 @@ public:
                            const std::string& adressePostale,
                            bool fumeur) = 0;
 
+    /**
+     * @brief Destructeur virtuel de l'interface InscriptionInterface : Permet de garantir que les destructeurs des classes dérivées seront appelés correctement lors de la destruction d'objets via un pointeur à cette interface.
+     */
     virtual ~InscriptionInterface() = default;
 };
 

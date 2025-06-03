@@ -16,7 +16,7 @@ TARGET    := CovoiturageApp
 # -----------------------------------------------------------------------
 # 2) Sources de l’application principale
 # -----------------------------------------------------------------------
-SRC_MAIN        := main1.cpp
+SRC_MAIN        := main_console.cpp
 
 SRC_CONTROLLEUR := \
     Controlleur/Controlleur_cpp/InscriptionControlleur.cpp \

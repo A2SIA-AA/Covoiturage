@@ -21,6 +21,12 @@ public:
      */
     virtual bool modifierCoordonnees() = 0;
 
+    /**
+     * @brief Détruit l'instance de ModifierProfilInterface.
+     *
+     * Cette méthode virtuelle par défaut permet une gestion appropriée de la destruction
+     * des instances de classes dérivées lorsque manipulées via un pointeur de type base.
+     */
     virtual ~ModifierProfilInterface() = default;
 };
 

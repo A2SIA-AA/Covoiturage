@@ -15,6 +15,12 @@ public:
      */
     virtual void afficherReservations(const Passager& passager) = 0 ;
 
+    /**
+     * @brief Destructeur virtuel de la classe MesReservationsInterface.
+     *
+     * Ce destructeur est défini pour permettre la suppression polymorphique correcte
+     * des objets dérivés de cette interface.
+     */
     virtual ~MesReservationsInterface() = default;
 
 };

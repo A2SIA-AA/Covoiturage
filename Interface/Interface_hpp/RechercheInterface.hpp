@@ -25,7 +25,13 @@ public:
      * @return std::tuple<std::string, std::string, std::string> un tuple contenant le lieu de départ, le lieu d'arrivée et la date de départ souhaité pour le trajet  
      */
     [[nodiscard]] virtual std::tuple<std::string, std::string, std::string> rechercher() const =0 ;
-    
+
+    /**
+     * @brief Destructeur virtuel de la classe RechercheInterface.
+     *
+     * Ce destructeur permet une destruction appropriée des objets dérivés via un pointeur
+     * de type RechercheInterface, garantissant ainsi le respect du polymorphisme.
+     */
     virtual ~RechercheInterface() = default;
 };
 

@@ -61,6 +61,12 @@ class TrajetInterface {
          */
         virtual void afficherInterfaceRecherche(const std::vector<Trajet>& trajets) = 0;
 
+        /**
+         * @brief Destructeur virtuel de la classe TrajetInterface.
+         *
+         * Permet de garantir la destruction propre des objets dérivés lorsque la suppression
+         * se fait par un pointeur de type base (TrajetInterface).
+         */
         virtual ~TrajetInterface() = default;
     };
 

@@ -17,6 +17,9 @@ public:
      */
     virtual bool seConnecter(const std::string& email, const std::string& motDePasse) = 0;
 
+    /**
+     * @brief Destructeur virtuel par défaut : Permet la destruction correcte et propre des objets dérivés via un pointeur vers la classe de base.
+     */
     virtual ~ConnexionInterface() = default;
 };
 
