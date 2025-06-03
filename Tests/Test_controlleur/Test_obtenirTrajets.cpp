@@ -3,7 +3,7 @@
 #include <iostream>
 
 void testObtenirTrajets() {
-    Database db(":memory");
+    Database db(":memory:");
     TrajetControlleur controleur(db);
 
     // Cas nominal : trajet existant

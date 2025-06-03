@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 void testComparerHeureDepart() {
-    Database db(":memory");
+    Database db(":memory:");
     RechercheControlleur controleur(db);
 
     std::vector<std::pair<std::string, float>> segments = { {"Paris-Lyon", 30.0} };
