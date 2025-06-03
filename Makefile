@@ -1,9 +1,7 @@
 # -----------------------------------------------------------------------
-# Makefile pour CovoiturageApp + tests unitaires (Test_*.cpp)
+# Makefile pour CovoiturageApp + tests unitaires (Tests/Test_controlleur/* et Tests/Test_modele/*)
 # -----------------------------------------------------------------------
 
-# 1) Variables générales
-# -----------------------------------------------------------------------
 CXX       := g++
 CXXFLAGS  := -std=c++17 -Wall
 INCLUDES  := -IControlleur/Controlleur_hpp \
@@ -11,10 +9,10 @@ INCLUDES  := -IControlleur/Controlleur_hpp \
              -IInterface/Interface_hpp
 
 LDFLAGS   := -lsqlite3
-TARGET    := CovoiturageApp
+TARGET    := bin/CovoiturageApp
 
 # -----------------------------------------------------------------------
-# 2) Sources de l’application principale
+# Sources de l’application principale
 # -----------------------------------------------------------------------
 SRC_MAIN        := main_console.cpp
 
@@ -49,24 +47,29 @@ SRCS := \
     $(SRC_INTERFACE)
 
 # -----------------------------------------------------------------------
-# 3) Conversion noms de .cpp → .o (dans obj/…)
+# Conversion noms de .cpp → .o (dans obj/…)
 # -----------------------------------------------------------------------
 OBJDIR := obj
 OBJS   := $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
 # -----------------------------------------------------------------------
-# 4) Sources des tests (fichiers Test_*.cpp dans Tests/)
+# Sources des tests (fichiers Test_*.cpp dans Tests/)
 # -----------------------------------------------------------------------
-TEST_DIR   := Tests
-# Rechercher tous les fichiers Tests/Test_controlleur/Test_*.cpp
-TEST_SRCS  := $(wildcard $(TEST_DIR)/Test_controlleur/Test_*.cpp)
-# Extraire le nom simple (ex: “Test_monFonctionnalité”) sans le .cpp
+TEST_DIR  := Tests
+
+# On cherche tous les Test_*.cpp dans Test_controlleur ET dans Test_modele
+TEST_SRCS := \
+    $(wildcard $(TEST_DIR)/Test_controlleur/Test_*.cpp) \
+    $(wildcard $(TEST_DIR)/Test_modele/Test_*.cpp)
+
+# Nom simple de chaque test (Sans chemin ni .cpp)
 TEST_NAMES := $(notdir $(TEST_SRCS:.cpp=))
-# On produira pour chaque TEST_NAMES un exécutable bin/Test_monFonctionnalité
-TEST_BINS  := $(addprefix bin/,$(TEST_NAMES))
+
+# Chaque test donne lieu à un exécutable bin/Test_<nom>
+TEST_BINS := $(addprefix bin/,$(TEST_NAMES))
 
 # -----------------------------------------------------------------------
-# 5) Cibles principales
+# Cibles principales
 # -----------------------------------------------------------------------
 .PHONY: all app tests clean
 
@@ -91,8 +94,6 @@ $(OBJDIR)/%.o: %.cpp
 # -----------------------------------------------------------------------
 # 6) Compilation des tests unitaires
 # -----------------------------------------------------------------------
-# Pour chaque Tests/Test_controlleur/Test_*.cpp, on produit bin/Test_*.
-# On lie chaque test avec toutes les sources de l’application.
 
 # 6.1 Création du dossier bin/ s’il n’existe pas
 bin:
@@ -101,20 +102,28 @@ bin:
 # 6.2 Règle globale « tests » qui dépend de bin/ et de tous les exécutables bin/Test_*
 tests: | bin $(TEST_BINS)
 
-# 6.3 Construire chaque exécutable de test
-#     Exemple : Tests/Test_controlleur/Test_example.cpp → bin/Test_example
-$(foreach T,$(TEST_NAMES),\
-  $(eval \
-    bin/$(T): $(TEST_DIR)/Test_controlleur/$(T).cpp $(SRCS) ; \
-        @echo "=== Compilation du test $< → bin/$(T) ===" ; \
-        $(CXX) $(CXXFLAGS) $(INCLUDES) \
-            $(TEST_DIR)/Test_controlleur/$(T).cpp \
-            $(SRC_CONTROLLEUR) \
-            $(SRC_MODELE) \
-            $(SRC_INTERFACE) \
-            -o bin/$(T) $(LDFLAGS) ; \
-  )\
-)
+# 6.3 Construire chaque exécutable de test (Test_controlleur & Test_modele)
+#     On définit deux motifs : l’un pour Test_controlleur, l’autre pour Test_modele
+
+# Pour Tests/Test_controlleur/Test_<T>.cpp → bin/Test_<T>
+bin/%: $(TEST_DIR)/Test_controlleur/%.cpp $(SRCS)
+	@echo "=== Compilation du test $< → $@ ==="
+	$(CXX) $(CXXFLAGS) $(INCLUDES) \
+	    $< \
+	    $(SRC_CONTROLLEUR) \
+	    $(SRC_MODELE) \
+	    $(SRC_INTERFACE) \
+	    -o $@ $(LDFLAGS)
+
+# Pour Tests/Test_modele/Test_<T>.cpp → bin/Test_<T>
+bin/%: $(TEST_DIR)/Test_modele/%.cpp $(SRCS)
+	@echo "=== Compilation du test $< → $@ ==="
+	$(CXX) $(CXXFLAGS) $(INCLUDES) \
+	    $< \
+	    $(SRC_CONTROLLEUR) \
+	    $(SRC_MODELE) \
+	    $(SRC_INTERFACE) \
+	    -o $@ $(LDFLAGS)
 
 # -----------------------------------------------------------------------------
 # 7) Nettoyage
