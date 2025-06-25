@@ -54,6 +54,7 @@ make          # équivaut à "make all"
 
 # Lancer l’application CLI
 ./bin/CovoiturageApp
+```
 
 ### Exécuter les tests unitaires
 
