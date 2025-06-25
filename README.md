@@ -55,3 +55,17 @@ make          # équivaut à "make all"
 # Lancer l’application CLI
 ./bin/CovoiturageApp
 
+### Exécuter les tests unitaires
+
+```bash
+make tests    # compile chaque Test_*.cpp dans bin/
+# puis exécuter les exécutables générés, ex. :
+./bin/Test_InscriptionControlleur
+./bin/Test_Utilisateur
+```
+
+### Nettoyer les fichiers générés
+
+```bash
+make clean
+```
