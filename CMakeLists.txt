@@ -63,7 +63,7 @@ include_directories(
 )
 
 set(GUI_SOURCES
-        main.cpp
+        main_GUI.cpp
         Controlleur/Controlleur_cpp/MainControlleur.cpp
         Controlleur/Controlleur_cpp/InscriptionControlleur.cpp
         Controlleur/Controlleur_cpp/ConnexionControlleur.cpp
