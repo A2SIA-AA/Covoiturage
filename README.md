@@ -20,11 +20,14 @@ Dépôt d’origine : <https://github.com/Lolorien/Covoiturage.git>.
 ---
 
 ## Arborescence (simplifiée)
+```
 Covoiturage/
-├── Controlleur/ # Logique métier (Inscription, Connexion, etc.)
-├── Modele/ # Entités : Utilisateur, Trajet, Reservation…
-├── Interface/ # Vue console (et GUI Qt)
-├── Tests/ # Tests unitaires
-├── main_console.cpp # Point d’entrée CLI
-└── Makefile # Build + tests + clean
+├── Controlleur/             # Logique métier (Inscription, Connexion, etc.)
+├── Modele/                  # Entités : Utilisateur, Trajet, Reservation…
+├── Interface/               # Vue console (et ébauche GUI Qt)
+├── Tests/                   # Tests unitaires
+├── main\_console.cpp         # Point d’entrée CLI
+└── Makefile                 # Build + tests + clean
+
+````
 
