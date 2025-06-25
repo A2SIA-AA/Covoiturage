@@ -31,3 +31,27 @@ Covoiturage/
 
 ````
 
+---
+
+## Prérequis
+| Outil / lib | Version conseillée |
+|-------------|--------------------|
+| **g++**     | ≥ 11 (C++17) |
+| **make**    | GNU Make |
+| **SQLite3** | (linké via `-lsqlite3`) |
+
+---
+
+## Compilation et exécution
+
+```bash
+# Cloner le projet
+git clone https://github.com/Lolorien/Covoiturage.git
+cd Covoiturage
+
+# Construire l’application et les tests
+make          # équivaut à "make all"
+
+# Lancer l’application CLI
+./bin/CovoiturageApp
+
