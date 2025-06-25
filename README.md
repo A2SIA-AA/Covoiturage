@@ -26,7 +26,7 @@ Covoiturage/
 ├── Modele/                  # Entités : Utilisateur, Trajet, Reservation…
 ├── Interface/               # Vue console (et ébauche GUI Qt)
 ├── Tests/                   # Tests unitaires
-├── main\_console.cpp         # Point d’entrée CLI
+├── main_console.cpp         # Point d’entrée CLI
 └── Makefile                 # Build + tests + clean
 
 ````
