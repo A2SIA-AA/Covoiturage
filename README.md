@@ -4,8 +4,6 @@ Application en ligne de commande (CLI) qui simule un service de covoiturage :
 inscription d’utilisateurs, publication et recherche de trajets, réservation de places, et gestion des annonces.  
 Le projet contient aussi des tests unitaires pour les contrôleurs et les modèles.
 
-Dépôt d’origine : <https://github.com/Lolorien/Covoiturage.git>.
-
 ---
 
 ## Fonctionnalités principales
